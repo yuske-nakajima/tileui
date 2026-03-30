@@ -13,7 +13,17 @@ export {
 	STYLE_ELEMENT_ID,
 	TILE_SIZE,
 } from './constants';
+export type { BooleanOptions } from './controllers/BooleanController';
+export { BooleanController } from './controllers/BooleanController';
+export type { ButtonOptions } from './controllers/ButtonController';
+export { ButtonController } from './controllers/ButtonController';
+export type { ColorOptions } from './controllers/ColorController';
+export { ColorController } from './controllers/ColorController';
 export { Controller } from './controllers/Controller';
+export type { KnobOptions } from './controllers/KnobController';
+export { KnobController } from './controllers/KnobController';
+export type { NumberInputOptions } from './controllers/NumberInputController';
+export { NumberInputController } from './controllers/NumberInputController';
 
 export { injectStyles } from './styles/inject';
 export { describeArc, polarToCartesian } from './utils/svg';
