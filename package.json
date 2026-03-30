@@ -20,6 +20,9 @@
 	"sideEffects": false,
 	"scripts": {
 		"dev": "vite",
+		"dev:bg": "vite > /dev/null 2>&1 & echo $! > .vite.pid && echo 'Vite started (PID:'$(cat .vite.pid)')'",
+		"dev:status": "if [ -f .vite.pid ] && kill -0 $(cat .vite.pid) 2>/dev/null; then echo \"Running (PID: $(cat .vite.pid))\"; curl -s http://localhost:5173 > /dev/null && echo 'http://localhost:5173' || echo 'Starting...'; else echo 'Not running'; fi",
+		"dev:stop": "if [ -f .vite.pid ] && kill -0 $(cat .vite.pid) 2>/dev/null; then kill $(cat .vite.pid) && rm -f .vite.pid && echo 'Stopped'; else echo 'Not running'; rm -f .vite.pid; fi",
 		"build": "vite build && tsc --emitDeclarationOnly",
 		"check": "biome check .",
 		"format": "biome format --write .",
