@@ -75,10 +75,13 @@ export class KnobController extends Controller<number> {
 		return (this.value - this.min) / range;
 	}
 
-	/** 値をステップに合わせて丸める */
+	/** 値をステップに合わせて丸め、浮動小数点誤差を除去する */
 	private clampAndStep(raw: number): number {
 		const stepped = Math.round(raw / this.step) * this.step;
-		return Math.min(this.max, Math.max(this.min, stepped));
+		const clamped = Math.min(this.max, Math.max(this.min, stepped));
+		// step の小数桁数に合わせて丸めることで浮動小数点誤差を除去
+		const decimals = (this.step.toString().split('.')[1] || '').length;
+		return Number(clamped.toFixed(decimals));
 	}
 
 	createDOM(): HTMLElement {
