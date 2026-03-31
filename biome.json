@@ -1,0 +1,30 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"lineWidth": 100
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single"
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"files": {
+		"includes": ["**", "!dist", "!node_modules", "!.claude"]
+	}
+}

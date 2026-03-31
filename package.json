@@ -1,0 +1,61 @@
+{
+	"name": "tileui",
+	"version": "0.1.0",
+	"description": "A grid-tile GUI panel with SVG rotary knobs for creative coding",
+	"type": "module",
+	"main": "./dist/tileui.umd.cjs",
+	"module": "./dist/tileui.js",
+	"types": "./dist/tileui.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/tileui.d.ts",
+			"import": "./dist/tileui.js",
+			"require": "./dist/tileui.umd.cjs"
+		},
+		"./style.css": "./dist/tileui.css"
+	},
+	"files": [
+		"dist"
+	],
+	"sideEffects": false,
+	"scripts": {
+		"dev": "vite",
+		"dev:bg": "vite > /dev/null 2>&1 & echo $! > .vite.pid && echo 'Vite started (PID:'$(cat .vite.pid)')'",
+		"dev:status": "if [ -f .vite.pid ] && kill -0 $(cat .vite.pid) 2>/dev/null; then echo \"Running (PID: $(cat .vite.pid))\"; curl -s http://localhost:5173 > /dev/null && echo 'http://localhost:5173' || echo 'Starting...'; else echo 'Not running'; fi",
+		"dev:stop": "if [ -f .vite.pid ] && kill -0 $(cat .vite.pid) 2>/dev/null; then kill $(cat .vite.pid) && rm -f .vite.pid && echo 'Stopped'; else echo 'Not running'; rm -f .vite.pid; fi",
+		"build": "vite build && tsc --emitDeclarationOnly",
+		"check": "biome check .",
+		"format": "biome format --write .",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"prepublishOnly": "npm run build"
+	},
+	"keywords": [
+		"gui",
+		"control-panel",
+		"dat-gui",
+		"lil-gui",
+		"tweakpane",
+		"creative-coding",
+		"svg-knob",
+		"grid",
+		"debug-panel"
+	],
+	"author": "yuske-nakajima",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yuske-nakajima/tileui.git"
+	},
+	"homepage": "https://github.com/yuske-nakajima/tileui",
+	"bugs": {
+		"url": "https://github.com/yuske-nakajima/tileui/issues"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.9",
+		"jsdom": "^29.0.1",
+		"typescript": "6.0.2",
+		"vite": "8.0.3",
+		"vitest": "4.1.2"
+	}
+}
