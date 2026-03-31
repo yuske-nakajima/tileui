@@ -17,23 +17,10 @@
 
 ## Install
 
+> **Note:** Not yet published to npm. After publishing, install with:
+
 ```bash
 npm install tileui
-```
-
-### CDN
-
-```html
-<!-- UMD -->
-<script src="https://unpkg.com/tileui"></script>
-<script>
-  const gui = new TileUI();
-</script>
-
-<!-- ESM -->
-<script type="module">
-  import TileUI from 'https://cdn.jsdelivr.net/npm/tileui/dist/tileui.js';
-</script>
 ```
 
 ## Quick Start
