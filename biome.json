@@ -25,6 +25,6 @@
 		}
 	},
 	"files": {
-		"includes": ["**", "!dist", "!node_modules", "!.claude"]
+		"includes": ["**", "!dist", "!node_modules", "!.claude", "!.vite"]
 	}
 }

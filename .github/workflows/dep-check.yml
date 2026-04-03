@@ -1,0 +1,159 @@
+name: Dependency Check
+
+on:
+  schedule:
+    # 毎日 9:00 JST (0:00 UTC)
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  dep-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v2
+
+      - run: npm ci
+
+      # Node.js EOL チェック
+      - name: Check Node.js EOL
+        id: node-eol
+        run: |
+          NODE_MAJOR=$(node -v | sed 's/v\([0-9]*\).*/\1/')
+          NODE_CURRENT=$(node -v | sed 's/v//')
+          EOL_DATA=$(curl -sf "https://endoflife.date/api/nodejs/${NODE_MAJOR}.json")
+          EOL_DATE=$(echo "$EOL_DATA" | jq -r '.eol')
+          LATEST=$(echo "$EOL_DATA" | jq -r '.latest')
+          LTS=$(echo "$EOL_DATA" | jq -r '.lts')
+
+          # EOL まで 90 日以内かチェック
+          TODAY=$(date +%s)
+          EOL_TS=$(date -d "$EOL_DATE" +%s 2>/dev/null || date -j -f "%Y-%m-%d" "$EOL_DATE" +%s 2>/dev/null || echo "0")
+          DAYS_LEFT=$(( (EOL_TS - TODAY) / 86400 ))
+
+          REPORT=""
+          if [ "$DAYS_LEFT" -lt 90 ] && [ "$DAYS_LEFT" -gt 0 ]; then
+            REPORT="⚠️ Node.js ${NODE_MAJOR} の EOL まで残り ${DAYS_LEFT} 日 (${EOL_DATE})"
+          elif [ "$DAYS_LEFT" -le 0 ]; then
+            REPORT="🚨 Node.js ${NODE_MAJOR} は EOL を過ぎています (${EOL_DATE})"
+          fi
+
+          if [ "$NODE_CURRENT" != "$LATEST" ]; then
+            REPORT="${REPORT}\n📦 Node.js アップデート: v${NODE_CURRENT} → v${LATEST}"
+          fi
+
+          echo "report<<EOF" >> "$GITHUB_OUTPUT"
+          echo -e "$REPORT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      # npm-check-updates でアップデートチェック
+      - name: Check patch updates
+        id: patch
+        run: |
+          RESULT=$(npx -y npm-check-updates --target patch 2>/dev/null || true)
+          echo "result<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RESULT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Check minor updates
+        id: minor
+        run: |
+          RESULT=$(npx -y npm-check-updates --target minor 2>/dev/null || true)
+          echo "result<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RESULT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Check major updates
+        id: major
+        run: |
+          RESULT=$(npx -y npm-check-updates --target latest 2>/dev/null || true)
+          echo "result<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RESULT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      # npm audit
+      - name: Check vulnerabilities
+        id: audit
+        run: |
+          RESULT=$(npm audit 2>&1 || true)
+          echo "result<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RESULT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      # レポート生成 & Issue 作成
+      - name: Create issue if updates found
+        uses: actions/github-script@v7
+        env:
+          NODE_EOL: ${{ steps.node-eol.outputs.report }}
+          PATCH: ${{ steps.patch.outputs.result }}
+          MINOR: ${{ steps.minor.outputs.result }}
+          MAJOR: ${{ steps.major.outputs.result }}
+          AUDIT: ${{ steps.audit.outputs.result }}
+        with:
+          script: |
+            const nodeEol = process.env.NODE_EOL?.trim() || '';
+            const patch = process.env.PATCH || '';
+            const minor = process.env.MINOR || '';
+            const major = process.env.MAJOR || '';
+            const audit = process.env.AUDIT || '';
+
+            const allLatest = [patch, minor, major].every(r =>
+              r.includes('All dependencies match')
+            );
+            const noVulnerabilities = audit.includes('found 0 vulnerabilities');
+            const noNodeIssue = nodeEol === '';
+
+            if (allLatest && noVulnerabilities && noNodeIssue) {
+              console.log('全て最新・問題なし。Issue は作成しません。');
+              return;
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            const title = `📦 依存性チェックレポート (${today})`;
+
+            let body = `# 依存性チェックレポート\n\n`;
+            body += `**実行日**: ${today}\n`;
+            body += `**Node.js**: ${process.version}\n\n`;
+
+            if (nodeEol) {
+              body += `## Node.js ステータス\n\n${nodeEol}\n\n`;
+            }
+
+            body += `## パッチアップデート\n\n\`\`\`\n${patch}\n\`\`\`\n\n`;
+            body += `## マイナーアップデート\n\n\`\`\`\n${minor}\n\`\`\`\n\n`;
+            body += `## メジャーアップデート\n\n\`\`\`\n${major}\n\`\`\`\n\n`;
+            body += `## セキュリティ監査\n\n\`\`\`\n${audit}\n\`\`\`\n\n`;
+            body += `---\n🤖 GitHub Actions により自動生成`;
+
+            // 同日の既存 Issue を閉じる
+            const { data: existingIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'dependencies',
+            });
+
+            for (const issue of existingIssues) {
+              if (issue.title.startsWith('📦 依存性チェックレポート')) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed',
+                  state_reason: 'not_planned',
+                });
+              }
+            }
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['dependencies'],
+            });
