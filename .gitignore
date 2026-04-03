@@ -2,4 +2,6 @@ node_modules/
 dist/
 .claude/settings.local.json
 .vite.pid
+.vite/
 .serena
+.idea
