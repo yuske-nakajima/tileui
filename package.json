@@ -52,7 +52,7 @@
 		"url": "https://github.com/yuske-nakajima/tileui/issues"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.9",
+		"@biomejs/biome": "2.4.10",
 		"jsdom": "29.0.1",
 		"typescript": "6.0.2",
 		"vite": "8.0.3",
