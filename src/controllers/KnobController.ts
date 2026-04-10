@@ -9,6 +9,7 @@ import {
 	KNOB_TRACK_WIDTH,
 	KNOB_VALUE_WIDTH,
 } from '../constants';
+import { formatValue } from '../utils/number';
 import { describeArc, polarToCartesian } from '../utils/svg';
 import { Controller } from './Controller';
 
@@ -164,9 +165,9 @@ export class KnobController extends Controller<number> {
 			this.thumb.setAttribute('cy', String(pos.y));
 		}
 
-		// 値テキストの更新
+		// 値テキストの更新（step に応じた桁数で表示）
 		if (this.valueSpan) {
-			this.valueSpan.textContent = String(this.value);
+			this.valueSpan.textContent = formatValue(this.value, this.step);
 		}
 	}
 
