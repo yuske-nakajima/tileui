@@ -23,6 +23,21 @@
 npm install @yuske-nakajima/tileui
 ```
 
+### CDN
+
+```html
+<!-- UMD -->
+<script src="https://unpkg.com/@yuske-nakajima/tileui"></script>
+<script>
+  const gui = new TileUI();
+</script>
+
+<!-- ESM -->
+<script type="module">
+  import TileUI from 'https://cdn.jsdelivr.net/npm/@yuske-nakajima/tileui/dist/tileui.js';
+</script>
+```
+
 ## クイックスタート
 
 ```ts
