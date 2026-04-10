@@ -1,3 +1,24 @@
+## [0.2.1](https://github.com/yuske-nakajima/tileui/compare/v0.2.0...v0.2.1) (2026-04-10)
+
+### Features
+
+* .style()にborderColorオプションを追加 ([51ced21](https://github.com/yuske-nakajima/tileui/commit/51ced216972c7f853d6a4a969a3de8968d286144))
+* **demo:** p5.jsジェネラティブアートを実装 ([83ea83d](https://github.com/yuske-nakajima/tileui/commit/83ea83db96d81b4300747af97045a3ab9235dc34))
+* **demo:** tileui↔p5.jsリアルタイム連携を実装 ([a706d49](https://github.com/yuske-nakajima/tileui/commit/a706d49863cf67d765109b0a695e9359c805a393))
+* **demo:** ショーケースセクションを追加、パネル幅をフィット ([36ff889](https://github.com/yuske-nakajima/tileui/commit/36ff889015ab1d59984838fc3c6f52adc9b9c148))
+* **demo:** ショーケースのCustom StylesにborderColorを追加 ([742e764](https://github.com/yuske-nakajima/tileui/commit/742e7641d87c630dfedce9a413b257ca5c478190))
+* **demo:** デモページ骨格とNothing designスタイルを実装 ([b3ce0c4](https://github.com/yuske-nakajima/tileui/commit/b3ce0c4a3a460ef62302867c30ddd60a1a99e764))
+* **demo:** レスポンシブ対応とデモ専用ビルド設定を追加 ([981887a](https://github.com/yuske-nakajima/tileui/commit/981887a0c633366cc01c0fa76a7e6137aa2db84a))
+* **demo:** 仕上げ（OGP、ダークモード、READMEリンク） ([c05da81](https://github.com/yuske-nakajima/tileui/commit/c05da8147cc17c22745b399a123ce239e56fe60c))
+* タイルの背景色・フォントカラーを個別設定可能にする ([9f86cc7](https://github.com/yuske-nakajima/tileui/commit/9f86cc7c29cb97b92cf8c4dbb8e9b0ff7793ce30)), closes [#28](https://github.com/yuske-nakajima/tileui/issues/28)
+
+### Bug Fixes
+
+* demo用tsconfig.jsonを追加してTS6059エラーを解消 ([abb927f](https://github.com/yuske-nakajima/tileui/commit/abb927f1f01d6901a3acf2eee7d43c35e25ccb40))
+* タイルのborderを重ねて隙間を解消 ([e20d573](https://github.com/yuske-nakajima/tileui/commit/e20d573b7dde98e097de4d23aeb07378239ef382))
+* タイル間の余白を除去してピタッと並べる ([f8a10a8](https://github.com/yuske-nakajima/tileui/commit/f8a10a859f1b78dc9a215ae117e8784c6d7950d4)), closes [#27](https://github.com/yuske-nakajima/tileui/issues/27)
+* ノブの値表示で小数点以下の桁数を制限 ([e20b8a7](https://github.com/yuske-nakajima/tileui/commit/e20b8a7179b664b3b4bf006d2e9db550345081af)), closes [#26](https://github.com/yuske-nakajima/tileui/issues/26)
+
 ## [0.2.0](https://github.com/yuske-nakajima/tileui/compare/v0.1.1...v0.2.0) (2026-04-10)
 
 ### ⚠ BREAKING CHANGES
