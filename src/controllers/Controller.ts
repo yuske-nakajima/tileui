@@ -42,10 +42,15 @@ export abstract class Controller<T = unknown> {
 	}
 
 	/**
-	 * タイルの背景色・フォントカラーを設定する
+	 * タイルのスタイルを個別設定する
 	 * @returns メソッドチェーン用に this を返す
 	 */
-	style(options: { bgColor?: string; textColor?: string; borderColor?: string }): this {
+	style(options: {
+		bgColor?: string;
+		textColor?: string;
+		borderColor?: string;
+		accentColor?: string;
+	}): this {
 		if (this.element) {
 			if (options.bgColor) {
 				this.element.style.backgroundColor = options.bgColor;
@@ -55,6 +60,11 @@ export abstract class Controller<T = unknown> {
 			}
 			if (options.borderColor) {
 				this.element.style.borderColor = options.borderColor;
+			}
+			if (options.accentColor) {
+				this.element.style.setProperty('--tileui-accent', options.accentColor);
+				this.element.style.setProperty('--tileui-toggle-on', options.accentColor);
+				this.element.style.setProperty('--tileui-knob-value', options.accentColor);
 			}
 		}
 		return this;
