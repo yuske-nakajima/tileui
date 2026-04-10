@@ -12,6 +12,7 @@ window.addEventListener('resize', resizeSketch);
 // tileui パネルを #gui コンテナに生成
 const gui = new TileUI({
 	container: document.getElementById('gui')!,
+	columns: 2,
 	title: 'Controls',
 });
 
@@ -77,6 +78,68 @@ gui.addButton('Reset', () => {
 	Object.assign(params, defaults);
 	Object.assign(artParams, defaults);
 	gui.updateDisplay();
+});
+
+// === ショーケース ===
+
+const sampleParams = { speed: 50, volume: 0.8, color: '#ff6600', enabled: true };
+
+function addSampleControls(g: TileUI) {
+	g.add(sampleParams, 'speed', 0, 100, 1);
+	g.add(sampleParams, 'volume', 0, 1, 0.01);
+	g.addColor(sampleParams, 'color');
+	g.addBoolean(sampleParams, 'enabled');
+	g.addButton('Reset', () => {});
+	g.addButton('Action', () => {});
+}
+
+// 2列
+const s2 = new TileUI({
+	container: document.getElementById('showcase-2col')!,
+	columns: 2,
+	title: '2 Columns',
+});
+addSampleControls(s2);
+
+// 3列
+const s3 = new TileUI({
+	container: document.getElementById('showcase-3col')!,
+	columns: 3,
+	title: '3 Columns',
+});
+addSampleControls(s3);
+
+// 4列
+const s4 = new TileUI({
+	container: document.getElementById('showcase-4col')!,
+	columns: 4,
+	title: '4 Columns',
+});
+addSampleControls(s4);
+
+// 個別スタイル
+const s5 = new TileUI({
+	container: document.getElementById('showcase-styled')!,
+	columns: 3,
+	title: 'Custom Styles',
+});
+s5.add(sampleParams, 'speed', 0, 100, 1).style({ bgColor: '#2d1b69', borderColor: '#5b3cc4' });
+s5.add(sampleParams, 'volume', 0, 1, 0.01).style({
+	bgColor: '#1b4d3e',
+	textColor: '#80ffdb',
+	borderColor: '#2d8a6e',
+});
+s5.addColor(sampleParams, 'color').style({ bgColor: '#4a1942', borderColor: '#7a2d6d' });
+s5.addBoolean(sampleParams, 'enabled').style({ bgColor: '#0d3b66', borderColor: '#1a6db5' });
+s5.addButton('Reset', () => {}).style({
+	bgColor: '#6b2737',
+	textColor: '#ffccd5',
+	borderColor: '#a33d52',
+});
+s5.addButton('Action', () => {}).style({
+	bgColor: '#1a472a',
+	textColor: '#90ee90',
+	borderColor: '#2d8a4e',
 });
 
 // インストールコマンドのクリックコピー

@@ -165,6 +165,77 @@ describe('TileUI', () => {
 		});
 	});
 
+	describe('style()', () => {
+		it('bgColor を指定するとタイルの backgroundColor が変更される', () => {
+			const gui = new TileUI({ container });
+			const params = { speed: 50 };
+			const ctrl = gui.add(params, 'speed', 0, 100);
+			ctrl.style({ bgColor: '#ff0000' });
+			const tile = container.querySelector(`.${CSS_PREFIX}-tile-knob`) as HTMLElement;
+			expect(tile.style.backgroundColor).toBe('rgb(255, 0, 0)');
+			gui.dispose();
+		});
+
+		it('textColor を指定するとタイルの color が変更される', () => {
+			const gui = new TileUI({ container });
+			const params = { speed: 50 };
+			const ctrl = gui.add(params, 'speed', 0, 100);
+			ctrl.style({ textColor: '#ffffff' });
+			const tile = container.querySelector(`.${CSS_PREFIX}-tile-knob`) as HTMLElement;
+			expect(tile.style.color).toBe('rgb(255, 255, 255)');
+			gui.dispose();
+		});
+
+		it('bgColor と textColor を同時に指定できる', () => {
+			const gui = new TileUI({ container });
+			const params = { speed: 50 };
+			const ctrl = gui.add(params, 'speed', 0, 100);
+			ctrl.style({ bgColor: '#ff0000', textColor: '#ffffff' });
+			const tile = container.querySelector(`.${CSS_PREFIX}-tile-knob`) as HTMLElement;
+			expect(tile.style.backgroundColor).toBe('rgb(255, 0, 0)');
+			expect(tile.style.color).toBe('rgb(255, 255, 255)');
+			gui.dispose();
+		});
+
+		it('onChange と style をチェーンで呼び出せる', () => {
+			const gui = new TileUI({ container });
+			const params = { speed: 50 };
+			const callback = vi.fn();
+			const ctrl = gui.add(params, 'speed', 0, 100);
+			// onChange → style のチェーン
+			const result = ctrl.onChange(callback).style({ bgColor: '#00ff00' });
+			expect(result).toBe(ctrl);
+			const tile = container.querySelector(`.${CSS_PREFIX}-tile-knob`) as HTMLElement;
+			expect(tile.style.backgroundColor).toBe('rgb(0, 255, 0)');
+			// コールバックも正常動作
+			ctrl.value = 75;
+			expect(callback).toHaveBeenCalledWith(75);
+			gui.dispose();
+		});
+
+		it('style → onChange のチェーンも動作する', () => {
+			const gui = new TileUI({ container });
+			const params = { speed: 50 };
+			const callback = vi.fn();
+			const ctrl = gui.add(params, 'speed', 0, 100);
+			const result = ctrl.style({ textColor: '#000000' }).onChange(callback);
+			expect(result).toBe(ctrl);
+			ctrl.value = 25;
+			expect(callback).toHaveBeenCalledWith(25);
+			gui.dispose();
+		});
+
+		it('borderColor を指定するとタイルの borderColor が変更される', () => {
+			const gui = new TileUI({ container });
+			const params = { speed: 50 };
+			const ctrl = gui.add(params, 'speed', 0, 100);
+			ctrl.style({ borderColor: '#ff0000' });
+			const tile = container.querySelector(`.${CSS_PREFIX}-tile-knob`) as HTMLElement;
+			expect(tile.style.borderColor).toBe('rgb(255, 0, 0)');
+			gui.dispose();
+		});
+	});
+
 	describe('columns オプション', () => {
 		it('columns を指定するとグリッド列数が固定される', () => {
 			const gui = new TileUI({ container, columns: 3 });

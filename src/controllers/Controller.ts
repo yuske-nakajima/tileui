@@ -41,6 +41,25 @@ export abstract class Controller<T = unknown> {
 		return this;
 	}
 
+	/**
+	 * タイルの背景色・フォントカラーを設定する
+	 * @returns メソッドチェーン用に this を返す
+	 */
+	style(options: { bgColor?: string; textColor?: string; borderColor?: string }): this {
+		if (this.element) {
+			if (options.bgColor) {
+				this.element.style.backgroundColor = options.bgColor;
+			}
+			if (options.textColor) {
+				this.element.style.color = options.textColor;
+			}
+			if (options.borderColor) {
+				this.element.style.borderColor = options.borderColor;
+			}
+		}
+		return this;
+	}
+
 	/** DOM の表示を現在の値に同期する */
 	updateDisplay(): void {
 		// サブクラスでオーバーライドして表示を更新する

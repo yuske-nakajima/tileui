@@ -5,7 +5,7 @@ const TILEUI_CSS = `
 /* TileUI CSS 変数（テーマカスタマイズ用） */
 :root {
 	--tileui-tile-size: 100px;
-	--tileui-gap: 2px;
+	--tileui-gap: 0px;
 	--tileui-bg: #1a1a2e;
 	--tileui-tile-bg: #16213e;
 	--tileui-tile-bg-hover: #1c2a4a;
@@ -26,7 +26,7 @@ const TILEUI_CSS = `
 
 /* パネルコンテナ（CSS Grid） */
 .tileui-panel {
-	display: grid;
+	display: inline-grid;
 	grid-template-columns: repeat(auto-fill, var(--tileui-tile-size));
 	gap: var(--tileui-gap);
 	padding: var(--tileui-gap);
@@ -45,7 +45,7 @@ const TILEUI_CSS = `
 	height: var(--tileui-tile-size);
 	background: var(--tileui-tile-bg);
 	border: 1px solid var(--tileui-border);
-	border-radius: var(--tileui-radius);
+	margin: -0.5px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
