@@ -1,3 +1,24 @@
+## [0.2.2](https://github.com/yuske-nakajima/tileui/compare/v0.2.1...v0.2.2) (2026-04-10)
+
+### Features
+
+* .style()にaccentColorオプションを追加 ([d0b0bde](https://github.com/yuske-nakajima/tileui/commit/d0b0bde2d264af0ebe6b5d8d1fcdf3afb82a6a3f)), closes [#34](https://github.com/yuske-nakajima/tileui/issues/34)
+* **demo:** ショーケースごとに異なるアクセントカラーを適用 ([687a934](https://github.com/yuske-nakajima/tileui/commit/687a934fc0e1d1f90c1b96dd8250108954cf77d5))
+* **demo:** セクションごとにアクセントカラーを分散配色 ([8584c2b](https://github.com/yuske-nakajima/tileui/commit/8584c2b9973eb77c661eb303c5dfd01ff75fbf67))
+
+### Bug Fixes
+
+* **demo:** CSS変数オーバーライドを!importantで確実に適用 ([23ca18e](https://github.com/yuske-nakajima/tileui/commit/23ca18e149aff24ffa1edd30eb57ec74ef0670d3))
+* **demo:** CSS変数オーバーライドを.tileui-panelスコープに変更 ([08efd80](https://github.com/yuske-nakajima/tileui/commit/08efd801969f5ce38b7e4b5b78f57c4314a10ec1))
+* **demo:** gui-areaの幅をパネルにフィットさせて右の隙間を解消 ([80f0af1](https://github.com/yuske-nakajima/tileui/commit/80f0af1d5daa3b2247e662c4c5fc99dbd7942c8f))
+* **demo:** toggle-on/knob-valueのパネルスコープ定義を削除 ([8e3e179](https://github.com/yuske-nakajima/tileui/commit/8e3e179c75ec51349108cf47e248ffd7a2f9a1f8))
+* **demo:** ショーケースにもアクセントカラーを適用 ([40a5b05](https://github.com/yuske-nakajima/tileui/commit/40a5b05951ed2de1dd2e3e07115943771e43548e))
+* **demo:** ショーケースのborderスタイルをメインGUIと統一 ([3b98a53](https://github.com/yuske-nakajima/tileui/commit/3b98a53a52343cabad00adb7153914583d028f64))
+* **demo:** トグル/ノブの色をaccentColor連動に変更 ([d181351](https://github.com/yuske-nakajima/tileui/commit/d1813517566904fcff0b9d6e7256b73889e18881))
+* デモページのバージョン表示をpackage.jsonから自動注入 ([37e6731](https://github.com/yuske-nakajima/tileui/commit/37e6731b254263dd5bc603aeb549d463da23a220))
+* トグル/ノブのCSSで直接--tileui-accentを参照 ([a8ca1ff](https://github.com/yuske-nakajima/tileui/commit/a8ca1ff62bcd2cf95cc37210ca73dc27e6040794))
+* トグル/ノブのCSS変数にフォールバックでaccent参照を追加 ([9bc4b43](https://github.com/yuske-nakajima/tileui/commit/9bc4b436a09ae1a69ef749cc345be36f0c9ed9c7))
+
 ## [0.2.1](https://github.com/yuske-nakajima/tileui/compare/v0.2.0...v0.2.1) (2026-04-10)
 
 ### Features
