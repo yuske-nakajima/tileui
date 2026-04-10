@@ -1,6 +1,6 @@
 /* === tileui デモページ — Nothing design スタイル === */
 
-/* tileui CSS 変数のモノクロオーバーライド */
+/* tileui CSS 変数のモノクロオーバーライド（!important でライブラリ注入より優先） */
 :root {
 	--tileui-bg: #000000;
 	--tileui-tile-bg: #000000;
