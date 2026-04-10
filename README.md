@@ -17,16 +17,14 @@
 
 ## インストール
 
-> **Note:** npm 未公開です。公開後に以下のコマンドでインストールできます。
-
 ```bash
-npm install tileui
+npm install @yuske-nakajima/tileui
 ```
 
 ## クイックスタート
 
 ```ts
-import TileUI from 'tileui';
+import TileUI from '@yuske-nakajima/tileui';
 
 const params = { speed: 0.5, volume: 80, color: '#ff0000', enabled: true };
 

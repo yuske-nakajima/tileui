@@ -17,16 +17,14 @@
 
 ## Install
 
-> **Note:** Not yet published to npm. After publishing, install with:
-
 ```bash
-npm install tileui
+npm install @yuske-nakajima/tileui
 ```
 
 ## Quick Start
 
 ```ts
-import TileUI from 'tileui';
+import TileUI from '@yuske-nakajima/tileui';
 
 const params = { speed: 0.5, volume: 80, color: '#ff0000', enabled: true };
 

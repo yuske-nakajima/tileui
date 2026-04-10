@@ -1,6 +1,6 @@
 {
-	"name": "tileui",
-	"version": "0.1.1",
+	"name": "@yuske-nakajima/tileui",
+	"version": "0.2.0",
 	"description": "A grid-tile GUI panel with SVG rotary knobs for creative coding",
 	"type": "module",
 	"main": "./dist/tileui.umd.cjs",
