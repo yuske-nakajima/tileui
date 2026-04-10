@@ -23,7 +23,7 @@
 		"dev:bg": "vite > /dev/null 2>&1 & echo $! > .vite.pid && echo 'Vite started (PID:'$(cat .vite.pid)')'",
 		"dev:status": "if [ -f .vite.pid ] && kill -0 $(cat .vite.pid) 2>/dev/null; then echo \"Running (PID: $(cat .vite.pid))\"; curl -s http://localhost:5173 > /dev/null && echo 'http://localhost:5173' || echo 'Starting...'; else echo 'Not running'; fi",
 		"dev:stop": "if [ -f .vite.pid ] && kill -0 $(cat .vite.pid) 2>/dev/null; then kill $(cat .vite.pid) && rm -f .vite.pid && echo 'Stopped'; else echo 'Not running'; rm -f .vite.pid; fi",
-		"build": "vite build && tsc --emitDeclarationOnly",
+		"build": "vite build && node -e \"const fs=require('fs');['dist/tileui.js','dist/tileui.umd.cjs'].forEach(f=>{fs.writeFileSync(f,fs.readFileSync(f,'utf8').replace(/\\/\\/#region[^\\n]*\\n/g,'').replace(/\\/\\/#endregion[^\\n]*\\n?/g,''))})\" && tsc --emitDeclarationOnly",
 		"build:demo": "vite build --config vite.config.demo.ts",
 		"check": "biome check . && eslint .",
 		"format": "biome format --write .",
