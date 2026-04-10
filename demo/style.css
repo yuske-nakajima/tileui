@@ -2,7 +2,7 @@
 
 /* tileui CSS 変数のモノクロオーバーライド */
 :root {
-	--tileui-bg: #111111;
+	--tileui-bg: #000000;
 	--tileui-tile-bg: #1a1a1a;
 	--tileui-tile-bg-hover: #222222;
 	--tileui-border: #333333;
@@ -113,9 +113,12 @@ body {
 	overflow: hidden;
 }
 
-/* GUI パネルエリア */
+/* GUI パネルエリア — 白系の細い border でコミカルに */
 .gui-area {
 	min-width: 280px;
+	border: 1px solid rgba(250, 249, 246, 0.15);
+	border-radius: 8px;
+	padding: 4px;
 }
 
 /* タグライン — fluid typography & spacing */
