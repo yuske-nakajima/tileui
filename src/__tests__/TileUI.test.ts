@@ -224,6 +224,16 @@ describe('TileUI', () => {
 			expect(callback).toHaveBeenCalledWith(25);
 			gui.dispose();
 		});
+
+		it('borderColor を指定するとタイルの borderColor が変更される', () => {
+			const gui = new TileUI({ container });
+			const params = { speed: 50 };
+			const ctrl = gui.add(params, 'speed', 0, 100);
+			ctrl.style({ borderColor: '#ff0000' });
+			const tile = container.querySelector(`.${CSS_PREFIX}-tile-knob`) as HTMLElement;
+			expect(tile.style.borderColor).toBe('rgb(255, 0, 0)');
+			gui.dispose();
+		});
 	});
 
 	describe('columns オプション', () => {
