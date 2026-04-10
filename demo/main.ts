@@ -1,7 +1,12 @@
 // TileUI デモ — パネル + p5.js ジェネラティブアート連携
 
+declare const __VERSION__: string;
+
 import TileUI from '../src';
 import { artParams, initSketch, resizeSketch } from './sketch';
+
+// バージョン表示（package.json から自動注入）
+document.getElementById('version')!.textContent = `v${__VERSION__}`;
 
 // p5.js スケッチを初期化
 initSketch(document.getElementById('sketch')!);
