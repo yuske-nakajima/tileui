@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -98,3 +98,9 @@ jobs:
       - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # GitHub Release を作成（Conventional Commits からリリースノート自動生成）
+      - name: Create GitHub Release
+        run: gh release create "${{ needs.tag.outputs.tag }}" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
