@@ -48,6 +48,7 @@ body {
 .main,
 .tagline,
 .install,
+.showcase,
 .footer {
 	max-width: 1200px;
 	margin-inline: auto;
@@ -150,6 +151,35 @@ body {
 
 .install__command:hover {
 	opacity: 0.8;
+}
+
+/* ショーケース — Nothing design */
+.showcase {
+	padding-bottom: clamp(40px, 8vw, 64px);
+}
+
+.showcase__title {
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	font-weight: 400;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: #888888;
+	margin-bottom: clamp(32px, 6vw, 48px);
+}
+
+.showcase__item {
+	margin-bottom: clamp(32px, 6vw, 48px);
+}
+
+.showcase__label {
+	display: block;
+	font-family: "Space Mono", monospace;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: #555555;
+	margin-bottom: 12px;
 }
 
 /* フッター — fluid spacing */

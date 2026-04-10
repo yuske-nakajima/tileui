@@ -26,7 +26,7 @@ const TILEUI_CSS = `
 
 /* パネルコンテナ（CSS Grid） */
 .tileui-panel {
-	display: grid;
+	display: inline-grid;
 	grid-template-columns: repeat(auto-fill, var(--tileui-tile-size));
 	gap: var(--tileui-gap);
 	padding: var(--tileui-gap);
