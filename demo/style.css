@@ -18,6 +18,11 @@
 	--tileui-font-family: "Space Grotesk", sans-serif;
 }
 
+/* ダークモード: スクロールバー等もダークにする */
+html {
+	color-scheme: dark;
+}
+
 /* リセットとベース */
 *,
 *::before,
@@ -150,7 +155,8 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	padding-block: 48px;
+	padding-block: 48px 64px;
+	border-top: 1px solid #222222;
 	font-family: "Space Mono", monospace;
 	font-size: 12px;
 	text-transform: uppercase;
