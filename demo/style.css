@@ -3,8 +3,8 @@
 /* tileui CSS 変数のモノクロオーバーライド */
 :root {
 	--tileui-bg: #000000;
-	--tileui-tile-bg: #1a1a1a;
-	--tileui-tile-bg-hover: #222222;
+	--tileui-tile-bg: #000000;
+	--tileui-tile-bg-hover: #111111;
 	--tileui-border: #333333;
 	--tileui-text: #faf9f6;
 	--tileui-text-muted: #888888;
