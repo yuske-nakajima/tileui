@@ -15,10 +15,10 @@
 	--tileui-accent: #faf9f6;
 	--tileui-accent-dim: rgba(250, 249, 246, 0.2);
 	--tileui-knob-track: #333333;
-	--tileui-knob-value: #faf9f6;
+	--tileui-knob-value: var(--tileui-accent);
 	--tileui-knob-thumb: #faf9f6;
 	--tileui-toggle-off: #333333;
-	--tileui-toggle-on: #faf9f6;
+	--tileui-toggle-on: var(--tileui-accent);
 	--tileui-font-family: "Space Grotesk", sans-serif;
 }
 
