@@ -126,12 +126,12 @@ gui
 const sampleParams = { speed: 50, volume: 0.8, color: '#ff6600', enabled: true };
 
 function addSampleControls(g: TileUI) {
-	g.add(sampleParams, 'speed', 0, 100, 1);
-	g.add(sampleParams, 'volume', 0, 1, 0.01);
-	g.addColor(sampleParams, 'color');
-	g.addBoolean(sampleParams, 'enabled');
-	g.addButton('Reset', () => {});
-	g.addButton('Action', () => {});
+	g.add(sampleParams, 'speed', 0, 100, 1).style({ accentColor: accent.knob });
+	g.add(sampleParams, 'volume', 0, 1, 0.01).style({ accentColor: accent.knob });
+	g.addColor(sampleParams, 'color').style({ accentColor: accent.color });
+	g.addBoolean(sampleParams, 'enabled').style({ accentColor: accent.bool });
+	g.addButton('Reset', () => {}).style({ accentColor: accent.button });
+	g.addButton('Action', () => {}).style({ accentColor: accent.button });
 }
 
 // 2列
