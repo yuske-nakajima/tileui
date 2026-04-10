@@ -123,12 +123,24 @@ const s5 = new TileUI({
 	columns: 3,
 	title: 'Custom Styles',
 });
-s5.add(sampleParams, 'speed', 0, 100, 1).style({ bgColor: '#2d1b69' });
-s5.add(sampleParams, 'volume', 0, 1, 0.01).style({ bgColor: '#1b4d3e', textColor: '#80ffdb' });
-s5.addColor(sampleParams, 'color').style({ bgColor: '#4a1942' });
-s5.addBoolean(sampleParams, 'enabled').style({ bgColor: '#0d3b66' });
-s5.addButton('Reset', () => {}).style({ bgColor: '#6b2737', textColor: '#ffccd5' });
-s5.addButton('Action', () => {}).style({ bgColor: '#1a472a', textColor: '#90ee90' });
+s5.add(sampleParams, 'speed', 0, 100, 1).style({ bgColor: '#2d1b69', borderColor: '#5b3cc4' });
+s5.add(sampleParams, 'volume', 0, 1, 0.01).style({
+	bgColor: '#1b4d3e',
+	textColor: '#80ffdb',
+	borderColor: '#2d8a6e',
+});
+s5.addColor(sampleParams, 'color').style({ bgColor: '#4a1942', borderColor: '#7a2d6d' });
+s5.addBoolean(sampleParams, 'enabled').style({ bgColor: '#0d3b66', borderColor: '#1a6db5' });
+s5.addButton('Reset', () => {}).style({
+	bgColor: '#6b2737',
+	textColor: '#ffccd5',
+	borderColor: '#a33d52',
+});
+s5.addButton('Action', () => {}).style({
+	bgColor: '#1a472a',
+	textColor: '#90ee90',
+	borderColor: '#2d8a4e',
+});
 
 // インストールコマンドのクリックコピー
 const installCmd = document.getElementById('install-cmd');
