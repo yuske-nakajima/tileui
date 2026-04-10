@@ -234,6 +234,18 @@ describe('TileUI', () => {
 			expect(tile.style.borderColor).toBe('rgb(255, 0, 0)');
 			gui.dispose();
 		});
+
+		it('accentColor を指定するとCSS変数がタイルにローカル設定される', () => {
+			const gui = new TileUI({ container });
+			const params = { enabled: true };
+			const ctrl = gui.addBoolean(params, 'enabled');
+			ctrl.style({ accentColor: '#ff6600' });
+			const tile = container.querySelector(`.${CSS_PREFIX}-tile-boolean`) as HTMLElement;
+			expect(tile.style.getPropertyValue('--tileui-accent')).toBe('#ff6600');
+			expect(tile.style.getPropertyValue('--tileui-toggle-on')).toBe('#ff6600');
+			expect(tile.style.getPropertyValue('--tileui-knob-value')).toBe('#ff6600');
+			gui.dispose();
+		});
 	});
 
 	describe('columns オプション', () => {
