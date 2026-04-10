@@ -27,36 +27,31 @@ const params = artParams;
 // 初期値を保持（Reset ボタン用）
 const defaults = { ...artParams };
 
-// アクセントカラー（HSB 彩度50% 明度70% で色相を分散）
-const accent = {
-	knob: '#8fb359', // 色相90° — グリーン系
-	color: '#b3598f', // 色相330° — ピンク系
-	bool: '#5999b3', // 色相200° — ブルー系
-	button: '#b38f59', // 色相30° — オレンジ系
-};
+// メインパネルのアクセントカラー
+const mainAccent = '#8fb359';
 
 // ノブコントローラー
 gui
 	.add(params, 'gridSize', 3, 20, 1)
-	.style({ accentColor: accent.knob })
+	.style({ accentColor: mainAccent })
 	.onChange((v) => {
 		artParams.gridSize = v;
 	});
 gui
 	.add(params, 'noiseScale', 0.01, 0.5, 0.01)
-	.style({ accentColor: accent.knob })
+	.style({ accentColor: mainAccent })
 	.onChange((v) => {
 		artParams.noiseScale = v;
 	});
 gui
 	.add(params, 'speed', 0, 2, 0.01)
-	.style({ accentColor: accent.knob })
+	.style({ accentColor: mainAccent })
 	.onChange((v) => {
 		artParams.speed = v;
 	});
 gui
 	.add(params, 'rotation', 0, 360, 1)
-	.style({ accentColor: accent.knob })
+	.style({ accentColor: mainAccent })
 	.onChange((v) => {
 		artParams.rotation = v;
 	});
@@ -64,13 +59,13 @@ gui
 // カラーコントローラー
 gui
 	.addColor(params, 'bgColor')
-	.style({ accentColor: accent.color })
+	.style({ accentColor: mainAccent })
 	.onChange((v) => {
 		artParams.bgColor = v;
 	});
 gui
 	.addColor(params, 'fgColor')
-	.style({ accentColor: accent.color })
+	.style({ accentColor: mainAccent })
 	.onChange((v) => {
 		artParams.fgColor = v;
 	});
@@ -78,13 +73,13 @@ gui
 // 真偽値コントローラー
 gui
 	.addBoolean(params, 'animate')
-	.style({ accentColor: accent.bool })
+	.style({ accentColor: mainAccent })
 	.onChange((v) => {
 		artParams.animate = v;
 	});
 gui
 	.addBoolean(params, 'fill')
-	.style({ accentColor: accent.bool })
+	.style({ accentColor: mainAccent })
 	.onChange((v) => {
 		artParams.fill = v;
 	});
@@ -110,7 +105,7 @@ gui
 		Object.assign(artParams, params);
 		gui.updateDisplay();
 	})
-	.style({ accentColor: accent.button });
+	.style({ accentColor: mainAccent });
 
 // Reset ボタン
 gui
@@ -119,7 +114,7 @@ gui
 		Object.assign(artParams, defaults);
 		gui.updateDisplay();
 	})
-	.style({ accentColor: accent.button });
+	.style({ accentColor: mainAccent });
 
 // === ショーケース ===
 
