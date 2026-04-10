@@ -3,23 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TileUI Demo</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 24px;
-      background: #0d0d1a;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #e0e0e0;
-    }
-    h1 {
-      font-size: 18px;
-      margin-bottom: 16px;
-    }
-  </style>
+  <title>TileUI - A Grid-Tile GUI Panel for Creative Coding</title>
+  <meta name="description" content="A grid-tile GUI panel with SVG rotary knobs for creative coding. Inspired by lil-gui / dat.gui / Tweakpane." />
+
+  <!-- OGP -->
+  <meta property="og:title" content="TileUI" />
+  <meta property="og:description" content="A grid-tile GUI panel with SVG rotary knobs for creative coding." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://github.com/yuske-nakajima/tileui" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <h1>TileUI Demo</h1>
+  <!-- ヘッダー -->
+  <header class="header">
+    <span class="header__logo">TILEUI</span>
+    <nav class="header__nav">
+      <span class="header__version">v0.2.0</span>
+      <a class="header__link" href="https://www.npmjs.com/package/@yuske-nakajima/tileui" target="_blank" rel="noopener noreferrer">npm</a>
+      <a class="header__link" href="https://github.com/yuske-nakajima/tileui" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+    </nav>
+  </header>
+
+  <!-- メインエリア: キャンバス + GUI パネル -->
+  <main class="main">
+    <div id="sketch" class="canvas-area"></div>
+    <div id="gui" class="gui-area"></div>
+  </main>
+
+  <!-- タグライン -->
+  <section class="tagline">
+    <p>A grid-tile GUI panel with SVG rotary knobs for creative coding</p>
+  </section>
+
+  <!-- インストールコマンド -->
+  <section class="install">
+    <code class="install__command" id="install-cmd" title="Click to copy">npm install @yuske-nakajima/tileui</code>
+  </section>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <span>KNOB</span>
+    <span class="footer__dot">&middot;</span>
+    <span>BOOLEAN</span>
+    <span class="footer__dot">&middot;</span>
+    <span>COLOR</span>
+    <span class="footer__dot">&middot;</span>
+    <span>BUTTON</span>
+    <span class="footer__dot">&middot;</span>
+    <span>FOLDER</span>
+  </footer>
+
   <script type="module" src="./main.ts"></script>
 </body>
 </html>

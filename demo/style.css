@@ -1,0 +1,163 @@
+/* === tileui デモページ — Nothing design スタイル === */
+
+/* tileui CSS 変数のモノクロオーバーライド */
+:root {
+	--tileui-bg: #111111;
+	--tileui-tile-bg: #1a1a1a;
+	--tileui-tile-bg-hover: #222222;
+	--tileui-border: #333333;
+	--tileui-text: #faf9f6;
+	--tileui-text-muted: #888888;
+	--tileui-accent: #faf9f6;
+	--tileui-accent-dim: rgba(250, 249, 246, 0.2);
+	--tileui-knob-track: #333333;
+	--tileui-knob-value: #faf9f6;
+	--tileui-knob-thumb: #faf9f6;
+	--tileui-toggle-off: #333333;
+	--tileui-toggle-on: #faf9f6;
+	--tileui-font-family: "Space Grotesk", sans-serif;
+}
+
+/* リセットとベース */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #000000;
+	color: #faf9f6;
+	font-family: "Space Grotesk", sans-serif;
+	font-weight: 400;
+	line-height: 1.5;
+	min-height: 100vh;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* 最大幅コンテナ */
+.header,
+.main,
+.tagline,
+.install,
+.footer {
+	max-width: 1200px;
+	margin-inline: auto;
+	padding-inline: 24px;
+}
+
+/* ヘッダー */
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-block: 32px 48px;
+	font-family: "Space Mono", monospace;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	font-size: 13px;
+}
+
+.header__logo {
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 0.2em;
+}
+
+.header__nav {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+}
+
+.header__version {
+	color: #888888;
+}
+
+.header__link {
+	color: #faf9f6;
+	text-decoration: none;
+	transition: opacity 0.15s;
+}
+
+.header__link:hover {
+	opacity: 0.7;
+}
+
+/* メインエリア: グリッドレイアウト */
+.main {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 32px;
+	align-items: start;
+	padding-bottom: 64px;
+}
+
+/* キャンバスエリア */
+.canvas-area {
+	aspect-ratio: 1 / 1;
+	background: #111111;
+	border-radius: 4px;
+	max-width: 600px;
+	width: 100%;
+}
+
+/* GUI パネルエリア */
+.gui-area {
+	min-width: 280px;
+}
+
+/* タグライン */
+.tagline {
+	padding-block: 48px;
+}
+
+.tagline p {
+	font-family: "Space Grotesk", sans-serif;
+	font-size: 28px;
+	font-weight: 500;
+	line-height: 1.3;
+	max-width: 640px;
+}
+
+/* インストールコマンド */
+.install {
+	padding-bottom: 64px;
+}
+
+.install__command {
+	display: inline-block;
+	font-family: "Space Mono", monospace;
+	font-size: 14px;
+	background: #111111;
+	color: #faf9f6;
+	padding: 12px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: opacity 0.15s;
+	user-select: all;
+}
+
+.install__command:hover {
+	opacity: 0.8;
+}
+
+/* フッター */
+.footer {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding-block: 48px;
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: #888888;
+}
+
+.footer__dot {
+	color: #333333;
+}
