@@ -125,13 +125,20 @@ gui
 
 const sampleParams = { speed: 50, volume: 0.8, color: '#ff6600', enabled: true };
 
-function addSampleControls(g: TileUI) {
-	g.add(sampleParams, 'speed', 0, 100, 1).style({ accentColor: accent.knob });
-	g.add(sampleParams, 'volume', 0, 1, 0.01).style({ accentColor: accent.knob });
-	g.addColor(sampleParams, 'color').style({ accentColor: accent.color });
-	g.addBoolean(sampleParams, 'enabled').style({ accentColor: accent.bool });
-	g.addButton('Reset', () => {}).style({ accentColor: accent.button });
-	g.addButton('Action', () => {}).style({ accentColor: accent.button });
+// ショーケースごとのアクセントカラー（HSB 彩度50% 明度70%）
+const showcaseAccents = {
+	col2: '#b35959', // 色相0° — レッド系
+	col3: '#59b3a2', // 色相170° — ティール系
+	col4: '#7a59b3', // 色相270° — パープル系
+};
+
+function addSampleControls(g: TileUI, ac: string) {
+	g.add(sampleParams, 'speed', 0, 100, 1).style({ accentColor: ac });
+	g.add(sampleParams, 'volume', 0, 1, 0.01).style({ accentColor: ac });
+	g.addColor(sampleParams, 'color').style({ accentColor: ac });
+	g.addBoolean(sampleParams, 'enabled').style({ accentColor: ac });
+	g.addButton('Reset', () => {}).style({ accentColor: ac });
+	g.addButton('Action', () => {}).style({ accentColor: ac });
 }
 
 // 2列
@@ -140,7 +147,7 @@ const s2 = new TileUI({
 	columns: 2,
 	title: '2 Columns',
 });
-addSampleControls(s2);
+addSampleControls(s2, showcaseAccents.col2);
 
 // 3列
 const s3 = new TileUI({
@@ -148,7 +155,7 @@ const s3 = new TileUI({
 	columns: 3,
 	title: '3 Columns',
 });
-addSampleControls(s3);
+addSampleControls(s3, showcaseAccents.col3);
 
 // 4列
 const s4 = new TileUI({
@@ -156,7 +163,7 @@ const s4 = new TileUI({
 	columns: 4,
 	title: '4 Columns',
 });
-addSampleControls(s4);
+addSampleControls(s4, showcaseAccents.col4);
 
 // 個別スタイル
 const s5 = new TileUI({
