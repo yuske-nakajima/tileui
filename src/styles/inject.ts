@@ -5,7 +5,7 @@ const TILEUI_CSS = `
 /* TileUI CSS 変数（テーマカスタマイズ用） */
 :root {
 	--tileui-tile-size: 100px;
-	--tileui-gap: 2px;
+	--tileui-gap: 0px;
 	--tileui-bg: #1a1a2e;
 	--tileui-tile-bg: #16213e;
 	--tileui-tile-bg-hover: #1c2a4a;
