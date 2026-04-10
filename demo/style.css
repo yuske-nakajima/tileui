@@ -161,3 +161,20 @@ body {
 .footer__dot {
 	color: #333333;
 }
+
+/* レスポンシブ: 1024px 未満で縦積みレイアウト */
+@media (max-width: 1023px) {
+	.main {
+		grid-template-columns: 1fr;
+	}
+
+	.canvas-area {
+		max-width: 500px;
+		margin-inline: auto;
+	}
+
+	.gui-area {
+		min-width: unset;
+		width: 100%;
+	}
+}
