@@ -13,6 +13,7 @@ export default defineConfig(({ command }) => ({
 		__VERSION__: JSON.stringify(pkg.version),
 	},
 	build: {
+		minify: 'oxc',
 		rollupOptions: {
 			output: {
 				exports: 'named',
