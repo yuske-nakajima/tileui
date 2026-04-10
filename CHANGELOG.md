@@ -1,4 +1,16 @@
-## 0.1.1 (2026-04-10)
+## [0.2.0](https://github.com/yuske-nakajima/tileui/compare/v0.1.1...v0.2.0) (2026-04-10)
+
+### ⚠ BREAKING CHANGES
+
+* パッケージ名が tileui から @yuske-nakajima/tileui に変更
+
+Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+
+### Features
+
+* パッケージ名を @yuske-nakajima/tileui に変更 ([45efdee](https://github.com/yuske-nakajima/tileui/commit/45efdeefa865601d9f2605e71e3e5850d6204393))
+
+## [0.1.1](https://github.com/yuske-nakajima/tileui/compare/b99531ce616e51710fbda17f2ab3678ceda24c08...v0.1.1) (2026-04-10)
 
 ### Features
 
