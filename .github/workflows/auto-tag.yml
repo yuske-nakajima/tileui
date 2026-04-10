@@ -1,0 +1,72 @@
+name: Auto Tag & CHANGELOG
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      # 全履歴を取得（タグ存在チェックと CHANGELOG 生成に必要）
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # package.json からバージョンを読み取る
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(jq -r .version package.json)
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      # タグが既に存在するかチェック
+      - name: Check tag existence
+        id: check
+        run: |
+          if git rev-parse "refs/tags/${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "タグ ${{ steps.version.outputs.tag }} は既に存在します。スキップします。"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "タグ ${{ steps.version.outputs.tag }} は存在しません。作成します。"
+          fi
+
+      # Node.js セットアップ（CHANGELOG 生成に必要）
+      - uses: jdx/mise-action@v2
+        if: steps.check.outputs.exists == 'false'
+
+      # Conventional Commits から CHANGELOG を生成
+      - name: Generate CHANGELOG
+        if: steps.check.outputs.exists == 'false'
+        run: npx -y conventional-changelog-cli -p conventionalcommits -i CHANGELOG.md -s -r 0
+
+      # bot ユーザーとして git を設定
+      - name: Configure git
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # CHANGELOG に変更がある場合のみコミット
+      - name: Commit CHANGELOG
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          git add CHANGELOG.md
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: update CHANGELOG.md for ${{ steps.version.outputs.tag }} [skip ci]"
+            git push origin main
+          else
+            echo "CHANGELOG.md に変更なし。コミットをスキップします。"
+          fi
+
+      # 最新コミットにタグを作成して push
+      - name: Create and push tag
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          git tag "${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
