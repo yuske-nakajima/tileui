@@ -1,15 +1,17 @@
-name: Auto Tag & CHANGELOG
+name: Auto Tag & Release
 
 on:
   push:
     branches: [main]
 
-permissions:
-  contents: write
-
 jobs:
   tag:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      should_release: ${{ steps.check.outputs.exists == 'false' }}
     steps:
       # 全履歴を取得（タグ存在チェックと CHANGELOG 生成に必要）
       - uses: actions/checkout@v4
@@ -43,7 +45,7 @@ jobs:
       # Conventional Commits から CHANGELOG を生成
       - name: Generate CHANGELOG
         if: steps.check.outputs.exists == 'false'
-        run: npx -y conventional-changelog-cli -p conventionalcommits -i CHANGELOG.md -s -r 0
+        run: npx -y conventional-changelog-cli@5 -p conventionalcommits -i CHANGELOG.md -s -r 0
 
       # bot ユーザーとして git を設定
       - name: Configure git
@@ -70,3 +72,29 @@ jobs:
         run: |
           git tag "${{ steps.version.outputs.tag }}"
           git push origin "${{ steps.version.outputs.tag }}"
+
+  publish:
+    needs: tag
+    if: needs.tag.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.tag.outputs.tag }}
+
+      - uses: jdx/mise-action@v2
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
