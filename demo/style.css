@@ -106,8 +106,7 @@ body {
 /* キャンバスエリア — overflow: hidden で p5.js キャンバスのはみ出しを防止 */
 .canvas-area {
 	aspect-ratio: 1 / 1;
-	background: #111111;
-	border-radius: 4px;
+	background: #000000;
 	max-width: 600px;
 	width: 100%;
 	overflow: hidden;
