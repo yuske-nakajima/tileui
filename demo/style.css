@@ -1,10 +1,14 @@
 /* === tileui デモページ — Nothing design スタイル === */
 
-/* tileui CSS 変数のモノクロオーバーライド */
-:root {
-	--tileui-bg: #111111;
-	--tileui-tile-bg: #1a1a1a;
-	--tileui-tile-bg-hover: #222222;
+/*
+ * tileui CSS 変数のモノクロオーバーライド
+ * ライブラリの injectStyles() が :root に後から注入するため、
+ * .tileui-panel スコープで上書きして確実に適用する
+ */
+.tileui-panel {
+	--tileui-bg: #000000;
+	--tileui-tile-bg: #000000;
+	--tileui-tile-bg-hover: #111111;
 	--tileui-border: #333333;
 	--tileui-text: #faf9f6;
 	--tileui-text-muted: #888888;
@@ -106,16 +110,23 @@ body {
 /* キャンバスエリア — overflow: hidden で p5.js キャンバスのはみ出しを防止 */
 .canvas-area {
 	aspect-ratio: 1 / 1;
-	background: #111111;
-	border-radius: 4px;
+	background: #000000;
 	max-width: 600px;
 	width: 100%;
 	overflow: hidden;
 }
 
-/* GUI パネルエリア */
+/* パネルのタイトル背景もページと統一 */
+.tileui-title {
+	background: transparent;
+}
+
+/* GUI パネルエリア — 白系の細い border でコミカルに */
 .gui-area {
-	min-width: 280px;
+	border: 1px solid rgba(250, 249, 246, 0.15);
+	border-radius: 8px;
+	padding: 4px;
+	width: fit-content;
 }
 
 /* タグライン — fluid typography & spacing */
@@ -170,6 +181,14 @@ body {
 
 .showcase__item {
 	margin-bottom: clamp(32px, 6vw, 48px);
+}
+
+/* ショーケース内のパネルラッパーに gui-area と同じ枠を適用 */
+.showcase__item > div {
+	border: 1px solid rgba(250, 249, 246, 0.15);
+	border-radius: 8px;
+	padding: 4px;
+	width: fit-content;
 }
 
 .showcase__label {
