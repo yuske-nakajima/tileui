@@ -1,7 +1,11 @@
 /* === tileui デモページ — Nothing design スタイル === */
 
-/* tileui CSS 変数のモノクロオーバーライド（!important でライブラリ注入より優先） */
-:root {
+/*
+ * tileui CSS 変数のモノクロオーバーライド
+ * ライブラリの injectStyles() が :root に後から注入するため、
+ * .tileui-panel スコープで上書きして確実に適用する
+ */
+.tileui-panel {
 	--tileui-bg: #000000;
 	--tileui-tile-bg: #000000;
 	--tileui-tile-bg-hover: #111111;
