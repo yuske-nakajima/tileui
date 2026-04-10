@@ -97,7 +97,7 @@ const TILEUI_CSS = `
 
 .tileui-knob-value {
 	fill: none;
-	stroke: var(--tileui-knob-value, var(--tileui-accent));
+	stroke: var(--tileui-accent);
 	stroke-linecap: round;
 	transition: d 0.05s ease;
 }
@@ -119,7 +119,7 @@ const TILEUI_CSS = `
 }
 
 .tileui-toggle[data-active='true'] {
-	background: var(--tileui-toggle-on, var(--tileui-accent));
+	background: var(--tileui-accent);
 }
 
 .tileui-toggle-thumb {
