@@ -45,7 +45,7 @@ const TILEUI_CSS = `
 	height: var(--tileui-tile-size);
 	background: var(--tileui-tile-bg);
 	border: 1px solid var(--tileui-border);
-	border-radius: var(--tileui-radius);
+	margin: -0.5px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
