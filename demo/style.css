@@ -175,6 +175,13 @@ body {
 	margin-bottom: clamp(32px, 6vw, 48px);
 }
 
+/* ショーケース内のパネルにも gui-area と同じ枠を適用 */
+.showcase__item .tileui-panel {
+	border: 1px solid rgba(250, 249, 246, 0.15);
+	border-radius: 8px;
+	padding: 4px;
+}
+
 .showcase__label {
 	display: block;
 	font-family: "Space Mono", monospace;
