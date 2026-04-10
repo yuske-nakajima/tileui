@@ -1,6 +1,13 @@
-// TileUI デモ — Sprint 1: パネル生成と Nothing design スタイル
+// TileUI デモ — パネル + p5.js ジェネラティブアート連携
 
 import TileUI from '../src';
+import { artParams, initSketch, resizeSketch } from './sketch';
+
+// p5.js スケッチを初期化
+initSketch(document.getElementById('sketch')!);
+
+// ウィンドウリサイズ時にキャンバスサイズを追従
+window.addEventListener('resize', resizeSketch);
 
 // tileui パネルを #gui コンテナに生成
 const gui = new TileUI({
@@ -8,17 +15,8 @@ const gui = new TileUI({
 	title: 'Controls',
 });
 
-// ダミーパラメータ（Sprint 3 で p5.js と連携予定）
-const params = {
-	gridSize: 8,
-	noiseScale: 0.1,
-	speed: 0.5,
-	rotation: 0,
-	bgColor: '#000000',
-	fgColor: '#faf9f6',
-	animate: true,
-	fill: true,
-};
+// artParams を GUI パネルで操作（参照を共有）
+const params = artParams;
 
 // ノブコントローラー
 gui.add(params, 'gridSize', 3, 20, 1);
