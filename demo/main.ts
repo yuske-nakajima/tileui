@@ -1,46 +1,99 @@
-// TileUI デモ — 全機能を網羅的にテストする
+// TileUI デモ — パネル + p5.js ジェネラティブアート連携
 
 import TileUI from '../src';
+import { artParams, initSketch, resizeSketch } from './sketch';
 
-const params = {
-	speed: 50,
-	volume: 0.8,
-	count: 10,
-	enabled: true,
-	color: '#ff6600',
-};
+// p5.js スケッチを初期化
+initSketch(document.getElementById('sketch')!);
 
-// メインパネル
-const gui = new TileUI({ title: 'TileUI Demo' });
+// ウィンドウリサイズ時にキャンバスサイズを追従
+window.addEventListener('resize', resizeSketch);
 
-// ノブコントローラー（min/max あり）
-gui.add(params, 'speed', 0, 100, 1).onChange((v) => {
-	console.log('speed:', v);
+// tileui パネルを #gui コンテナに生成
+const gui = new TileUI({
+	container: document.getElementById('gui')!,
+	title: 'Controls',
 });
 
-// ノブコントローラー（小数ステップ）
-gui.add(params, 'volume', 0, 1, 0.01);
+// artParams を GUI パネルで操作（参照を共有）
+const params = artParams;
 
-// 数値入力（範囲なし → NumberInput）
-gui.add(params, 'count');
+// 初期値を保持（Reset ボタン用）
+const defaults = { ...artParams };
 
-// 真偽値コントローラー
-gui.addBoolean(params, 'enabled');
+// ノブコントローラー（onChange でリアルタイム連携）
+gui.add(params, 'gridSize', 3, 20, 1).onChange((v) => {
+	artParams.gridSize = v;
+});
+gui.add(params, 'noiseScale', 0.01, 0.5, 0.01).onChange((v) => {
+	artParams.noiseScale = v;
+});
+gui.add(params, 'speed', 0, 2, 0.01).onChange((v) => {
+	artParams.speed = v;
+});
+gui.add(params, 'rotation', 0, 360, 1).onChange((v) => {
+	artParams.rotation = v;
+});
 
 // カラーコントローラー
-gui.addColor(params, 'color');
-
-// ボタン
-gui.addButton('Reset', () => {
-	params.speed = 50;
-	params.volume = 0.8;
-	params.count = 10;
-	params.enabled = true;
-	params.color = '#ff6600';
-	gui.updateDisplay();
-	console.log('Reset!');
+gui.addColor(params, 'bgColor').onChange((v) => {
+	artParams.bgColor = v;
+});
+gui.addColor(params, 'fgColor').onChange((v) => {
+	artParams.fgColor = v;
 });
 
-// フォルダ（サブグリッド）
-const folder = gui.addFolder('Advanced');
-folder.add(params, 'speed', 0, 200, 5);
+// 真偽値コントローラー
+gui.addBoolean(params, 'animate').onChange((v) => {
+	artParams.animate = v;
+});
+gui.addBoolean(params, 'fill').onChange((v) => {
+	artParams.fill = v;
+});
+
+/** ランダムな hex カラーを生成 */
+function randomHexColor(): string {
+	return `#${Math.floor(Math.random() * 0xffffff)
+		.toString(16)
+		.padStart(6, '0')}`;
+}
+
+// Randomize ボタン — 全パラメータをランダム値に設定
+gui.addButton('Randomize', () => {
+	params.gridSize = Math.floor(Math.random() * 18) + 3;
+	params.noiseScale = Math.random() * 0.49 + 0.01;
+	params.speed = Math.random() * 2;
+	params.rotation = Math.floor(Math.random() * 360);
+	params.bgColor = randomHexColor();
+	params.fgColor = randomHexColor();
+	params.animate = Math.random() > 0.3;
+	params.fill = Math.random() > 0.3;
+	Object.assign(artParams, params);
+	gui.updateDisplay();
+});
+
+// Reset ボタン — 初期値に戻す
+gui.addButton('Reset', () => {
+	Object.assign(params, defaults);
+	Object.assign(artParams, defaults);
+	gui.updateDisplay();
+});
+
+// インストールコマンドのクリックコピー
+const installCmd = document.getElementById('install-cmd');
+if (installCmd) {
+	installCmd.addEventListener('click', () => {
+		navigator.clipboard.writeText('npm install @yuske-nakajima/tileui').then(
+			() => {
+				const original = installCmd.textContent;
+				installCmd.textContent = 'Copied!';
+				setTimeout(() => {
+					installCmd.textContent = original;
+				}, 1500);
+			},
+			() => {
+				// クリップボード API が使えない場合は何もしない
+			},
+		);
+	});
+}

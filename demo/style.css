@@ -1,0 +1,223 @@
+/* === tileui デモページ — Nothing design スタイル === */
+
+/* tileui CSS 変数のモノクロオーバーライド */
+:root {
+	--tileui-bg: #111111;
+	--tileui-tile-bg: #1a1a1a;
+	--tileui-tile-bg-hover: #222222;
+	--tileui-border: #333333;
+	--tileui-text: #faf9f6;
+	--tileui-text-muted: #888888;
+	--tileui-accent: #faf9f6;
+	--tileui-accent-dim: rgba(250, 249, 246, 0.2);
+	--tileui-knob-track: #333333;
+	--tileui-knob-value: #faf9f6;
+	--tileui-knob-thumb: #faf9f6;
+	--tileui-toggle-off: #333333;
+	--tileui-toggle-on: #faf9f6;
+	--tileui-font-family: "Space Grotesk", sans-serif;
+}
+
+/* ダークモード: スクロールバー等もダークにする */
+html {
+	color-scheme: dark;
+}
+
+/* リセットとベース */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #000000;
+	color: #faf9f6;
+	font-family: "Space Grotesk", sans-serif;
+	font-weight: 400;
+	line-height: 1.5;
+	min-height: 100vh;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* 最大幅コンテナ — fluid spacing で余白を段階的に変化 */
+.header,
+.main,
+.tagline,
+.install,
+.footer {
+	max-width: 1200px;
+	margin-inline: auto;
+	padding-inline: clamp(16px, 4vw, 24px);
+}
+
+/* ヘッダー — fluid spacing */
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-block: clamp(20px, 4vw, 32px) clamp(32px, 6vw, 48px);
+	font-family: "Space Mono", monospace;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	font-size: clamp(11px, 1.5vw, 13px);
+}
+
+/* ヘッダーロゴ — fluid typography */
+.header__logo {
+	font-size: clamp(14px, 2vw, 16px);
+	font-weight: 400;
+	letter-spacing: 0.2em;
+}
+
+.header__nav {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+}
+
+.header__version {
+	color: #888888;
+}
+
+.header__link {
+	color: #faf9f6;
+	text-decoration: none;
+	transition: opacity 0.15s;
+}
+
+.header__link:hover {
+	opacity: 0.7;
+}
+
+/* メインエリア: グリッドレイアウト — fluid spacing */
+.main {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: clamp(16px, 3vw, 32px);
+	align-items: start;
+	padding-bottom: 64px;
+}
+
+/* キャンバスエリア — overflow: hidden で p5.js キャンバスのはみ出しを防止 */
+.canvas-area {
+	aspect-ratio: 1 / 1;
+	background: #111111;
+	border-radius: 4px;
+	max-width: 600px;
+	width: 100%;
+	overflow: hidden;
+}
+
+/* GUI パネルエリア */
+.gui-area {
+	min-width: 280px;
+}
+
+/* タグライン — fluid typography & spacing */
+.tagline {
+	padding-block: clamp(32px, 6vw, 48px);
+}
+
+.tagline p {
+	font-family: "Space Grotesk", sans-serif;
+	font-size: clamp(18px, 4vw, 28px);
+	font-weight: 500;
+	line-height: 1.3;
+	max-width: 640px;
+}
+
+/* インストールコマンド — fluid typography & spacing */
+.install {
+	padding-bottom: clamp(40px, 8vw, 64px);
+}
+
+.install__command {
+	display: inline-block;
+	font-family: "Space Mono", monospace;
+	font-size: clamp(12px, 1.5vw, 14px);
+	background: #111111;
+	color: #faf9f6;
+	padding: 12px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: opacity 0.15s;
+	user-select: all;
+}
+
+.install__command:hover {
+	opacity: 0.8;
+}
+
+/* フッター — fluid spacing */
+.footer {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding-block: clamp(32px, 6vw, 48px) clamp(40px, 8vw, 64px);
+	border-top: 1px solid #222222;
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: #888888;
+}
+
+.footer__dot {
+	color: #333333;
+}
+
+/* レスポンシブ: 1024px 未満で縦積みレイアウト */
+@media (max-width: 1023px) {
+	.main {
+		grid-template-columns: 1fr;
+	}
+
+	/* タブレット以下ではキャンバスを幅いっぱいに広げる */
+	.canvas-area {
+		max-width: none;
+		margin-inline: auto;
+	}
+
+	.gui-area {
+		min-width: unset;
+		width: 100%;
+	}
+}
+
+/* タブレット: 768px 未満 */
+@media (max-width: 767px) {
+	.header__nav {
+		gap: 16px;
+	}
+
+	.footer {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}
+
+/* モバイル小: 480px 未満 */
+@media (max-width: 479px) {
+	.header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+	}
+
+	.header__nav {
+		gap: 12px;
+	}
+
+	.install__command {
+		display: block;
+		word-break: break-all;
+	}
+
+	.footer {
+		font-size: 10px;
+	}
+}
