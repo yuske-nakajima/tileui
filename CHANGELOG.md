@@ -1,3 +1,15 @@
+## [0.2.4](https://github.com/yuske-nakajima/tileui/compare/v0.2.3...v0.2.4) (2026-04-11)
+
+### Features
+
+* demo画面の4カラム以上表示をモバイルで横スクロール対応 ([#40](https://github.com/yuske-nakajima/tileui/issues/40)) ([de91900](https://github.com/yuske-nakajima/tileui/commit/de91900918d2ca8e7a20b241cc1481e49d3871ed))
+* モバイルでControlsパネルを画面幅に応じた列数に自動調整 ([#40](https://github.com/yuske-nakajima/tileui/issues/40)) ([8ad63ee](https://github.com/yuske-nakajima/tileui/commit/8ad63ee23a4d775bae8b5025c954ca695efb7c43))
+* モバイルでパネルを中央寄せ＋横スクロール対応 ([#40](https://github.com/yuske-nakajima/tileui/issues/40)) ([72bd5b8](https://github.com/yuske-nakajima/tileui/commit/72bd5b8a0bdf8f590ebb3f268ffb290bdd4cfc83))
+
+### Bug Fixes
+
+* モバイルでパネルが1列になる問題を修正（display:grid を復元） ([6451c63](https://github.com/yuske-nakajima/tileui/commit/6451c63f83e492f422e50d7467c77b763f44fb30))
+
 ## [0.2.3](https://github.com/yuske-nakajima/tileui/compare/v0.2.2...v0.2.3) (2026-04-11)
 
 ### Bug Fixes
