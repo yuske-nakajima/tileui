@@ -9,28 +9,25 @@ export interface ColorOptions {
 
 /**
  * カラーコントローラー
- * input[type=color] と丸型プレビューで色を選択する
+ * ネイティブ input[type=color] の上にカスタム丸プレビューを重ねて表示する。
+ * タップは input に直接届くため iOS WebKit でもカラーピッカーが開く。
  */
 export class ColorController extends Controller<string> {
 	private readonly label: string;
 
-	/** カラープレビュー要素 */
+	/** カラープレビュー（表示用、pointer-events: none） */
 	private preview: HTMLElement | null = null;
 
-	/** 隠し color input */
+	/** ネイティブ color input（操作用、プレビューの下に配置） */
 	private colorInput: HTMLInputElement | null = null;
 
 	/** input の変更ハンドラ */
 	private readonly handleChange: (e: Event) => void;
 
-	/** プレビュークリックハンドラ */
-	private readonly handlePreviewClick: () => void;
-
 	constructor(obj: Record<string, unknown>, prop: string, options: ColorOptions = {}) {
 		super(obj, prop);
 		this.label = options.label ?? prop;
 		this.handleChange = this.onChange_.bind(this);
-		this.handlePreviewClick = this.onPreviewClick.bind(this);
 	}
 
 	createDOM(): HTMLElement {
@@ -42,20 +39,25 @@ export class ColorController extends Controller<string> {
 		labelEl.classList.add(`${CSS_PREFIX}-label`);
 		labelEl.textContent = this.label;
 
-		// カラープレビュー（丸型）
-		this.preview = document.createElement('div');
-		this.preview.classList.add(`${CSS_PREFIX}-color-preview`);
-		this.preview.addEventListener('click', this.handlePreviewClick);
+		// wrapper: input とプレビューを重ねるコンテナ
+		const wrapper = document.createElement('div');
+		wrapper.classList.add(`${CSS_PREFIX}-color-wrapper`);
 
-		// 隠し color input
+		// ネイティブ input（wrapper 全体を覆い、タップを受ける）
 		this.colorInput = document.createElement('input');
 		this.colorInput.type = 'color';
 		this.colorInput.classList.add(`${CSS_PREFIX}-color-input`);
 		this.colorInput.addEventListener('input', this.handleChange);
 
+		// カスタムプレビュー丸（input の上に重ね、タップは通す）
+		this.preview = document.createElement('div');
+		this.preview.classList.add(`${CSS_PREFIX}-color-preview`);
+
+		wrapper.appendChild(this.colorInput);
+		wrapper.appendChild(this.preview);
+
 		tile.appendChild(labelEl);
-		tile.appendChild(this.preview);
-		tile.appendChild(this.colorInput);
+		tile.appendChild(wrapper);
 
 		this.element = tile;
 		this.updateDisplay();
@@ -64,17 +66,12 @@ export class ColorController extends Controller<string> {
 	}
 
 	updateDisplay(): void {
-		if (this.preview) {
-			this.preview.style.backgroundColor = this.value;
-		}
 		if (this.colorInput) {
 			this.colorInput.value = this.value;
 		}
-	}
-
-	/** プレビュークリックで color input を開く */
-	private onPreviewClick(): void {
-		this.colorInput?.click();
+		if (this.preview) {
+			this.preview.style.backgroundColor = this.value;
+		}
 	}
 
 	/** input の値変更を反映 */
@@ -84,10 +81,7 @@ export class ColorController extends Controller<string> {
 	}
 
 	dispose(): void {
-		if (this.preview) {
-			this.preview.removeEventListener('click', this.handlePreviewClick);
-			this.preview = null;
-		}
+		this.preview = null;
 		if (this.colorInput) {
 			this.colorInput.removeEventListener('input', this.handleChange);
 			this.colorInput = null;

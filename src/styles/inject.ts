@@ -53,10 +53,16 @@ const TILEUI_CSS = `
 	overflow: hidden;
 	box-sizing: border-box;
 	transition: background 0.15s ease;
+	/* モバイルでのダブルタップズームやタップハイライトを抑制 */
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
 }
 
-.tileui-tile:hover {
-	background: var(--tileui-tile-bg-hover);
+/* hover はマウス操作可能なデバイスのみ適用（iOS のダブルタップ問題を回避） */
+@media (hover: hover) {
+	.tileui-tile:hover {
+		background: var(--tileui-tile-bg-hover);
+	}
 }
 
 /* タイルラベル */
@@ -83,6 +89,8 @@ const TILEUI_CSS = `
 /* SVG ノブ */
 .tileui-knob {
 	cursor: grab;
+	/* モバイルでドラッグ中にページスクロールを防止 */
+	touch-action: none;
 }
 
 .tileui-knob:active {
@@ -107,11 +115,11 @@ const TILEUI_CSS = `
 	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
-/* トグルスイッチ */
+/* トグルスイッチ（モバイルタップ領域 44x24px） */
 .tileui-toggle {
-	width: 36px;
-	height: 20px;
-	border-radius: 10px;
+	width: 44px;
+	height: 24px;
+	border-radius: 12px;
 	background: var(--tileui-toggle-off);
 	cursor: pointer;
 	position: relative;
@@ -123,8 +131,8 @@ const TILEUI_CSS = `
 }
 
 .tileui-toggle-thumb {
-	width: 16px;
-	height: 16px;
+	width: 20px;
+	height: 20px;
 	border-radius: 50%;
 	background: var(--tileui-knob-thumb);
 	position: absolute;
@@ -135,23 +143,42 @@ const TILEUI_CSS = `
 }
 
 .tileui-toggle[data-active='true'] .tileui-toggle-thumb {
-	transform: translateX(16px);
+	transform: translateX(20px);
 }
 
-/* カラーコントローラ */
+/* カラーコントローラ（ネイティブ input の上にカスタム丸を重ねる） */
+.tileui-color-wrapper {
+	position: relative;
+	width: 44px;
+	height: 44px;
+}
+
+/* ネイティブ input: wrapper 全体を覆い、タップを受ける */
+.tileui-color-input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.01;
+	cursor: pointer;
+	/* iOS WebKit でタップが確実に届くよう親の制約をリセット */
+	touch-action: auto;
+	user-select: auto;
+	-webkit-user-select: auto;
+}
+
+/* カスタムプレビュー丸: タップは下の input に通す */
 .tileui-color-preview {
-	width: 32px;
-	height: 32px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 44px;
+	height: 44px;
 	border-radius: 50%;
 	border: 2px solid var(--tileui-border);
-	cursor: pointer;
-}
-
-.tileui-color-input {
-	opacity: 0;
-	position: absolute;
-	width: 0;
-	height: 0;
+	box-sizing: border-box;
+	pointer-events: none;
 }
 
 /* ボタンタイル */
