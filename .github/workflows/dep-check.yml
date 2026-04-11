@@ -102,7 +102,42 @@ jobs:
             const major = process.env.MAJOR || '';
             const audit = process.env.AUDIT || '';
 
-            const allLatest = [patch, minor, major].every(r =>
+            // ncu 出力からパッケージ名を抽出する
+            const parsePackageNames = (ncuOutput) => {
+              const names = new Set();
+              for (const line of ncuOutput.split('\n')) {
+                // " eslint  10.1.0  →  10.2.0" のような行を検出
+                const match = line.match(/^\s+(\S+)\s+\S+\s+→\s+\S+/);
+                if (match) names.add(match[1]);
+              }
+              return names;
+            };
+
+            // ncu 出力から指定パッケージの行を除外する
+            const filterOutput = (ncuOutput, excludeNames) => {
+              if (excludeNames.size === 0) return ncuOutput;
+              const lines = ncuOutput.split('\n');
+              const filtered = lines.filter(line => {
+                const match = line.match(/^\s+(\S+)\s+\S+\s+→\s+\S+/);
+                return !match || !excludeNames.has(match[1]);
+              });
+              // フィルタ後にパッケージ行が残っていなければ「全て最新」メッセージに置換
+              const hasPackages = filtered.some(l => l.match(/^\s+\S+\s+\S+\s+→\s+\S+/));
+              if (!hasPackages) {
+                return 'All dependencies match the latest package versions :)';
+              }
+              // "Run npx ..." 行も除外（パッケージがない場合は不要）
+              return filtered.filter(l => !l.startsWith('Run npx')).join('\n');
+            };
+
+            const patchPkgs = parsePackageNames(patch);
+            const minorPkgs = parsePackageNames(minor);
+
+            // マイナーからパッチ重複を除外、メジャーからパッチ+マイナー重複を除外
+            const filteredMinor = filterOutput(minor, patchPkgs);
+            const filteredMajor = filterOutput(major, new Set([...patchPkgs, ...minorPkgs]));
+
+            const allLatest = [patch, filteredMinor, filteredMajor].every(r =>
               r.includes('All dependencies match')
             );
             const noVulnerabilities = audit.includes('found 0 vulnerabilities');
@@ -125,8 +160,8 @@ jobs:
             }
 
             body += `## パッチアップデート\n\n\`\`\`\n${patch}\n\`\`\`\n\n`;
-            body += `## マイナーアップデート\n\n\`\`\`\n${minor}\n\`\`\`\n\n`;
-            body += `## メジャーアップデート\n\n\`\`\`\n${major}\n\`\`\`\n\n`;
+            body += `## マイナーアップデート\n\n\`\`\`\n${filteredMinor}\n\`\`\`\n\n`;
+            body += `## メジャーアップデート\n\n\`\`\`\n${filteredMajor}\n\`\`\`\n\n`;
             body += `## セキュリティ監査\n\n\`\`\`\n${audit}\n\`\`\`\n\n`;
             body += `---\n🤖 GitHub Actions により自動生成`;
 
