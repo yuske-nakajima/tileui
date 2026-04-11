@@ -229,9 +229,19 @@ body {
 		margin-inline: auto;
 	}
 
+	/* パネルを中央寄せ */
 	.gui-area {
 		min-width: unset;
-		width: 100%;
+		width: fit-content;
+		margin-inline: auto;
+	}
+
+	/* ショーケースのパネルも中央寄せ、はみ出す場合はスクロール */
+	.showcase__item > div {
+		width: fit-content;
+		max-width: 100%;
+		margin-inline: auto;
+		overflow-x: auto;
 	}
 }
 
@@ -266,12 +276,5 @@ body {
 
 	.footer {
 		font-size: 10px;
-	}
-
-	/* 4カラム以上のショーケースがモバイルで見切れないよう横スクロール対応 */
-	.showcase__item > div {
-		overflow-x: auto;
-		max-width: 100%;
-		width: auto;
 	}
 }
