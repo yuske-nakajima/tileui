@@ -13,7 +13,7 @@ export default defineConfig(({ command }) => ({
 		__VERSION__: JSON.stringify(pkg.version),
 	},
 	build: {
-		minify: 'oxc',
+		minify: 'terser',
 		rollupOptions: {
 			output: {
 				exports: 'named',
