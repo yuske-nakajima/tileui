@@ -1,3 +1,11 @@
+## [0.2.3](https://github.com/yuske-nakajima/tileui/compare/v0.2.2...v0.2.3) (2026-04-11)
+
+### Bug Fixes
+
+* **ci:** 依存性チェックレポートのメジャーセクションからマイナー以下を除外 ([#38](https://github.com/yuske-nakajima/tileui/issues/38)) ([7200c5e](https://github.com/yuske-nakajima/tileui/commit/7200c5e91b4cb5acd5bcb6a50840ee5192a67e60))
+* iOS WebKit でカラーピッカーが動作しない問題を修正 ([988f748](https://github.com/yuske-nakajima/tileui/commit/988f748fec1dd2da98133b005f4fa8959a281463))
+* スマホでのコントロール操作を改善（タッチ最適化） ([#39](https://github.com/yuske-nakajima/tileui/issues/39)) ([69e32ce](https://github.com/yuske-nakajima/tileui/commit/69e32cecaa17521e726edc23f7ff5c06a639a5bc))
+
 ## [0.2.2](https://github.com/yuske-nakajima/tileui/compare/v0.2.1...v0.2.2) (2026-04-10)
 
 ### Features
