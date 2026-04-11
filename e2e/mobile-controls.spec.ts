@@ -44,15 +44,19 @@ test.describe('モバイルでのコントロール操作', () => {
 		expect(before).not.toEqual(after);
 	});
 
-	test('カラープレビューをタップできる', async ({ page }) => {
-		const preview = page.locator('.tileui-color-preview').first();
-		await expect(preview).toBeVisible();
+	test('カラー入力のタップ領域が十分な大きさ', async ({ page }) => {
+		const wrapper = page.locator('.tileui-color-wrapper').first();
+		await expect(wrapper).toBeVisible();
 
-		// タップ領域が十分な大きさか確認（40px 以上）
-		const box = await preview.boundingBox();
+		// タップ領域が十分な大きさか確認（44px）
+		const box = await wrapper.boundingBox();
 		expect(box).toBeTruthy();
-		expect(box?.width).toBeGreaterThanOrEqual(40);
-		expect(box?.height).toBeGreaterThanOrEqual(40);
+		expect(box?.width).toBeGreaterThanOrEqual(44);
+		expect(box?.height).toBeGreaterThanOrEqual(44);
+
+		// プレビュー丸が表示されている
+		const preview = wrapper.locator('.tileui-color-preview');
+		await expect(preview).toBeVisible();
 	});
 
 	test('トグルのタップ領域が十分な大きさ', async ({ page }) => {

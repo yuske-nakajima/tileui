@@ -58,8 +58,11 @@ const TILEUI_CSS = `
 	-webkit-tap-highlight-color: transparent;
 }
 
-.tileui-tile:hover {
-	background: var(--tileui-tile-bg-hover);
+/* hover はマウス操作可能なデバイスのみ適用（iOS のダブルタップ問題を回避） */
+@media (hover: hover) {
+	.tileui-tile:hover {
+		background: var(--tileui-tile-bg-hover);
+	}
 }
 
 /* タイルラベル */
@@ -143,20 +146,39 @@ const TILEUI_CSS = `
 	transform: translateX(20px);
 }
 
-/* カラーコントローラ（モバイルタップ領域 40px） */
-.tileui-color-preview {
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	border: 2px solid var(--tileui-border);
-	cursor: pointer;
+/* カラーコントローラ（ネイティブ input の上にカスタム丸を重ねる） */
+.tileui-color-wrapper {
+	position: relative;
+	width: 44px;
+	height: 44px;
 }
 
+/* ネイティブ input: wrapper 全体を覆い、タップを受ける */
 .tileui-color-input {
-	opacity: 0;
 	position: absolute;
-	width: 0;
-	height: 0;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.01;
+	cursor: pointer;
+	/* iOS WebKit でタップが確実に届くよう親の制約をリセット */
+	touch-action: auto;
+	user-select: auto;
+	-webkit-user-select: auto;
+}
+
+/* カスタムプレビュー丸: タップは下の input に通す */
+.tileui-color-preview {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: 2px solid var(--tileui-border);
+	box-sizing: border-box;
+	pointer-events: none;
 }
 
 /* ボタンタイル */
