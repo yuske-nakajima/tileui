@@ -92,4 +92,33 @@ test.describe('デモページの表示', () => {
 		await expect(page.locator('#showcase-4col .tileui-panel')).toBeVisible();
 		await expect(page.locator('#showcase-styled .tileui-panel')).toBeVisible();
 	});
+
+	test('モバイルで4列パネルが横スクロール可能', async ({ page }, testInfo) => {
+		// mobile-chrome プロジェクトのみ実行
+		if (testInfo.project.name !== 'mobile-chrome') {
+			test.skip();
+			return;
+		}
+
+		await page.goto('/');
+		await page.waitForSelector('#showcase-4col .tileui-panel');
+
+		const viewportWidth = page.viewportSize()?.width ?? 0;
+
+		// 4列パネルの grid が 4 * 100px = 400px を要求していることを確認
+		const panelScrollWidth = await page
+			.locator('#showcase-4col .tileui-panel')
+			.evaluate((el) => el.scrollWidth);
+		expect(panelScrollWidth).toBeGreaterThanOrEqual(400);
+
+		// ラッパー（.showcase__item > div = #showcase-4col）が overflow-x: auto であることを確認
+		const wrapper = page.locator('#showcase-4col');
+		const overflowX = await wrapper.evaluate((el) => getComputedStyle(el).overflowX);
+		expect(overflowX).toBe('auto');
+
+		// ラッパーの幅がビューポート幅以下であることを確認（はみ出していない）
+		const wrapperBox = await wrapper.boundingBox();
+		expect(wrapperBox).toBeTruthy();
+		expect(wrapperBox?.width).toBeLessThanOrEqual(viewportWidth);
+	});
 });

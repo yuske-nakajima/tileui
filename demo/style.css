@@ -267,4 +267,11 @@ body {
 	.footer {
 		font-size: 10px;
 	}
+
+	/* 4カラム以上のショーケースがモバイルで見切れないよう横スクロール対応 */
+	.showcase__item > div {
+		overflow-x: auto;
+		max-width: 100%;
+		width: auto;
+	}
 }
