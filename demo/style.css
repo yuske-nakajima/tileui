@@ -241,6 +241,7 @@ body {
 	}
 
 	.gui-area .tileui-panel {
+		display: grid;
 		grid-template-columns: repeat(auto-fill, var(--tileui-tile-size));
 		justify-content: center;
 	}
