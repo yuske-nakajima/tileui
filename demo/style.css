@@ -127,6 +127,11 @@ body {
 	width: fit-content;
 }
 
+/* デスクトップでは Controls パネルを 2 列に制限 */
+.gui-area .tileui-panel {
+	grid-template-columns: repeat(2, var(--tileui-tile-size));
+}
+
 /* タグライン — fluid typography & spacing */
 .tagline {
 	padding-block: clamp(32px, 6vw, 48px);
@@ -229,9 +234,24 @@ body {
 		margin-inline: auto;
 	}
 
+	/* パネルを画面幅に広げ、列数を自動調整して中央寄せ */
 	.gui-area {
 		min-width: unset;
 		width: 100%;
+	}
+
+	.gui-area .tileui-panel {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, var(--tileui-tile-size));
+		justify-content: center;
+	}
+
+	/* ショーケースのパネルも中央寄せ、はみ出す場合はスクロール */
+	.showcase__item > div {
+		width: fit-content;
+		max-width: 100%;
+		margin-inline: auto;
+		overflow-x: auto;
 	}
 }
 

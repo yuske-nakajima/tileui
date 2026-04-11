@@ -17,7 +17,6 @@ window.addEventListener('resize', resizeSketch);
 // tileui パネルを #gui コンテナに生成
 const gui = new TileUI({
 	container: document.getElementById('gui')!,
-	columns: 2,
 	title: 'Controls',
 });
 
