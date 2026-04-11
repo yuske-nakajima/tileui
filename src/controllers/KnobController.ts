@@ -173,6 +173,8 @@ export class KnobController extends Controller<number> {
 
 	private onPointerDown(e: PointerEvent): void {
 		e.preventDefault();
+		// モバイルでドラッグ中に指がSVG外に出てもイベントを維持する
+		(e.target as Element)?.setPointerCapture?.(e.pointerId);
 		this.dragging = true;
 		this.dragStartY = e.clientY;
 		this.dragStartValue = this.value;

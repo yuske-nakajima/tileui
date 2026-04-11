@@ -29,6 +29,7 @@
 		"format": "biome format --write .",
 		"test": "vitest run",
 		"test:watch": "vitest",
+		"test:e2e": "playwright test",
 		"prepublishOnly": "npm run build"
 	},
 	"keywords": [
@@ -54,6 +55,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.10",
+		"@playwright/test": "1.59.1",
 		"eslint": "10.1.0",
 		"jsdom": "29.0.1",
 		"typescript": "6.0.2",

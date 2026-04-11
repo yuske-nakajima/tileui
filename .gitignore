@@ -7,3 +7,5 @@ dist/
 .serena
 .idea
 demo-dist/
+test-results/
+playwright-report/

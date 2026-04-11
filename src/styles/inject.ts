@@ -53,6 +53,9 @@ const TILEUI_CSS = `
 	overflow: hidden;
 	box-sizing: border-box;
 	transition: background 0.15s ease;
+	/* モバイルでのダブルタップズームやタップハイライトを抑制 */
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .tileui-tile:hover {
@@ -83,6 +86,8 @@ const TILEUI_CSS = `
 /* SVG ノブ */
 .tileui-knob {
 	cursor: grab;
+	/* モバイルでドラッグ中にページスクロールを防止 */
+	touch-action: none;
 }
 
 .tileui-knob:active {
@@ -107,11 +112,11 @@ const TILEUI_CSS = `
 	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
-/* トグルスイッチ */
+/* トグルスイッチ（モバイルタップ領域 44x24px） */
 .tileui-toggle {
-	width: 36px;
-	height: 20px;
-	border-radius: 10px;
+	width: 44px;
+	height: 24px;
+	border-radius: 12px;
 	background: var(--tileui-toggle-off);
 	cursor: pointer;
 	position: relative;
@@ -123,8 +128,8 @@ const TILEUI_CSS = `
 }
 
 .tileui-toggle-thumb {
-	width: 16px;
-	height: 16px;
+	width: 20px;
+	height: 20px;
 	border-radius: 50%;
 	background: var(--tileui-knob-thumb);
 	position: absolute;
@@ -135,13 +140,13 @@ const TILEUI_CSS = `
 }
 
 .tileui-toggle[data-active='true'] .tileui-toggle-thumb {
-	transform: translateX(16px);
+	transform: translateX(20px);
 }
 
-/* カラーコントローラ */
+/* カラーコントローラ（モバイルタップ領域 40px） */
 .tileui-color-preview {
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	border-radius: 50%;
 	border: 2px solid var(--tileui-border);
 	cursor: pointer;
