@@ -127,7 +127,7 @@ jobs:
                 return 'All dependencies match the latest package versions :)';
               }
               // "Run npx ..." 行も除外（パッケージがない場合は不要）
-              return filtered.filter(l => !l.startsWith('Run npx')).join('\n');
+              return filtered.filter(l => !l.trimStart().startsWith('Run npx')).join('\n');
             };
 
             const patchPkgs = parsePackageNames(patch);
