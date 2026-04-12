@@ -5,18 +5,27 @@ declare const __VERSION__: string;
 import TileUI from '../src';
 import { artParams, initSketch, resizeSketch } from './sketch';
 
+/** ID から要素を取得し、見つからなければエラーを投げる */
+function getElement(id: string): HTMLElement {
+	const el = document.getElementById(id);
+	if (!el) {
+		throw new Error(`要素 #${id} が見つかりません`);
+	}
+	return el;
+}
+
 // バージョン表示（package.json から自動注入）
-document.getElementById('version')!.textContent = `v${__VERSION__}`;
+getElement('version').textContent = `v${__VERSION__}`;
 
 // p5.js スケッチを初期化
-initSketch(document.getElementById('sketch')!);
+initSketch(getElement('sketch'));
 
 // ウィンドウリサイズ時にキャンバスサイズを追従
 window.addEventListener('resize', resizeSketch);
 
 // tileui パネルを #gui コンテナに生成
 const gui = new TileUI({
-	container: document.getElementById('gui')!,
+	container: getElement('gui'),
 	title: 'Controls',
 });
 
@@ -137,7 +146,7 @@ function addSampleControls(g: TileUI, ac: string) {
 
 // 2列
 const s2 = new TileUI({
-	container: document.getElementById('showcase-2col')!,
+	container: getElement('showcase-2col'),
 	columns: 2,
 	title: '2 Columns',
 });
@@ -145,7 +154,7 @@ addSampleControls(s2, showcaseAccents.col2);
 
 // 3列
 const s3 = new TileUI({
-	container: document.getElementById('showcase-3col')!,
+	container: getElement('showcase-3col'),
 	columns: 3,
 	title: '3 Columns',
 });
@@ -153,7 +162,7 @@ addSampleControls(s3, showcaseAccents.col3);
 
 // 4列
 const s4 = new TileUI({
-	container: document.getElementById('showcase-4col')!,
+	container: getElement('showcase-4col'),
 	columns: 4,
 	title: '4 Columns',
 });
@@ -161,7 +170,7 @@ addSampleControls(s4, showcaseAccents.col4);
 
 // 個別スタイル
 const s5 = new TileUI({
-	container: document.getElementById('showcase-styled')!,
+	container: getElement('showcase-styled'),
 	columns: 3,
 	title: 'Custom Styles',
 });

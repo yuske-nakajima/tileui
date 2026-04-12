@@ -25,6 +25,15 @@
 		}
 	},
 	"files": {
-		"includes": ["**", "!dist", "!demo-dist", "!node_modules", "!.claude", "!.vite"]
+		"includes": [
+			"**",
+			"!dist",
+			"!demo-dist",
+			"!node_modules",
+			"!.claude",
+			"!.vite",
+			"!test-results",
+			"!playwright-report"
+		]
 	}
 }
