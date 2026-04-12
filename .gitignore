@@ -6,6 +6,7 @@ dist/
 .vite/
 .serena
 .idea
+.vscode/
 demo-dist/
 test-results/
 playwright-report/
