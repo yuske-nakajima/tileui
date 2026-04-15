@@ -103,7 +103,7 @@ export class TileUI {
 		this.panel.classList.add(`${CSS_PREFIX}-panel`);
 
 		// columns オプション対応
-		this.setupColumns(options.columns);
+		this.setupColumns(options.columns, options.dock);
 
 		// タイトル表示
 		if (options.title) {
@@ -202,45 +202,6 @@ export class TileUI {
 		} else {
 			this.open();
 		}
-	}
-
-	/**
-	 * columns オプションに応じてグリッド列数を設定する
-	 * - number: 固定列数
-	 * - ColumnOption: ResizeObserver でパネル幅に応じて動的計算
-	 * - undefined: CSS の auto-fill に任せる（何もしない）
-	 */
-	private setupColumns(columns: number | ColumnOption | undefined): void {
-		if (columns === undefined) {
-			return;
-		}
-
-		const size = 'var(--tileui-tile-size)';
-
-		if (!isColumnOption(columns)) {
-			// 固定列数
-			this.panel.style.gridTemplateColumns = `repeat(${columns}, ${size})`;
-			return;
-		}
-
-		// レスポンシブ列数: min/max を正規化（min > max の場合は max にクランプ）
-		const minCols = Math.min(columns.min, columns.max);
-		const maxCols = Math.max(columns.min, columns.max);
-
-		// 初期値として min を設定
-		this.panel.style.gridTemplateColumns = `repeat(${minCols}, ${size})`;
-
-		// ResizeObserver でパネル幅を監視し、列数を動的に更新
-		this.resizeObserver = new ResizeObserver((entries) => {
-			for (const entry of entries) {
-				const panelWidth = entry.contentRect.width;
-				// パネル幅 / タイルサイズで理想列数を計算し、min〜max でクランプ
-				const idealCols = Math.floor(panelWidth / TILE_SIZE);
-				const clampedCols = Math.max(minCols, Math.min(idealCols, maxCols));
-				this.panel.style.gridTemplateColumns = `repeat(${clampedCols}, ${size})`;
-			}
-		});
-		this.resizeObserver.observe(this.panel);
 	}
 
 	/**
@@ -385,6 +346,71 @@ export class TileUI {
 			}
 		}
 	}
+
+	/**
+	 * columns オプションに応じてグリッド列数を設定する
+	 * - left/right ドロワーは CSS Flexbox で自動折り返しするため JS 計算不要
+	 * - number: 固定列数
+	 * - ColumnOption: ResizeObserver でパネル幅に応じて動的計算
+	 * - undefined: CSS の auto-fill に任せる（何もしない）
+	 */
+	private setupColumns(columns: number | ColumnOption | undefined, dock?: DockPosition): void {
+		if (columns === undefined) {
+			return;
+		}
+
+		const size = 'var(--tileui-tile-size)';
+
+		if (!isColumnOption(columns)) {
+			// 固定列数（left/right ドロワーでも固定指定は尊重）
+			this.panel.style.gridTemplateColumns = `repeat(${columns}, ${size})`;
+			return;
+		}
+
+		// レスポンシブ列数: min/max を正規化（min > max の場合は max にクランプ）
+		const minCols = Math.min(columns.min, columns.max);
+		const maxCols = Math.max(columns.min, columns.max);
+
+		// 初期値として min を設定
+		this.panel.style.gridTemplateColumns = `repeat(${minCols}, ${size})`;
+
+		if (dock === 'left' || dock === 'right') {
+			// left/right ドロワー: ドロワーの高さに収まる列数を計算する
+			// window resize で再計算
+			const recalcVertical = () => {
+				if (!this.drawer) return;
+				const h = this.drawer.getBoundingClientRect().height;
+				if (h === 0) return;
+				const totalItems = this.panel.children.length;
+				if (totalItems === 0) return;
+				const maxRows = Math.max(1, Math.floor(h / TILE_SIZE));
+				const neededCols = Math.ceil(totalItems / maxRows);
+				const clamped = Math.max(minCols, Math.min(neededCols, maxCols));
+				this.panel.style.gridTemplateColumns = `repeat(${clamped}, ${size})`;
+			};
+
+			// resize イベントで再計算
+			this._resizeHandler = () => recalcVertical();
+			window.addEventListener('resize', this._resizeHandler);
+
+			// open() 時にも再計算するためコールバックを保持
+			this._recalcVertical = recalcVertical;
+		} else {
+			// 通常 / top/bottom: 幅ベースで列数を動的計算
+			this.resizeObserver = new ResizeObserver((entries) => {
+				for (const entry of entries) {
+					const panelWidth = entry.contentRect.width;
+					const idealCols = Math.floor(panelWidth / TILE_SIZE);
+					const clampedCols = Math.max(minCols, Math.min(idealCols, maxCols));
+					this.panel.style.gridTemplateColumns = `repeat(${clampedCols}, ${size})`;
+				}
+			});
+			this.resizeObserver.observe(this.panel);
+		}
+	}
+
+	/** window resize ハンドラの参照（dispose 用） */
+	private _resizeHandler: (() => void) | null = null;
 
 	/** トグルボタンを生成してドロワーに配置する */
 	private setupToggleButton(dock: DockPosition): void {
