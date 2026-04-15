@@ -287,7 +287,7 @@
 	transform: translateY(100%);
 }
 
-/* top/bottom ドロワー内のパネルは全幅を使ってタイルを横並びにする */
+/* top/bottom ドロワー内のパネルは横いっぱいに広がりタイルを横並びにする */
 .tileui-drawer[data-dock="top"] > .tileui-panel,
 .tileui-drawer[data-dock="bottom"] > .tileui-panel {
 	display: grid;
