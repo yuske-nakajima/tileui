@@ -271,6 +271,12 @@
 	transform: translateY(100%);
 }
 
+/* top/bottom ドロワー内のパネルは全幅を使ってタイルを横並びにする */
+.tileui-drawer[data-dock="top"] > .tileui-panel,
+.tileui-drawer[data-dock="bottom"] > .tileui-panel {
+	display: grid;
+}
+
 /* 開いた状態: transform をリセット */
 .tileui-drawer[data-open="true"] {
 	transform: translate(0, 0);
