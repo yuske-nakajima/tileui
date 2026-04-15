@@ -249,11 +249,151 @@ describe('TileUI', () => {
 	});
 
 	describe('columns オプション', () => {
-		it('columns を指定するとグリッド列数が固定される', () => {
+		it('columns: number を指定するとグリッド列数が固定される', () => {
 			const gui = new TileUI({ container, columns: 3 });
 			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
 			expect(panel.style.gridTemplateColumns).toContain('repeat(3');
 			gui.dispose();
+		});
+
+		it('columns 未指定時は auto-fill が維持される', () => {
+			const gui = new TileUI({ container });
+			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
+			// gridTemplateColumns をインラインで設定しないので空文字
+			expect(panel.style.gridTemplateColumns).toBe('');
+			gui.dispose();
+		});
+
+		it('columns: { min, max } でインスタンスを生成できる', () => {
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = vi.fn();
+					unobserve = vi.fn();
+					disconnect = vi.fn();
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 2, max: 4 } });
+			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
+			expect(panel).not.toBeNull();
+			// レスポンシブモードでは gridTemplateColumns が設定される（初期値は min）
+			expect(panel.style.gridTemplateColumns).toContain('repeat(2');
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+
+		it('columns: { min, max } で min > max の場合は min が max にクランプされる', () => {
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = vi.fn();
+					unobserve = vi.fn();
+					disconnect = vi.fn();
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 5, max: 2 } });
+			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
+			// min > max でもエラーにならず、min が max の値にクランプされる
+			expect(panel.style.gridTemplateColumns).toContain('repeat(2');
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+	});
+
+	describe('レスポンシブ列数（ResizeObserver）', () => {
+		it('columns: { min, max } で ResizeObserver が設定される', () => {
+			const observeSpy = vi.fn();
+			const disconnectSpy = vi.fn();
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = observeSpy;
+					unobserve = vi.fn();
+					disconnect = disconnectSpy;
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 2, max: 4 } });
+			expect(observeSpy).toHaveBeenCalledTimes(1);
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+
+		it('columns: number では ResizeObserver が設定されない', () => {
+			const observeSpy = vi.fn();
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = observeSpy;
+					unobserve = vi.fn();
+					disconnect = vi.fn();
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: 3 });
+			expect(observeSpy).not.toHaveBeenCalled();
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+
+		it('dispose() で ResizeObserver が disconnect される', () => {
+			const disconnectSpy = vi.fn();
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = vi.fn();
+					unobserve = vi.fn();
+					disconnect = disconnectSpy;
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 2, max: 4 } });
+			gui.dispose();
+			expect(disconnectSpy).toHaveBeenCalledTimes(1);
+			vi.unstubAllGlobals();
+		});
+
+		it('パネル幅に応じて列数が動的に計算される', () => {
+			let resizeCallback: ResizeObserverCallback | null = null;
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = vi.fn();
+					unobserve = vi.fn();
+					disconnect = vi.fn();
+					constructor(cb: ResizeObserverCallback) {
+						resizeCallback = cb;
+					}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 2, max: 6 } });
+			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
+
+			// パネル幅 350px / タイルサイズ 100px = 3.5 → floor で 3列
+			resizeCallback?.(
+				[{ contentRect: { width: 350 } } as unknown as ResizeObserverEntry],
+				{} as ResizeObserver,
+			);
+			expect(panel.style.gridTemplateColumns).toContain('repeat(3');
+
+			// パネル幅 600px / タイルサイズ 100px = 6 → max にクランプして 6列
+			resizeCallback?.(
+				[{ contentRect: { width: 600 } } as unknown as ResizeObserverEntry],
+				{} as ResizeObserver,
+			);
+			expect(panel.style.gridTemplateColumns).toContain('repeat(6');
+
+			// パネル幅 100px / タイルサイズ 100px = 1 → min にクランプして 2列
+			resizeCallback?.(
+				[{ contentRect: { width: 100 } } as unknown as ResizeObserverEntry],
+				{} as ResizeObserver,
+			);
+			expect(panel.style.gridTemplateColumns).toContain('repeat(2');
+
+			gui.dispose();
+			vi.unstubAllGlobals();
 		});
 	});
 

@@ -1,4 +1,4 @@
-import { CSS_PREFIX } from './constants';
+import { CSS_PREFIX, TILE_SIZE } from './constants';
 import { BooleanController } from './controllers/BooleanController';
 import { ButtonController } from './controllers/ButtonController';
 import { ColorController } from './controllers/ColorController';
@@ -16,12 +16,25 @@ interface Disposable {
 /** ドックの配置方向 */
 export type DockPosition = 'left' | 'right' | 'top' | 'bottom';
 
+/** レスポンシブ列数のオプション（min〜max の範囲で自動調整） */
+export interface ColumnOption {
+	/** 最小列数 */
+	min: number;
+	/** 最大列数 */
+	max: number;
+}
+
+/** columns オプションがオブジェクト形式かどうかを判定する型ガード */
+function isColumnOption(columns: number | ColumnOption): columns is ColumnOption {
+	return typeof columns === 'object' && 'min' in columns && 'max' in columns;
+}
+
 /** TileUI コンストラクタのオプション */
 export interface TileUIOptions {
 	/** パネルの挿入先コンテナ（未指定なら document.body） */
 	container?: HTMLElement;
-	/** グリッドの列数（未指定なら auto-fill） */
-	columns?: number;
+	/** グリッドの列数（数値で固定、{ min, max } でレスポンシブ、未指定で auto-fill） */
+	columns?: number | ColumnOption;
 	/** パネルのタイトル */
 	title?: string;
 	/** ドロワーとして画面端に配置する方向 */
@@ -54,6 +67,9 @@ export class TileUI {
 	/** ドロワーの開閉状態 */
 	private _isOpen = false;
 
+	/** レスポンシブ列数監視用の ResizeObserver（columns がオブジェクト型の場合のみ） */
+	private resizeObserver: ResizeObserver | null = null;
+
 	constructor(options: TileUIOptions = {}) {
 		// スタイルを注入
 		injectStyles();
@@ -66,10 +82,7 @@ export class TileUI {
 		this.panel.classList.add(`${CSS_PREFIX}-panel`);
 
 		// columns オプション対応
-		if (options.columns !== undefined) {
-			const size = 'var(--tileui-tile-size)';
-			this.panel.style.gridTemplateColumns = `repeat(${options.columns}, ${size})`;
-		}
+		this.setupColumns(options.columns);
 
 		// タイトル表示
 		if (options.title) {
@@ -145,6 +158,45 @@ export class TileUI {
 		} else {
 			this.open();
 		}
+	}
+
+	/**
+	 * columns オプションに応じてグリッド列数を設定する
+	 * - number: 固定列数
+	 * - ColumnOption: ResizeObserver でパネル幅に応じて動的計算
+	 * - undefined: CSS の auto-fill に任せる（何もしない）
+	 */
+	private setupColumns(columns: number | ColumnOption | undefined): void {
+		if (columns === undefined) {
+			return;
+		}
+
+		const size = 'var(--tileui-tile-size)';
+
+		if (!isColumnOption(columns)) {
+			// 固定列数
+			this.panel.style.gridTemplateColumns = `repeat(${columns}, ${size})`;
+			return;
+		}
+
+		// レスポンシブ列数: min/max を正規化（min > max の場合は max にクランプ）
+		const minCols = Math.min(columns.min, columns.max);
+		const maxCols = Math.max(columns.min, columns.max);
+
+		// 初期値として min を設定
+		this.panel.style.gridTemplateColumns = `repeat(${minCols}, ${size})`;
+
+		// ResizeObserver でパネル幅を監視し、列数を動的に更新
+		this.resizeObserver = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				const panelWidth = entry.contentRect.width;
+				// パネル幅 / タイルサイズで理想列数を計算し、min〜max でクランプ
+				const idealCols = Math.floor(panelWidth / TILE_SIZE);
+				const clampedCols = Math.max(minCols, Math.min(idealCols, maxCols));
+				this.panel.style.gridTemplateColumns = `repeat(${clampedCols}, ${size})`;
+			}
+		});
+		this.resizeObserver.observe(this.panel);
 	}
 
 	/**
@@ -239,6 +291,12 @@ export class TileUI {
 
 	/** 全コントローラーとDOM要素をクリーンアップする */
 	dispose(): void {
+		// ResizeObserver を停止
+		if (this.resizeObserver) {
+			this.resizeObserver.disconnect();
+			this.resizeObserver = null;
+		}
+
 		// サブフォルダを先に dispose
 		for (const folder of this.folders) {
 			folder.dispose();
