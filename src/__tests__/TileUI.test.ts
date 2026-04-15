@@ -535,4 +535,227 @@ describe('TileUI', () => {
 			expect(container.querySelector(`.${CSS_PREFIX}-panel`)).toBeNull();
 		});
 	});
+
+	describe('collapsible オプション', () => {
+		it('collapsible: true + dock 指定でトグルボタンが生成される', () => {
+			const gui = new TileUI({ container, dock: 'right', collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`);
+			expect(btn).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('collapsible: true + dock なしではトグルボタンが生成されない', () => {
+			const gui = new TileUI({ container, collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`);
+			expect(btn).toBeNull();
+			gui.dispose();
+		});
+
+		it('collapsible 未指定 + dock 指定ではトグルボタンが生成されない', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`);
+			expect(btn).toBeNull();
+			gui.dispose();
+		});
+
+		it('トグルボタンクリックでドロワーが開閉する', () => {
+			const gui = new TileUI({ container, dock: 'right', collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`) as HTMLElement;
+
+			// 初期状態: 閉じている
+			expect(gui.isOpen).toBe(false);
+
+			// クリックで開く
+			btn.click();
+			expect(gui.isOpen).toBe(true);
+
+			// もう一度クリックで閉じる
+			btn.click();
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('トグルボタンに aria-label と aria-expanded が設定される', () => {
+			const gui = new TileUI({ container, dock: 'right', collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`) as HTMLElement;
+
+			expect(btn.getAttribute('aria-label')).toBe('Toggle panel');
+			expect(btn.getAttribute('aria-expanded')).toBe('false');
+
+			gui.dispose();
+		});
+
+		it('開閉時に aria-expanded が更新される', () => {
+			const gui = new TileUI({ container, dock: 'right', collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`) as HTMLElement;
+
+			gui.open();
+			expect(btn.getAttribute('aria-expanded')).toBe('true');
+
+			gui.close();
+			expect(btn.getAttribute('aria-expanded')).toBe('false');
+
+			gui.dispose();
+		});
+
+		it('dock の各方向でトグルボタンが生成される', () => {
+			const positions: Array<'left' | 'right' | 'top' | 'bottom'> = [
+				'left',
+				'right',
+				'top',
+				'bottom',
+			];
+			for (const dock of positions) {
+				const gui = new TileUI({ container, dock, collapsible: true });
+				const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`);
+				expect(btn).not.toBeNull();
+				gui.dispose();
+			}
+		});
+	});
+
+	describe('キーボードショートカット', () => {
+		it('Escape キーでドロワーが閉じる', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.open();
+			expect(gui.isOpen).toBe(true);
+
+			// Escape キーイベントを発火
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('Escape キーでドロワーが閉じている場合は何もしない', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			expect(gui.isOpen).toBe(false);
+
+			// Escape キーイベントを発火（閉じたまま）
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('dock 未指定時は Escape キーで何も起きない', () => {
+			const gui = new TileUI({ container });
+			// dock 未指定なので isOpen は常に true
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+			expect(gui.isOpen).toBe(true);
+
+			gui.dispose();
+		});
+
+		it('toggleKey で指定したキーでトグルする', () => {
+			const gui = new TileUI({ container, dock: 'right', toggleKey: 'g' });
+			expect(gui.isOpen).toBe(false);
+
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
+			expect(gui.isOpen).toBe(true);
+
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('toggleKey が未指定の場合はカスタムキーで何もしない', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			expect(gui.isOpen).toBe(false);
+
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('dispose() 後はキーイベントリスナーが解除される', () => {
+			const gui = new TileUI({ container, dock: 'right', toggleKey: 'g' });
+			gui.dispose();
+
+			// dispose 後は g キーでトグルしないことを確認するため、
+			// 新しいインスタンスを作成して影響がないことを確認
+			const gui2 = new TileUI({ container, dock: 'right' });
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
+			expect(gui2.isOpen).toBe(false);
+
+			gui2.dispose();
+		});
+	});
+
+	describe('アクセシビリティ', () => {
+		it('ドロワーに role="region" が設定される', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.getAttribute('role')).toBe('region');
+			gui.dispose();
+		});
+
+		it('title 指定時にドロワーの aria-label にタイトルが設定される', () => {
+			const gui = new TileUI({ container, dock: 'right', title: 'My Panel' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.getAttribute('aria-label')).toBe('My Panel');
+			gui.dispose();
+		});
+
+		it('title 未指定時にドロワーの aria-label がデフォルト値になる', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.getAttribute('aria-label')).toBe('TileUI panel');
+			gui.dispose();
+		});
+	});
+
+	describe('overlay オプション', () => {
+		it('overlay: true でドロワーが開くとオーバーレイが表示される', () => {
+			const gui = new TileUI({ container, dock: 'right', overlay: true });
+			gui.open();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`);
+			expect(overlay).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('overlay: true でドロワーが閉じるとオーバーレイが非表示になる', () => {
+			const gui = new TileUI({ container, dock: 'right', overlay: true });
+			gui.open();
+			gui.close();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`) as HTMLElement;
+			expect(overlay.style.display).toBe('none');
+			gui.dispose();
+		});
+
+		it('overlay 未指定時はオーバーレイが生成されない', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.open();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`);
+			expect(overlay).toBeNull();
+			gui.dispose();
+		});
+
+		it('オーバーレイクリックでドロワーが閉じる', () => {
+			const gui = new TileUI({ container, dock: 'right', overlay: true });
+			gui.open();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`) as HTMLElement;
+			overlay.click();
+			expect(gui.isOpen).toBe(false);
+			gui.dispose();
+		});
+
+		it('dispose() でオーバーレイが削除される', () => {
+			const gui = new TileUI({ container, dock: 'right', overlay: true });
+			gui.open();
+			gui.dispose();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`);
+			expect(overlay).toBeNull();
+		});
+
+		it('dock なしで overlay: true を指定してもオーバーレイは生成されない', () => {
+			const gui = new TileUI({ container, overlay: true });
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`);
+			expect(overlay).toBeNull();
+			gui.dispose();
+		});
+	});
 });

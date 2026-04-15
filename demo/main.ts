@@ -200,6 +200,9 @@ const drawerGui = new TileUI({
 	dock: 'right',
 	columns: 2,
 	title: 'Drawer Panel',
+	collapsible: true,
+	overlay: true,
+	toggleKey: 'g',
 });
 
 // ドロワー内にサンプルコントロールを追加
@@ -208,24 +211,6 @@ drawerGui.add(drawerParams, 'speed', 0, 100, 1).style({ accentColor: drawerAccen
 drawerGui.add(drawerParams, 'volume', 0, 1, 0.01).style({ accentColor: drawerAccent });
 drawerGui.addColor(drawerParams, 'color').style({ accentColor: drawerAccent });
 drawerGui.addBoolean(drawerParams, 'enabled').style({ accentColor: drawerAccent });
-drawerGui
-	.addButton('Close', () => {
-		drawerGui.close();
-		updateToggleBtn();
-	})
-	.style({ accentColor: drawerAccent });
-
-// ドロワー開閉ボタン
-const drawerToggleBtn = getElement('drawer-toggle');
-
-function updateToggleBtn() {
-	drawerToggleBtn.textContent = drawerGui.isOpen ? 'Close Drawer' : 'Open Drawer';
-}
-
-drawerToggleBtn.addEventListener('click', () => {
-	drawerGui.toggle();
-	updateToggleBtn();
-});
 
 // インストールコマンドのクリックコピー
 const installCmd = document.getElementById('install-cmd');
