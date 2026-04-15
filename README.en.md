@@ -6,7 +6,7 @@
 
 > A grid-tile GUI panel library with SVG rotary knobs
 
-![TileUI Demo](screenshots/demo-desktop.png)
+![TileUI Demo](screenshots/demo.gif)
 
 ## Features
 

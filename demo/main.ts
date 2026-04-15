@@ -193,24 +193,25 @@ s5.addButton('Action', () => {}).style({
 	borderColor: '#2d8a4e',
 });
 
-// === ドロワー（Dock）デモ ===
-const drawerAccent = '#b38f59'; // 色相40° — ゴールド系
-
+// === ドロワー（Dock）デモ — テーマカラー変更 ===
 const drawerGui = new TileUI({
 	dock: 'right',
-	columns: 2,
-	title: 'Drawer Panel',
+	columns: 1,
+	title: 'Theme',
 	collapsible: true,
-	overlay: true,
 	toggleKey: 'g',
 });
 
-// ドロワー内にサンプルコントロールを追加
-const drawerParams = { speed: 50, volume: 0.8, color: '#ff6600', enabled: true };
-drawerGui.add(drawerParams, 'speed', 0, 100, 1).style({ accentColor: drawerAccent });
-drawerGui.add(drawerParams, 'volume', 0, 1, 0.01).style({ accentColor: drawerAccent });
-drawerGui.addColor(drawerParams, 'color').style({ accentColor: drawerAccent });
-drawerGui.addBoolean(drawerParams, 'enabled').style({ accentColor: drawerAccent });
+const theme = { color: '#ff6600' };
+drawerGui
+	.addColor(theme, 'color')
+	.style({ accentColor: '#ff6600' })
+	.onChange((v) => {
+		document.body.style.color = v;
+	});
+
+// 初期値を適用
+document.body.style.color = theme.color;
 
 // インストールコマンドのクリックコピー
 const installCmd = document.getElementById('install-cmd');
