@@ -34,7 +34,8 @@
 			"!.vite",
 			"!test-results",
 			"!playwright-report",
-			"!.vscode"
+			"!.vscode",
+			"!dock-eval-playwright.ts"
 		]
 	}
 }
