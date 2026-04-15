@@ -204,6 +204,32 @@ body {
 	margin-bottom: 12px;
 }
 
+/* ドロワー開閉ボタン */
+.drawer-toggle-btn {
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: #faf9f6;
+	background: #111111;
+	border: 1px solid #333333;
+	border-radius: 4px;
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: opacity 0.15s;
+}
+
+.drawer-toggle-btn:hover {
+	opacity: 0.8;
+}
+
+/* ドロワーパネルのスタイルオーバーライド（デモ用） */
+.tileui-drawer {
+	background: #000000;
+	border-left: 1px solid rgba(250, 249, 246, 0.15);
+	padding: 4px;
+}
+
 /* フッター — fluid spacing */
 .footer {
 	display: flex;

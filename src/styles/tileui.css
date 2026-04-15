@@ -233,3 +233,45 @@
 .tileui-folder-arrow[data-open="true"] {
 	transform: rotate(90deg);
 }
+
+/* ドロワー */
+.tileui-drawer {
+	z-index: 9999;
+	will-change: transform;
+	transition: transform 0.3s ease;
+	overflow: auto;
+}
+
+/* 方向別の配置と閉じ時の transform */
+.tileui-drawer[data-dock="left"] {
+	left: 0;
+	top: 0;
+	height: 100%;
+	transform: translateX(-100%);
+}
+
+.tileui-drawer[data-dock="right"] {
+	right: 0;
+	top: 0;
+	height: 100%;
+	transform: translateX(100%);
+}
+
+.tileui-drawer[data-dock="top"] {
+	top: 0;
+	left: 0;
+	width: 100%;
+	transform: translateY(-100%);
+}
+
+.tileui-drawer[data-dock="bottom"] {
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	transform: translateY(100%);
+}
+
+/* 開いた状態: transform をリセット */
+.tileui-drawer[data-open="true"] {
+	transform: translate(0, 0);
+}

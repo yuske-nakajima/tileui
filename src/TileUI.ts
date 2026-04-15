@@ -13,6 +13,9 @@ interface Disposable {
 	dispose(): void;
 }
 
+/** ドックの配置方向 */
+export type DockPosition = 'left' | 'right' | 'top' | 'bottom';
+
 /** TileUI コンストラクタのオプション */
 export interface TileUIOptions {
 	/** パネルの挿入先コンテナ（未指定なら document.body） */
@@ -21,6 +24,8 @@ export interface TileUIOptions {
 	columns?: number;
 	/** パネルのタイトル */
 	title?: string;
+	/** ドロワーとして画面端に配置する方向 */
+	dock?: DockPosition;
 }
 
 /**
@@ -40,10 +45,20 @@ export class TileUI {
 	/** サブフォルダ一覧 */
 	private folders: TileUI[] = [];
 
+	/** ドロワー要素（dock 指定時のみ生成） */
+	private drawer: HTMLElement | null = null;
+
+	/** ドック方向（未指定なら null） */
+	private dockPosition: DockPosition | null = null;
+
+	/** ドロワーの開閉状態 */
+	private _isOpen = false;
+
 	constructor(options: TileUIOptions = {}) {
 		// スタイルを注入
 		injectStyles();
 
+		const hasContainer = options.container !== undefined;
 		this.container = options.container ?? document.body;
 
 		// パネル要素を作成
@@ -68,7 +83,68 @@ export class TileUI {
 			this.panel.appendChild(titleEl);
 		}
 
-		this.container.appendChild(this.panel);
+		// dock オプション: ドロワーラッパーを生成
+		if (options.dock) {
+			this.dockPosition = options.dock;
+			this.drawer = document.createElement('div');
+			this.drawer.classList.add(`${CSS_PREFIX}-drawer`);
+			this.drawer.dataset.dock = options.dock;
+			this.drawer.dataset.open = 'false';
+
+			// container 指定の有無でポジションを切り替え
+			this.drawer.style.position = hasContainer ? 'absolute' : 'fixed';
+
+			// 初期状態ではトランジション無効（一瞬表示されるのを防ぐ）
+			this.drawer.style.transition = 'none';
+
+			// パネルをドロワー内に配置
+			this.drawer.appendChild(this.panel);
+			this.container.appendChild(this.drawer);
+
+			// 次フレームでトランジションを有効化
+			requestAnimationFrame(() => {
+				if (this.drawer) {
+					this.drawer.style.transition = '';
+				}
+			});
+		} else {
+			this.container.appendChild(this.panel);
+		}
+	}
+
+	/** ドロワーの現在の開閉状態を返す（dock 未指定時は常に true） */
+	get isOpen(): boolean {
+		if (!this.dockPosition) {
+			return true;
+		}
+		return this._isOpen;
+	}
+
+	/** ドロワーを開く（dock 未指定時は何もしない） */
+	open(): void {
+		if (!this.drawer || !this.dockPosition) {
+			return;
+		}
+		this._isOpen = true;
+		this.drawer.dataset.open = 'true';
+	}
+
+	/** ドロワーを閉じる（dock 未指定時は何もしない） */
+	close(): void {
+		if (!this.drawer || !this.dockPosition) {
+			return;
+		}
+		this._isOpen = false;
+		this.drawer.dataset.open = 'false';
+	}
+
+	/** ドロワーの開閉を切り替える（dock 未指定時は何もしない） */
+	toggle(): void {
+		if (this._isOpen) {
+			this.close();
+		} else {
+			this.open();
+		}
 	}
 
 	/**
@@ -175,9 +251,17 @@ export class TileUI {
 		}
 		this.controllers = [];
 
-		// パネル要素を DOM から除去
-		if (this.panel.parentNode) {
-			this.panel.parentNode.removeChild(this.panel);
+		// ドロワー要素がある場合はドロワーごと除去（パネルも内包される）
+		if (this.drawer) {
+			if (this.drawer.parentNode) {
+				this.drawer.parentNode.removeChild(this.drawer);
+			}
+			this.drawer = null;
+		} else {
+			// dock 未指定時はパネル要素を直接除去
+			if (this.panel.parentNode) {
+				this.panel.parentNode.removeChild(this.panel);
+			}
 		}
 	}
 }
