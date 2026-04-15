@@ -76,6 +76,20 @@
     <div class="showcase__item">
       <span class="showcase__label">DOCK (RIGHT DRAWER)</span>
       <p class="showcase__hint">Press <kbd>G</kbd> to toggle or use the edge button</p>
+      <a class="showcase__dock-link" href="./dock.html">View Dock Demo &rarr;</a>
+      <pre class="showcase__code"><code>const gui = new TileUI({
+  dock: 'right',
+  collapsible: true,
+  overlay: true,
+  columns: { min: 1, max: 3 },
+  title: 'Controls',
+  toggleKey: 'g',
+});
+
+gui.add(params, 'speed', 0, 100);
+gui.addColor(params, 'color');
+gui.addBoolean(params, 'enabled');
+gui.open();</code></pre>
     </div>
   </section>
 

@@ -223,6 +223,44 @@ body {
 	color: #faf9f6;
 }
 
+/* ドックデモへのリンクボタン */
+.showcase__dock-link {
+	display: inline-block;
+	margin-top: 12px;
+	font-family: "Space Mono", monospace;
+	font-size: 13px;
+	color: #faf9f6;
+	text-decoration: none;
+	background: #222222;
+	border: 1px solid #444444;
+	border-radius: 4px;
+	padding: 8px 20px;
+	letter-spacing: 0.08em;
+	transition:
+		background 0.15s,
+		border-color 0.15s;
+}
+
+.showcase__dock-link:hover {
+	background: #333333;
+	border-color: #666666;
+}
+
+/* ドック機能のコード例 */
+.showcase__code {
+	margin-top: 16px;
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	line-height: 1.6;
+	color: #cccccc;
+	background: #111111;
+	border: 1px solid #333333;
+	border-radius: 4px;
+	padding: 16px 20px;
+	overflow-x: auto;
+	max-width: 480px;
+}
+
 /* ドロワーパネルのスタイルオーバーライド（デモ用） */
 .tileui-drawer {
 	background: #000000;

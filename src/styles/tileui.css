@@ -242,9 +242,9 @@
 	overflow: visible;
 }
 
-/* パネル部分のみスクロール可能にする */
+/* ドロワー内パネル: コンテンツに縮むためスクロール不要 */
 .tileui-drawer > .tileui-panel {
-	overflow: auto;
+	overflow: hidden;
 	max-height: 100%;
 }
 
