@@ -32,8 +32,8 @@ function updateDirectionLabel(): void {
 
 /** ドロワーを生成してコントロールを配置する */
 function createDrawer(dock: DockPosition): TileUI {
-	// top/bottom は横幅いっぱいに並べる（auto-fill）、left/right は制限付きレスポンシブ
-	const columns = dock === 'top' || dock === 'bottom' ? undefined : { min: 1, max: 3 };
+	// top/bottom はタイル数に応じてレスポンシブ列数、left/right は制限付きレスポンシブ
+	const columns = dock === 'top' || dock === 'bottom' ? { min: 3, max: 9 } : { min: 1, max: 3 };
 
 	const instance = new TileUI({
 		dock,

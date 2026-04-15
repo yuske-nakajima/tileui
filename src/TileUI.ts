@@ -397,7 +397,6 @@ export class TileUI {
 		if (dock === 'left' || dock === 'right') {
 			// left/right ドロワー: ビューポートの高さに収まる列数を計算する
 			const recalcVertical = () => {
-				// ドロワーは height: auto なのでビューポート高さを基準に計算
 				const h = window.innerHeight;
 				if (h === 0) return;
 				const totalItems = this.panel.children.length;
@@ -408,14 +407,27 @@ export class TileUI {
 				this.panel.style.gridTemplateColumns = `repeat(${clamped}, ${size})`;
 			};
 
-			// resize イベントで再計算
 			this._resizeHandler = () => recalcVertical();
 			window.addEventListener('resize', this._resizeHandler);
-
-			// open() 時にも再計算するためコールバックを保持
 			this._recalcVertical = recalcVertical;
+		} else if (dock === 'top' || dock === 'bottom') {
+			// top/bottom ドロワー: ビューポートの幅に収まる列数を計算する
+			const recalcHorizontal = () => {
+				const w = window.innerWidth;
+				if (w === 0) return;
+				const totalItems = this.panel.children.length;
+				if (totalItems === 0) return;
+				const maxColsByWidth = Math.max(1, Math.floor(w / TILE_SIZE));
+				const neededCols = Math.min(totalItems, maxColsByWidth);
+				const clamped = Math.max(minCols, Math.min(neededCols, maxCols));
+				this.panel.style.gridTemplateColumns = `repeat(${clamped}, ${size})`;
+			};
+
+			this._resizeHandler = () => recalcHorizontal();
+			window.addEventListener('resize', this._resizeHandler);
+			this._recalcVertical = recalcHorizontal;
 		} else {
-			// 通常 / top/bottom: 幅ベースで列数を動的計算
+			// 通常パネル: 幅ベースで列数を動的計算
 			this.resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
 					const panelWidth = entry.contentRect.width;

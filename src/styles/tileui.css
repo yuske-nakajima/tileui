@@ -276,22 +276,24 @@
 .tileui-drawer[data-dock="top"] {
 	top: 0;
 	left: 0;
-	width: 100%;
+	width: auto;
+	max-width: 100%;
 	transform: translateY(-100%);
 }
 
 .tileui-drawer[data-dock="bottom"] {
 	bottom: 0;
 	left: 0;
-	width: 100%;
+	width: auto;
+	max-width: 100%;
 	transform: translateY(100%);
 }
 
-/* top/bottom ドロワー内のパネルは横いっぱいに広がりタイルを横並びにする */
+/* top/bottom ドロワー内のパネルは高さをコンテンツに合わせ、JS が列数を制御する */
 .tileui-drawer[data-dock="top"] > .tileui-panel,
 .tileui-drawer[data-dock="bottom"] > .tileui-panel {
 	display: grid;
-	width: 100%;
+	align-content: start;
 }
 
 /* 開いた状態: transform をリセット */
