@@ -399,10 +399,14 @@ export class TileUI {
 			const recalcVertical = () => {
 				const h = window.innerHeight;
 				if (h === 0) return;
-				const totalItems = this.panel.children.length;
-				if (totalItems === 0) return;
-				const maxRows = Math.max(1, Math.floor(h / TILE_SIZE));
-				const neededCols = Math.ceil(totalItems / maxRows);
+				// タイトル要素は全幅で別行を取るためタイル数から除外し、高さから差し引く
+				const titleEl = this.panel.querySelector(`.${CSS_PREFIX}-title`);
+				const titleHeight = titleEl ? TILE_SIZE : 0;
+				const tileItems = this.panel.querySelectorAll(`:scope > :not(.${CSS_PREFIX}-title)`).length;
+				if (tileItems === 0) return;
+				const availableHeight = h - titleHeight;
+				const maxRows = Math.max(1, Math.floor(availableHeight / TILE_SIZE));
+				const neededCols = Math.ceil(tileItems / maxRows);
 				const clamped = Math.max(minCols, Math.min(neededCols, maxCols));
 				this.panel.style.gridTemplateColumns = `repeat(${clamped}, ${size})`;
 			};
@@ -412,13 +416,20 @@ export class TileUI {
 			this._recalcVertical = recalcVertical;
 		} else if (dock === 'top' || dock === 'bottom') {
 			// top/bottom ドロワー: ビューポートの幅に収まる列数を計算する
+			// left/right と同じアプローチ: 利用可能な幅から最大列数を求め、
+			// 行数を最小化しつつ均等に配置する
 			const recalcHorizontal = () => {
 				const w = window.innerWidth;
 				if (w === 0) return;
-				const totalItems = this.panel.children.length;
-				if (totalItems === 0) return;
+				// タイトル要素は grid-column: 1/-1 で全幅を取るためタイル数から除外
+				const tileItems = this.panel.querySelectorAll(`:scope > :not(.${CSS_PREFIX}-title)`).length;
+				if (tileItems === 0) return;
+				// 画面幅に収まる最大列数
 				const maxColsByWidth = Math.max(1, Math.floor(w / TILE_SIZE));
-				const neededCols = Math.min(totalItems, maxColsByWidth);
+				// 最大列数で配置した場合の行数
+				const rows = Math.ceil(tileItems / maxColsByWidth);
+				// その行数で均等に配置する列数（各行のアイテム数を揃える）
+				const neededCols = Math.ceil(tileItems / rows);
 				const clamped = Math.max(minCols, Math.min(neededCols, maxCols));
 				this.panel.style.gridTemplateColumns = `repeat(${clamped}, ${size})`;
 			};
