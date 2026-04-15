@@ -25,6 +25,6 @@ export { KnobController } from './controllers/KnobController';
 export type { NumberInputOptions } from './controllers/NumberInputController';
 export { NumberInputController } from './controllers/NumberInputController';
 export { injectStyles } from './styles/inject';
-export type { TileUIOptions } from './TileUI';
+export type { ColumnOption, DockPosition, TileUIOptions } from './TileUI';
 export { TileUI, TileUI as default } from './TileUI';
 export { describeArc, polarToCartesian } from './utils/svg';

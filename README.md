@@ -6,7 +6,7 @@
 
 > CSS Grid タイル型 + SVG ノブの GUI パネルライブラリ
 
-![TileUI デモ](screenshots/demo-desktop.png)
+![TileUI デモ](screenshots/demo.gif)
 
 ## 特徴
 

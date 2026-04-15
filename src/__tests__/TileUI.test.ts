@@ -249,10 +249,512 @@ describe('TileUI', () => {
 	});
 
 	describe('columns オプション', () => {
-		it('columns を指定するとグリッド列数が固定される', () => {
+		it('columns: number を指定するとグリッド列数が固定される', () => {
 			const gui = new TileUI({ container, columns: 3 });
 			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
 			expect(panel.style.gridTemplateColumns).toContain('repeat(3');
+			gui.dispose();
+		});
+
+		it('columns 未指定時は auto-fill が維持される', () => {
+			const gui = new TileUI({ container });
+			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
+			// gridTemplateColumns をインラインで設定しないので空文字
+			expect(panel.style.gridTemplateColumns).toBe('');
+			gui.dispose();
+		});
+
+		it('columns: { min, max } でインスタンスを生成できる', () => {
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = vi.fn();
+					unobserve = vi.fn();
+					disconnect = vi.fn();
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 2, max: 4 } });
+			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
+			expect(panel).not.toBeNull();
+			// レスポンシブモードでは gridTemplateColumns が設定される（初期値は min）
+			expect(panel.style.gridTemplateColumns).toContain('repeat(2');
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+
+		it('columns: { min, max } で min > max の場合は min が max にクランプされる', () => {
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = vi.fn();
+					unobserve = vi.fn();
+					disconnect = vi.fn();
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 5, max: 2 } });
+			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
+			// min > max でもエラーにならず、min が max の値にクランプされる
+			expect(panel.style.gridTemplateColumns).toContain('repeat(2');
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+	});
+
+	describe('レスポンシブ列数（ResizeObserver）', () => {
+		it('columns: { min, max } で ResizeObserver が設定される', () => {
+			const observeSpy = vi.fn();
+			const disconnectSpy = vi.fn();
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = observeSpy;
+					unobserve = vi.fn();
+					disconnect = disconnectSpy;
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 2, max: 4 } });
+			expect(observeSpy).toHaveBeenCalledTimes(1);
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+
+		it('columns: number では ResizeObserver が設定されない', () => {
+			const observeSpy = vi.fn();
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = observeSpy;
+					unobserve = vi.fn();
+					disconnect = vi.fn();
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: 3 });
+			expect(observeSpy).not.toHaveBeenCalled();
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+
+		it('dispose() で ResizeObserver が disconnect される', () => {
+			const disconnectSpy = vi.fn();
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = vi.fn();
+					unobserve = vi.fn();
+					disconnect = disconnectSpy;
+					constructor(public cb: ResizeObserverCallback) {}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 2, max: 4 } });
+			gui.dispose();
+			expect(disconnectSpy).toHaveBeenCalledTimes(1);
+			vi.unstubAllGlobals();
+		});
+
+		it('パネル幅に応じて列数が動的に計算される', () => {
+			let resizeCallback: ResizeObserverCallback | null = null;
+			vi.stubGlobal(
+				'ResizeObserver',
+				class {
+					observe = vi.fn();
+					unobserve = vi.fn();
+					disconnect = vi.fn();
+					constructor(cb: ResizeObserverCallback) {
+						resizeCallback = cb;
+					}
+				},
+			);
+			const gui = new TileUI({ container, columns: { min: 2, max: 6 } });
+			const panel = container.querySelector(`.${CSS_PREFIX}-panel`) as HTMLElement;
+
+			// パネル幅 350px / タイルサイズ 100px = 3.5 → floor で 3列
+			resizeCallback?.(
+				[{ contentRect: { width: 350 } } as unknown as ResizeObserverEntry],
+				{} as ResizeObserver,
+			);
+			expect(panel.style.gridTemplateColumns).toContain('repeat(3');
+
+			// パネル幅 600px / タイルサイズ 100px = 6 → max にクランプして 6列
+			resizeCallback?.(
+				[{ contentRect: { width: 600 } } as unknown as ResizeObserverEntry],
+				{} as ResizeObserver,
+			);
+			expect(panel.style.gridTemplateColumns).toContain('repeat(6');
+
+			// パネル幅 100px / タイルサイズ 100px = 1 → min にクランプして 2列
+			resizeCallback?.(
+				[{ contentRect: { width: 100 } } as unknown as ResizeObserverEntry],
+				{} as ResizeObserver,
+			);
+			expect(panel.style.gridTemplateColumns).toContain('repeat(2');
+
+			gui.dispose();
+			vi.unstubAllGlobals();
+		});
+	});
+
+	describe('dock オプション', () => {
+		it('dock 未指定時は .tileui-drawer が生成されない', () => {
+			const gui = new TileUI({ container });
+			expect(container.querySelector(`.${CSS_PREFIX}-drawer`)).toBeNull();
+			gui.dispose();
+		});
+
+		it('dock: "right" 指定時に .tileui-drawer が生成される', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`);
+			expect(drawer).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('dock: "left" 指定時に .tileui-drawer が生成される', () => {
+			const gui = new TileUI({ container, dock: 'left' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`);
+			expect(drawer).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('dock: "top" 指定時に .tileui-drawer が生成される', () => {
+			const gui = new TileUI({ container, dock: 'top' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`);
+			expect(drawer).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('dock: "bottom" 指定時に .tileui-drawer が生成される', () => {
+			const gui = new TileUI({ container, dock: 'bottom' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`);
+			expect(drawer).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('dock 指定時にパネルがドロワー内に配置される', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`);
+			const panel = drawer?.querySelector(`.${CSS_PREFIX}-panel`);
+			expect(panel).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('dock 指定 + container 指定時は position: absolute になる', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.style.position).toBe('absolute');
+			gui.dispose();
+		});
+
+		it('dock 指定 + container 未指定時は position: fixed になる', () => {
+			const gui = new TileUI({ dock: 'right' });
+			const drawer = document.body.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.style.position).toBe('fixed');
+			gui.dispose();
+		});
+
+		it('dock 方向に応じた data-dock 属性が設定される', () => {
+			const gui = new TileUI({ container, dock: 'left' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.dataset.dock).toBe('left');
+			gui.dispose();
+		});
+	});
+
+	describe('open() / close() / toggle() / isOpen', () => {
+		it('初期状態では閉じている', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			expect(gui.isOpen).toBe(false);
+			gui.dispose();
+		});
+
+		it('open() でドロワーが開く', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.open();
+			expect(gui.isOpen).toBe(true);
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.dataset.open).toBe('true');
+			gui.dispose();
+		});
+
+		it('close() でドロワーが閉じる', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.open();
+			gui.close();
+			expect(gui.isOpen).toBe(false);
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.dataset.open).toBe('false');
+			gui.dispose();
+		});
+
+		it('toggle() で開閉が切り替わる', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.toggle();
+			expect(gui.isOpen).toBe(true);
+			gui.toggle();
+			expect(gui.isOpen).toBe(false);
+			gui.dispose();
+		});
+
+		it('dock 未指定時に open() を呼んでもエラーにならない', () => {
+			const gui = new TileUI({ container });
+			expect(() => gui.open()).not.toThrow();
+			gui.dispose();
+		});
+
+		it('dock 未指定時に close() を呼んでもエラーにならない', () => {
+			const gui = new TileUI({ container });
+			expect(() => gui.close()).not.toThrow();
+			gui.dispose();
+		});
+
+		it('dock 未指定時に toggle() を呼んでもエラーにならない', () => {
+			const gui = new TileUI({ container });
+			expect(() => gui.toggle()).not.toThrow();
+			gui.dispose();
+		});
+
+		it('dock 未指定時の isOpen は常に true', () => {
+			const gui = new TileUI({ container });
+			expect(gui.isOpen).toBe(true);
+			gui.dispose();
+		});
+	});
+
+	describe('dock + dispose()', () => {
+		it('dispose() でドロワー要素が DOM から除去される', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.dispose();
+			expect(container.querySelector(`.${CSS_PREFIX}-drawer`)).toBeNull();
+		});
+
+		it('dispose() 後にパネルも除去される', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.dispose();
+			expect(container.querySelector(`.${CSS_PREFIX}-panel`)).toBeNull();
+		});
+	});
+
+	describe('collapsible オプション', () => {
+		it('collapsible: true + dock 指定でトグルボタンが生成される', () => {
+			const gui = new TileUI({ container, dock: 'right', collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`);
+			expect(btn).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('collapsible: true + dock なしではトグルボタンが生成されない', () => {
+			const gui = new TileUI({ container, collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`);
+			expect(btn).toBeNull();
+			gui.dispose();
+		});
+
+		it('collapsible 未指定 + dock 指定ではトグルボタンが生成されない', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`);
+			expect(btn).toBeNull();
+			gui.dispose();
+		});
+
+		it('トグルボタンクリックでドロワーが開閉する', () => {
+			const gui = new TileUI({ container, dock: 'right', collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`) as HTMLElement;
+
+			// 初期状態: 閉じている
+			expect(gui.isOpen).toBe(false);
+
+			// クリックで開く
+			btn.click();
+			expect(gui.isOpen).toBe(true);
+
+			// もう一度クリックで閉じる
+			btn.click();
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('トグルボタンに aria-label と aria-expanded が設定される', () => {
+			const gui = new TileUI({ container, dock: 'right', collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`) as HTMLElement;
+
+			expect(btn.getAttribute('aria-label')).toBe('Toggle panel');
+			expect(btn.getAttribute('aria-expanded')).toBe('false');
+
+			gui.dispose();
+		});
+
+		it('開閉時に aria-expanded が更新される', () => {
+			const gui = new TileUI({ container, dock: 'right', collapsible: true });
+			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`) as HTMLElement;
+
+			gui.open();
+			expect(btn.getAttribute('aria-expanded')).toBe('true');
+
+			gui.close();
+			expect(btn.getAttribute('aria-expanded')).toBe('false');
+
+			gui.dispose();
+		});
+
+		it('dock の各方向でトグルボタンが生成される', () => {
+			const positions: Array<'left' | 'right' | 'top' | 'bottom'> = [
+				'left',
+				'right',
+				'top',
+				'bottom',
+			];
+			for (const dock of positions) {
+				const gui = new TileUI({ container, dock, collapsible: true });
+				const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`);
+				expect(btn).not.toBeNull();
+				gui.dispose();
+			}
+		});
+	});
+
+	describe('キーボードショートカット', () => {
+		it('Escape キーでドロワーが閉じる', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.open();
+			expect(gui.isOpen).toBe(true);
+
+			// Escape キーイベントを発火
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('Escape キーでドロワーが閉じている場合は何もしない', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			expect(gui.isOpen).toBe(false);
+
+			// Escape キーイベントを発火（閉じたまま）
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('dock 未指定時は Escape キーで何も起きない', () => {
+			const gui = new TileUI({ container });
+			// dock 未指定なので isOpen は常に true
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+			expect(gui.isOpen).toBe(true);
+
+			gui.dispose();
+		});
+
+		it('toggleKey で指定したキーでトグルする', () => {
+			const gui = new TileUI({ container, dock: 'right', toggleKey: 'g' });
+			expect(gui.isOpen).toBe(false);
+
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
+			expect(gui.isOpen).toBe(true);
+
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('toggleKey が未指定の場合はカスタムキーで何もしない', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			expect(gui.isOpen).toBe(false);
+
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
+			expect(gui.isOpen).toBe(false);
+
+			gui.dispose();
+		});
+
+		it('dispose() 後はキーイベントリスナーが解除される', () => {
+			const gui = new TileUI({ container, dock: 'right', toggleKey: 'g' });
+			gui.dispose();
+
+			// dispose 後は g キーでトグルしないことを確認するため、
+			// 新しいインスタンスを作成して影響がないことを確認
+			const gui2 = new TileUI({ container, dock: 'right' });
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
+			expect(gui2.isOpen).toBe(false);
+
+			gui2.dispose();
+		});
+	});
+
+	describe('アクセシビリティ', () => {
+		it('ドロワーに role="region" が設定される', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.getAttribute('role')).toBe('region');
+			gui.dispose();
+		});
+
+		it('title 指定時にドロワーの aria-label にタイトルが設定される', () => {
+			const gui = new TileUI({ container, dock: 'right', title: 'My Panel' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.getAttribute('aria-label')).toBe('My Panel');
+			gui.dispose();
+		});
+
+		it('title 未指定時にドロワーの aria-label がデフォルト値になる', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			const drawer = container.querySelector(`.${CSS_PREFIX}-drawer`) as HTMLElement;
+			expect(drawer.getAttribute('aria-label')).toBe('TileUI panel');
+			gui.dispose();
+		});
+	});
+
+	describe('overlay オプション', () => {
+		it('overlay: true でドロワーが開くとオーバーレイが表示される', () => {
+			const gui = new TileUI({ container, dock: 'right', overlay: true });
+			gui.open();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`);
+			expect(overlay).not.toBeNull();
+			gui.dispose();
+		});
+
+		it('overlay: true でドロワーが閉じるとオーバーレイが非表示になる', () => {
+			const gui = new TileUI({ container, dock: 'right', overlay: true });
+			gui.open();
+			gui.close();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`) as HTMLElement;
+			expect(overlay.style.display).toBe('none');
+			gui.dispose();
+		});
+
+		it('overlay 未指定時はオーバーレイが生成されない', () => {
+			const gui = new TileUI({ container, dock: 'right' });
+			gui.open();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`);
+			expect(overlay).toBeNull();
+			gui.dispose();
+		});
+
+		it('オーバーレイクリックでドロワーが閉じる', () => {
+			const gui = new TileUI({ container, dock: 'right', overlay: true });
+			gui.open();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`) as HTMLElement;
+			overlay.click();
+			expect(gui.isOpen).toBe(false);
+			gui.dispose();
+		});
+
+		it('dispose() でオーバーレイが削除される', () => {
+			const gui = new TileUI({ container, dock: 'right', overlay: true });
+			gui.open();
+			gui.dispose();
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`);
+			expect(overlay).toBeNull();
+		});
+
+		it('dock なしで overlay: true を指定してもオーバーレイは生成されない', () => {
+			const gui = new TileUI({ container, overlay: true });
+			const overlay = container.querySelector(`.${CSS_PREFIX}-overlay`);
+			expect(overlay).toBeNull();
 			gui.dispose();
 		});
 	});

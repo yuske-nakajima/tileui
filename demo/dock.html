@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>TileUI - Dock Demo</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet" />
+
+  <style>
+    /* リセットとベース */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      color: #faf9f6;
+      font-family: "Space Grotesk", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* tileui パネルのスタイルオーバーライド（メインデモと統一） */
+    .tileui-panel {
+      --tileui-bg: #000000;
+      --tileui-tile-bg: #000000;
+      --tileui-tile-bg-hover: #111111;
+      --tileui-border: #333333;
+      --tileui-text: #faf9f6;
+      --tileui-text-muted: #888888;
+      --tileui-accent: #faf9f6;
+      --tileui-accent-dim: rgba(250, 249, 246, 0.2);
+      --tileui-knob-track: #333333;
+      --tileui-knob-thumb: #faf9f6;
+      --tileui-toggle-off: #333333;
+      --tileui-font-family: "Space Grotesk", sans-serif;
+    }
+
+    .tileui-drawer {
+      background: #000000;
+      border: 1px solid rgba(250, 249, 246, 0.15);
+      padding: 4px;
+    }
+
+    /* ヘッダー・中央テキストの視認性確保 */
+    .dock-header,
+    .dock-center__title,
+    .dock-center__desc,
+    .dock-center__hint,
+    .dock-center__direction {
+      text-shadow: 0 0 20px rgba(0,0,0,0.8);
+    }
+
+    /* ヘッダー */
+    .dock-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      z-index: 100;
+    }
+
+    .dock-header__logo {
+      font-size: 14px;
+      letter-spacing: 0.2em;
+    }
+
+    .dock-header__link {
+      color: #888888;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .dock-header__link:hover {
+      color: #faf9f6;
+    }
+
+    /* 中央テキスト */
+    .dock-center {
+      text-align: center;
+      max-width: 480px;
+      padding: 0 24px;
+    }
+
+    .dock-center__title {
+      font-family: "Space Mono", monospace;
+      font-size: clamp(20px, 4vw, 32px);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .dock-center__desc {
+      font-size: 14px;
+      color: #888888;
+      line-height: 1.6;
+    }
+
+    .dock-center__hint {
+      margin-top: 24px;
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      color: #555555;
+      letter-spacing: 0.05em;
+    }
+
+    .dock-center__hint kbd {
+      display: inline-block;
+      font-family: "Space Mono", monospace;
+      font-size: 11px;
+      background: #222222;
+      border: 1px solid #444444;
+      border-radius: 3px;
+      padding: 1px 6px;
+      color: #faf9f6;
+    }
+
+    /* 方向ラベル */
+    .dock-center__direction {
+      margin-top: 12px;
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      color: #555555;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .dock-center__direction-value {
+      color: #b38f59;
+    }
+  </style>
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header class="dock-header">
+    <span class="dock-header__logo">TILEUI</span>
+    <a class="dock-header__link" href="./index.html">&larr; Main Demo</a>
+  </header>
+
+  <!-- 中央コンテンツ -->
+  <div class="dock-center">
+    <h1 class="dock-center__title">Dock Demo</h1>
+    <p class="dock-center__desc">
+      TileUI のドロワー（Dock）モードのデモです。<br />
+      パネル内のボタンでドック方向を切り替えられます。
+    </p>
+    <p class="dock-center__hint">
+      Press <kbd>G</kbd> to toggle drawer
+    </p>
+    <p class="dock-center__direction">
+      Current: <span class="dock-center__direction-value" id="direction-label">RIGHT</span>
+    </p>
+  </div>
+
+  <script type="module" src="./dock.ts"></script>
+</body>
+</html>

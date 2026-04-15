@@ -33,7 +33,8 @@
 			"!.claude",
 			"!.vite",
 			"!test-results",
-			"!playwright-report"
+			"!playwright-report",
+			"!.vscode"
 		]
 	}
 }

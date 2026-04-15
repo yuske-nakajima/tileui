@@ -233,3 +233,140 @@
 .tileui-folder-arrow[data-open="true"] {
 	transform: rotate(90deg);
 }
+
+/* ドロワー */
+.tileui-drawer {
+	z-index: 9999;
+	will-change: transform;
+	transition: transform 0.3s ease;
+	overflow: visible;
+}
+
+/* ドロワー内パネル: コンテンツに縮むためスクロール不要 */
+.tileui-drawer > .tileui-panel {
+	overflow: hidden;
+	max-height: 100%;
+}
+
+/* left/right ドロワー内のパネルは高さをコンテンツに合わせ、JS が列数を制御する */
+.tileui-drawer[data-dock="left"] > .tileui-panel,
+.tileui-drawer[data-dock="right"] > .tileui-panel {
+	display: grid;
+	height: auto;
+	align-content: start;
+}
+
+/* 方向別の配置と閉じ時の transform */
+.tileui-drawer[data-dock="left"] {
+	left: 0;
+	top: 0;
+	height: auto;
+	max-height: 100%;
+	transform: translateX(-100%);
+}
+
+.tileui-drawer[data-dock="right"] {
+	right: 0;
+	top: 0;
+	height: auto;
+	max-height: 100%;
+	transform: translateX(100%);
+}
+
+.tileui-drawer[data-dock="top"] {
+	top: 0;
+	left: 0;
+	width: auto;
+	max-width: 100%;
+	transform: translateY(-100%);
+}
+
+.tileui-drawer[data-dock="bottom"] {
+	bottom: 0;
+	left: 0;
+	width: auto;
+	max-width: 100%;
+	transform: translateY(100%);
+}
+
+/* top/bottom ドロワー内のパネルは高さをコンテンツに合わせ、JS が列数を制御する */
+.tileui-drawer[data-dock="top"] > .tileui-panel,
+.tileui-drawer[data-dock="bottom"] > .tileui-panel {
+	display: grid;
+	align-content: start;
+}
+
+/* 開いた状態: transform をリセット */
+.tileui-drawer[data-open="true"] {
+	transform: translate(0, 0);
+}
+
+/* トグルボタン（ドロワー開閉用） */
+.tileui-toggle-btn {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	border: 1px solid var(--tileui-border);
+	background: var(--tileui-bg);
+	color: var(--tileui-text);
+	cursor: pointer;
+	z-index: 1;
+	transition: opacity 0.15s;
+}
+
+.tileui-toggle-btn:hover {
+	opacity: 0.8;
+}
+
+/* トグルボタンの方向別配置（完全にドロワーの外にはみ出す） */
+.tileui-toggle-btn[data-dock="right"] {
+	left: -28px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 28px;
+	height: 56px;
+	border-radius: 6px 0 0 6px;
+	border-right: none;
+}
+
+.tileui-toggle-btn[data-dock="left"] {
+	right: -28px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 28px;
+	height: 56px;
+	border-radius: 0 6px 6px 0;
+	border-left: none;
+}
+
+.tileui-toggle-btn[data-dock="top"] {
+	bottom: -28px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 56px;
+	height: 28px;
+	border-radius: 0 0 6px 6px;
+	border-top: none;
+}
+
+.tileui-toggle-btn[data-dock="bottom"] {
+	top: -28px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 56px;
+	height: 28px;
+	border-radius: 6px 6px 0 0;
+	border-bottom: none;
+}
+
+/* オーバーレイ（ドロワー背景暗転用） */
+.tileui-overlay {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 9998;
+}

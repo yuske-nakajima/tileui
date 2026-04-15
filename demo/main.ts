@@ -193,6 +193,26 @@ s5.addButton('Action', () => {}).style({
 	borderColor: '#2d8a4e',
 });
 
+// === ドロワー（Dock）デモ — テーマカラー変更 ===
+const drawerGui = new TileUI({
+	dock: 'right',
+	columns: 1,
+	title: 'Theme',
+	collapsible: true,
+	toggleKey: 'g',
+});
+
+const theme = { color: '#ff6600' };
+drawerGui
+	.addColor(theme, 'color')
+	.style({ accentColor: '#ff6600' })
+	.onChange((v) => {
+		document.body.style.color = v;
+	});
+
+// 初期値を適用
+document.body.style.color = theme.color;
+
 // インストールコマンドのクリックコピー
 const installCmd = document.getElementById('install-cmd');
 if (installCmd) {

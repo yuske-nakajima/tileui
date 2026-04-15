@@ -28,6 +28,7 @@
     <nav class="header__nav">
       <span class="header__version" id="version"></span>
       <a class="header__link" href="https://www.npmjs.com/package/@yuske-nakajima/tileui" target="_blank" rel="noopener noreferrer">npm</a>
+      <a class="header__link" href="./dock.html">Dock Demo</a>
       <a class="header__link" href="https://github.com/yuske-nakajima/tileui" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
     </nav>
   </header>
@@ -46,6 +47,28 @@
   <!-- インストールコマンド -->
   <section class="install">
     <code class="install__command" id="install-cmd" title="Click to copy">npm install @yuske-nakajima/tileui</code>
+  </section>
+
+  <!-- 使い方 -->
+  <section class="usage">
+    <h2 class="usage__title">USAGE</h2>
+    <div class="usage__item">
+      <span class="usage__label">ESM (recommended)</span>
+      <pre class="usage__code"><code>import TileUI from '@yuske-nakajima/tileui';</code></pre>
+    </div>
+    <div class="usage__item">
+      <span class="usage__label">CDN (ESM)</span>
+      <pre class="usage__code"><code>&lt;script type="module"&gt;
+  import TileUI from 'https://cdn.jsdelivr.net/npm/@yuske-nakajima/tileui/dist/tileui.js';
+&lt;/script&gt;</code></pre>
+    </div>
+    <div class="usage__item">
+      <span class="usage__label">CDN (UMD)</span>
+      <pre class="usage__code"><code>&lt;script src="https://unpkg.com/@yuske-nakajima/tileui"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const gui = new TileUI();
+&lt;/script&gt;</code></pre>
+    </div>
   </section>
 
   <!-- ショーケース -->
@@ -71,6 +94,31 @@
       <span class="showcase__label">CUSTOM STYLES</span>
       <div id="showcase-styled"></div>
     </div>
+
+    <div class="showcase__item">
+      <span class="showcase__label">DOCK (RIGHT DRAWER)</span>
+      <p class="showcase__hint">Press <kbd>G</kbd> to toggle or use the edge button</p>
+      <h3 class="showcase__code-caption">Dock Drawer — Slide-in panel from any edge</h3>
+      <pre class="showcase__code"><code>const gui = new TileUI({
+  dock: 'right',
+  collapsible: true,
+  overlay: true,
+  columns: { min: 1, max: 3 },
+  title: 'Controls',
+  toggleKey: 'g',
+});
+
+gui.add(params, 'speed', 0, 100);
+gui.addColor(params, 'color');
+gui.addBoolean(params, 'enabled');
+gui.open();</code></pre>
+    </div>
+  </section>
+
+  <!-- ドックデモへの誘導 -->
+  <section class="dock-cta">
+    <p>Try the interactive dock demo with all four directions</p>
+    <a href="./dock.html">Go to Dock Demo &rarr;</a>
   </section>
 
   <!-- フッター -->
@@ -84,6 +132,8 @@
     <span>BUTTON</span>
     <span class="footer__dot">&middot;</span>
     <span>FOLDER</span>
+    <span class="footer__dot">&middot;</span>
+    <span>DOCK</span>
   </footer>
 
   <script type="module" src="./main.ts"></script>

@@ -204,6 +204,146 @@ body {
 	margin-bottom: 12px;
 }
 
+/* ドロワーのヒントテキスト */
+.showcase__hint {
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	color: #555555;
+	letter-spacing: 0.05em;
+}
+
+.showcase__hint kbd {
+	display: inline-block;
+	font-family: "Space Mono", monospace;
+	font-size: 11px;
+	background: #222222;
+	border: 1px solid #444444;
+	border-radius: 3px;
+	padding: 1px 6px;
+	color: #faf9f6;
+}
+
+/* コードキャプション */
+.showcase__code-caption {
+	font-family: "Space Grotesk", sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	color: #aaaaaa;
+	margin-top: 16px;
+	margin-bottom: 4px;
+}
+
+/* ドック機能のコード例 */
+.showcase__code {
+	margin-top: 16px;
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	line-height: 1.6;
+	color: #cccccc;
+	background: #111111;
+	border: 1px solid #333333;
+	border-radius: 4px;
+	padding: 16px 20px;
+	overflow-x: auto;
+	max-width: 480px;
+}
+
+/* コードブロックのテキスト色を固定（ドロワーのカラーピッカーに影響されない） */
+code,
+pre,
+kbd {
+	color: #e0e0e0;
+}
+
+/* ドロワーパネルのスタイルオーバーライド（デモ用） */
+.tileui-drawer {
+	background: #000000;
+	border-left: 1px solid rgba(250, 249, 246, 0.15);
+	padding: 4px;
+}
+
+/* 使い方セクション */
+.usage {
+	max-width: 1200px;
+	margin-inline: auto;
+	padding-inline: clamp(16px, 4vw, 24px);
+	padding-bottom: clamp(40px, 8vw, 64px);
+}
+
+.usage__title {
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	font-weight: 400;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: #888888;
+	margin-bottom: clamp(24px, 4vw, 32px);
+}
+
+.usage__item {
+	margin-bottom: 20px;
+}
+
+.usage__label {
+	display: block;
+	font-family: "Space Mono", monospace;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: #555555;
+	margin-bottom: 8px;
+}
+
+.usage__code {
+	font-family: "Space Mono", monospace;
+	font-size: 12px;
+	line-height: 1.6;
+	color: #cccccc;
+	background: #111111;
+	border: 1px solid #333333;
+	border-radius: 4px;
+	padding: 12px 20px;
+	overflow-x: auto;
+	max-width: 640px;
+}
+
+/* ドックデモへの誘導セクション */
+.dock-cta {
+	max-width: 1200px;
+	margin-inline: auto;
+	padding-inline: clamp(16px, 4vw, 24px);
+	padding-block: clamp(32px, 6vw, 48px);
+	text-align: center;
+}
+
+.dock-cta p {
+	font-family: "Space Grotesk", sans-serif;
+	font-size: clamp(14px, 2vw, 16px);
+	color: #888888;
+	margin-bottom: 16px;
+}
+
+.dock-cta a {
+	display: inline-block;
+	font-family: "Space Mono", monospace;
+	font-size: 13px;
+	color: #faf9f6;
+	text-decoration: none;
+	background: #222222;
+	border: 1px solid #444444;
+	border-radius: 4px;
+	padding: 10px 24px;
+	letter-spacing: 0.08em;
+	transition:
+		background 0.15s,
+		border-color 0.15s;
+}
+
+.dock-cta a:hover {
+	background: #333333;
+	border-color: #666666;
+}
+
 /* フッター — fluid spacing */
 .footer {
 	display: flex;
