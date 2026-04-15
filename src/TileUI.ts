@@ -91,6 +91,12 @@ export class TileUI {
 	/** キーボードイベントハンドラの参照（dispose 時に解除用） */
 	private keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
+	/** window resize ハンドラの参照（dispose 用） */
+	private _resizeHandler: (() => void) | null = null;
+
+	/** left/right ドロワーの列数再計算コールバック（open 時に呼び出す） */
+	private _recalcVertical: (() => void) | null = null;
+
 	constructor(options: TileUIOptions = {}) {
 		// スタイルを注入
 		injectStyles();
@@ -182,6 +188,11 @@ export class TileUI {
 		this.drawer.dataset.open = 'true';
 		this.updateToggleButtonState();
 		this.updateOverlayVisibility();
+
+		// left/right ドロワーの列数を再計算（コンテンツ量と高さに基づく）
+		if (this._recalcVertical) {
+			this._recalcVertical();
+		}
 	}
 
 	/** ドロワーを閉じる（dock 未指定時は何もしない） */
@@ -302,6 +313,15 @@ export class TileUI {
 			this.resizeObserver = null;
 		}
 
+		// window resize リスナーを解除
+		if (this._resizeHandler) {
+			window.removeEventListener('resize', this._resizeHandler);
+			this._resizeHandler = null;
+		}
+
+		// 列数再計算コールバックをクリア
+		this._recalcVertical = null;
+
 		// キーボードイベントリスナーを解除
 		if (this.keydownHandler) {
 			document.removeEventListener('keydown', this.keydownHandler);
@@ -349,7 +369,7 @@ export class TileUI {
 
 	/**
 	 * columns オプションに応じてグリッド列数を設定する
-	 * - left/right ドロワーは CSS Flexbox で自動折り返しするため JS 計算不要
+	 * - left/right ドロワーはドロワーの高さに基づいて列数を動的計算
 	 * - number: 固定列数
 	 * - ColumnOption: ResizeObserver でパネル幅に応じて動的計算
 	 * - undefined: CSS の auto-fill に任せる（何もしない）
@@ -375,11 +395,10 @@ export class TileUI {
 		this.panel.style.gridTemplateColumns = `repeat(${minCols}, ${size})`;
 
 		if (dock === 'left' || dock === 'right') {
-			// left/right ドロワー: ドロワーの高さに収まる列数を計算する
-			// window resize で再計算
+			// left/right ドロワー: ビューポートの高さに収まる列数を計算する
 			const recalcVertical = () => {
-				if (!this.drawer) return;
-				const h = this.drawer.getBoundingClientRect().height;
+				// ドロワーは height: auto なのでビューポート高さを基準に計算
+				const h = window.innerHeight;
 				if (h === 0) return;
 				const totalItems = this.panel.children.length;
 				if (totalItems === 0) return;
@@ -408,9 +427,6 @@ export class TileUI {
 			this.resizeObserver.observe(this.panel);
 		}
 	}
-
-	/** window resize ハンドラの参照（dispose 用） */
-	private _resizeHandler: (() => void) | null = null;
 
 	/** トグルボタンを生成してドロワーに配置する */
 	private setupToggleButton(dock: DockPosition): void {
