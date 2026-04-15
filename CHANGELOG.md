@@ -1,3 +1,26 @@
+## [0.2.5](https://github.com/yuske-nakajima/tileui/compare/v0.2.4...v0.2.5) (2026-04-15)
+
+### Features
+
+* **demo:** dock デモに背景グラデーションアニメーションを追加 ([1484974](https://github.com/yuske-nakajima/tileui/commit/1484974b12b1bdec3d83f89825910d0007223c98))
+* dock オプションでドロワー表示を実装 ([0e53603](https://github.com/yuske-nakajima/tileui/commit/0e53603657dca945b9a02a5507ffb5df0d5bec09)), closes [#48](https://github.com/yuske-nakajima/tileui/issues/48)
+* ドロワー専用デモページを追加 ([14b654f](https://github.com/yuske-nakajima/tileui/commit/14b654f740bf4ab63177a5f968f44b1bbf76f990))
+* メインデモページを改善 ([3dd8593](https://github.com/yuske-nakajima/tileui/commit/3dd85939b1d4670da9d974db425c759a7ecadb4a))
+* レスポンシブ列数（columns: { min, max }）を実装 ([480d276](https://github.com/yuske-nakajima/tileui/commit/480d276ba4bf9d9a66d8dc83e069e7ebf780123d)), closes [#49](https://github.com/yuske-nakajima/tileui/issues/49)
+* 開閉ボタン・キーボードショートカット・オーバーレイを実装 ([3b43e7c](https://github.com/yuske-nakajima/tileui/commit/3b43e7c17eaaabde54d5363468ccf7b3d9ebb809)), closes [#50](https://github.com/yuske-nakajima/tileui/issues/50)
+
+### Bug Fixes
+
+* left/right ドロワーの空白問題を解決 ([4929080](https://github.com/yuske-nakajima/tileui/commit/4929080baa717f2d99cfbe81e36bb815136e7d22))
+* top/bottom ドロワーでタイルが横並びになるよう修正 ([6baa960](https://github.com/yuske-nakajima/tileui/commit/6baa960be32a38aa0f29120b5791fdec3d555aae))
+* top/bottom ドロワーの列数計算を left/right と統一 ([68d6447](https://github.com/yuske-nakajima/tileui/commit/68d6447370d1991c007b71e05a6a69ba7b7bb878))
+* top/bottom ドロワーを left/right と同じコンセプトに統一 ([1ae41a4](https://github.com/yuske-nakajima/tileui/commit/1ae41a454893f91dd7bdc50174ff38a78c37d9fb))
+* ドロワーのスクロールバーを除去し、メインデモにドック導線を追加 ([d444644](https://github.com/yuske-nakajima/tileui/commit/d444644e8d222d5abcf0bb48e9d3d68b6180b173))
+
+### Reverts
+
+* Revert "chore: VS Code のカラーテーマ設定を追加" ([1e475e4](https://github.com/yuske-nakajima/tileui/commit/1e475e4fe5b2f4aa33cfbacbb0e26e6ae6cafc38))
+
 ## [0.2.4](https://github.com/yuske-nakajima/tileui/compare/v0.2.3...v0.2.4) (2026-04-11)
 
 ### Features
