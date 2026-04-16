@@ -47,9 +47,17 @@ jobs:
             REPORT="${REPORT}\n📦 Node.js アップデート: v${NODE_CURRENT} → v${LATEST}"
           fi
 
+          # mise.toml のバージョンと実際のバージョンを比較
+          MISE_NODE=$(grep 'node' mise.toml | sed 's/.*"\(.*\)".*/\1/')
+          ACTUAL_NODE=$(node -v | sed 's/v//')
+          if [ "$MISE_NODE" != "$ACTUAL_NODE" ]; then
+            REPORT="${REPORT}\n⚠️ Node.js バージョン不一致: mise.toml=${MISE_NODE}, 実際=${ACTUAL_NODE}"
+          fi
+
           echo "report<<EOF" >> "$GITHUB_OUTPUT"
           echo -e "$REPORT" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "version=$(node -v)" >> "$GITHUB_OUTPUT"
 
       # npm-check-updates でアップデートチェック
       - name: Check patch updates
@@ -94,6 +102,7 @@ jobs:
           MINOR: ${{ steps.minor.outputs.result }}
           MAJOR: ${{ steps.major.outputs.result }}
           AUDIT: ${{ steps.audit.outputs.result }}
+          NODE_VERSION: ${{ steps.node-eol.outputs.version }}
         with:
           script: |
             const nodeEol = process.env.NODE_EOL?.trim() || '';
@@ -153,7 +162,7 @@ jobs:
 
             let body = `# 依存性チェックレポート\n\n`;
             body += `**実行日**: ${today}\n`;
-            body += `**Node.js**: ${process.version}\n\n`;
+            body += `**Node.js**: ${process.env.NODE_VERSION}\n\n`;
 
             if (nodeEol) {
               body += `## Node.js ステータス\n\n${nodeEol}\n\n`;
