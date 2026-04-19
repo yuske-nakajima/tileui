@@ -15,13 +15,13 @@ jobs:
 
       - uses: jdx/mise-action@v2
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: npm run check
+        run: pnpm run check
 
       - name: Test
-        run: npm run test
+        run: pnpm test
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
