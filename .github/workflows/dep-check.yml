@@ -18,7 +18,7 @@ jobs:
 
       - uses: jdx/mise-action@v2
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       # Node.js EOL チェック
       - name: Check Node.js EOL
@@ -84,11 +84,11 @@ jobs:
           echo "$RESULT" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
 
-      # npm audit
+      # pnpm audit
       - name: Check vulnerabilities
         id: audit
         run: |
-          RESULT=$(npm audit 2>&1 || true)
+          RESULT=$(pnpm audit 2>&1 || true)
           echo "result<<EOF" >> "$GITHUB_OUTPUT"
           echo "$RESULT" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
@@ -149,7 +149,7 @@ jobs:
             const allLatest = [patch, filteredMinor, filteredMajor].every(r =>
               r.includes('All dependencies match')
             );
-            const noVulnerabilities = audit.includes('found 0 vulnerabilities');
+            const noVulnerabilities = audit.includes('No known vulnerabilities found');
             const noNodeIssue = nodeEol === '';
 
             if (allLatest && noVulnerabilities && noNodeIssue) {

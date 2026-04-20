@@ -1,0 +1,9 @@
+# npm 公開から 7 日 (10080 分) 未満のパッケージはインストール不可
+minimumReleaseAge: 10080
+
+# tarball URL や git 直指定などの非通常パッケージをサブ依存に含めない
+blockExoticSubdeps: true
+
+# ライフサイクルスクリプトの実行をホワイトリスト方式で制限
+onlyBuiltDependencies:
+  - esbuild

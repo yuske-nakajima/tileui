@@ -18,6 +18,7 @@
 		"dist"
 	],
 	"sideEffects": false,
+	"packageManager": "pnpm@10.33.0",
 	"scripts": {
 		"dev": "vite",
 		"dev:bg": "vite > /dev/null 2>&1 & echo $! > .vite.pid && echo 'Vite started (PID:'$(cat .vite.pid)')'",
@@ -30,7 +31,7 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:e2e": "playwright test",
-		"prepublishOnly": "npm run build"
+		"prepublishOnly": "pnpm run build"
 	},
 	"keywords": [
 		"gui",
