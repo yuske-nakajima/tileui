@@ -126,7 +126,7 @@ gui
 
 // === ショーケース ===
 
-const sampleParams = { speed: 50, volume: 0.8, color: '#ff6600', enabled: true };
+const sampleParams = { speed: 50, volume: 0.8, color: '#80f0f8', enabled: true };
 
 // ショーケースごとのアクセントカラー（HSB 彩度50% 明度70%）
 const showcaseAccents = {
@@ -202,10 +202,10 @@ const drawerGui = new TileUI({
 	toggleKey: 'g',
 });
 
-const theme = { color: '#ff6600' };
+const theme = { color: '#80f0f8' };
 drawerGui
 	.addColor(theme, 'color')
-	.style({ accentColor: '#ff6600' })
+	.style({ accentColor: '#80f0f8' })
 	.onChange((v) => {
 		document.body.style.color = v;
 	});

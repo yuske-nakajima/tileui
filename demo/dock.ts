@@ -99,7 +99,7 @@ function stopGradientAnimation(): void {
 const params = {
 	speed: 50,
 	intensity: 0.7,
-	color: '#ff6600',
+	color: '#80f0f8',
 	enabled: true,
 };
 
