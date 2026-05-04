@@ -18,7 +18,7 @@
 		"dist"
 	],
 	"sideEffects": false,
-	"packageManager": "pnpm@10.33.1",
+	"packageManager": "pnpm@10.33.2",
 	"scripts": {
 		"dev": "vite",
 		"dev:bg": "vite > /dev/null 2>&1 & echo $! > .vite.pid && echo 'Vite started (PID:'$(cat .vite.pid)')'",
@@ -55,7 +55,7 @@
 		"url": "https://github.com/yuske-nakajima/tileui/issues"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.12",
+		"@biomejs/biome": "2.4.13",
 		"@playwright/test": "1.59.1",
 		"eslint": "10.2.1",
 		"jsdom": "29.0.2",
