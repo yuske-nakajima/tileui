@@ -1,5 +1,3 @@
-// SVG ノブ関連の定数
-
 /** ノブの可動範囲（度） */
 export const KNOB_RANGE_DEG = 270;
 

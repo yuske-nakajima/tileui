@@ -14,31 +14,26 @@ function getElement(id: string): HTMLElement {
 	return el;
 }
 
-// バージョン表示（package.json から自動注入）
+// __VERSION__ は vite.config の define で package.json から注入される
 getElement('version').textContent = `v${__VERSION__}`;
 
-// p5.js スケッチを初期化
 initSketch(getElement('sketch'));
 
-// ウィンドウリサイズ時にキャンバスサイズを追従
 window.addEventListener('resize', resizeSketch);
 
-// tileui パネルを #gui コンテナに生成
 const gui = new TileUI({
 	container: getElement('gui'),
 	title: 'Controls',
 });
 
-// artParams を GUI パネルで操作（参照を共有）
+// params は artParams への参照。ここでの代入は sketch 側にも伝播する
 const params = artParams;
 
-// 初期値を保持（Reset ボタン用）
+// Reset ボタン用に初期値を退避する
 const defaults = { ...artParams };
 
-// メインパネルのアクセントカラー
 const mainAccent = '#8fb359';
 
-// ノブコントローラー
 gui
 	.add(params, 'gridSize', 3, 20, 1)
 	.style({ accentColor: mainAccent })
@@ -64,7 +59,6 @@ gui
 		artParams.rotation = v;
 	});
 
-// カラーコントローラー
 gui
 	.addColor(params, 'bgColor')
 	.style({ accentColor: mainAccent })
@@ -78,7 +72,6 @@ gui
 		artParams.fgColor = v;
 	});
 
-// 真偽値コントローラー
 gui
 	.addBoolean(params, 'animate')
 	.style({ accentColor: mainAccent })
@@ -99,7 +92,6 @@ function randomHexColor(): string {
 		.padStart(6, '0')}`;
 }
 
-// Randomize ボタン
 gui
 	.addButton('Randomize', () => {
 		params.gridSize = Math.floor(Math.random() * 18) + 3;
@@ -115,7 +107,6 @@ gui
 	})
 	.style({ accentColor: mainAccent });
 
-// Reset ボタン
 gui
 	.addButton('Reset', () => {
 		Object.assign(params, defaults);
@@ -144,7 +135,6 @@ function addSampleControls(g: TileUI, ac: string) {
 	g.addButton('Action', () => {}).style({ accentColor: ac });
 }
 
-// 2列
 const s2 = new TileUI({
 	container: getElement('showcase-2col'),
 	columns: 2,
@@ -152,7 +142,6 @@ const s2 = new TileUI({
 });
 addSampleControls(s2, showcaseAccents.col2);
 
-// 3列
 const s3 = new TileUI({
 	container: getElement('showcase-3col'),
 	columns: 3,
@@ -160,7 +149,6 @@ const s3 = new TileUI({
 });
 addSampleControls(s3, showcaseAccents.col3);
 
-// 4列
 const s4 = new TileUI({
 	container: getElement('showcase-4col'),
 	columns: 4,
@@ -168,7 +156,6 @@ const s4 = new TileUI({
 });
 addSampleControls(s4, showcaseAccents.col4);
 
-// 個別スタイル
 const s5 = new TileUI({
 	container: getElement('showcase-styled'),
 	columns: 3,
@@ -210,7 +197,6 @@ drawerGui
 		document.body.style.color = v;
 	});
 
-// 初期値を適用
 document.body.style.color = theme.color;
 
 // インストールコマンドのクリックコピー

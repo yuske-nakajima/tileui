@@ -30,7 +30,6 @@ export class ButtonController extends Controller<() => void> {
 		const tile = document.createElement('div');
 		tile.classList.add(`${CSS_PREFIX}-tile`, `${CSS_PREFIX}-tile-button`);
 
-		// ボタン要素
 		this.button = document.createElement('button');
 		this.button.type = 'button';
 		this.button.classList.add(`${CSS_PREFIX}-button`);
@@ -44,7 +43,6 @@ export class ButtonController extends Controller<() => void> {
 		return tile;
 	}
 
-	/** ボタンクリック時にコールバックを実行 */
 	private onClick(): void {
 		const callback = this.value;
 		if (typeof callback === 'function') {

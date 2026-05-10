@@ -3,12 +3,10 @@ import { expect, test } from '@playwright/test';
 test.describe('モバイルでのコントロール操作', () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto('/');
-		// パネルが描画されるまで待機
 		await page.waitForSelector('.tileui-panel');
 	});
 
 	test('ノブをタッチドラッグで操作できる', async ({ page }) => {
-		// 最初のノブを含むタイルを特定
 		const tile = page.locator('.tileui-tile:has(.tileui-knob)').first();
 		const knob = tile.locator('.tileui-knob');
 		await expect(knob).toBeVisible();
@@ -54,7 +52,6 @@ test.describe('モバイルでのコントロール操作', () => {
 		expect(box?.width).toBeGreaterThanOrEqual(44);
 		expect(box?.height).toBeGreaterThanOrEqual(44);
 
-		// プレビュー丸が表示されている
 		const preview = wrapper.locator('.tileui-color-preview');
 		await expect(preview).toBeVisible();
 	});

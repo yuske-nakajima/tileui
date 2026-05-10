@@ -34,7 +34,6 @@ export class ColorController extends Controller<string> {
 		const tile = document.createElement('div');
 		tile.classList.add(`${CSS_PREFIX}-tile`, `${CSS_PREFIX}-tile-color`);
 
-		// ラベル
 		const labelEl = document.createElement('div');
 		labelEl.classList.add(`${CSS_PREFIX}-label`);
 		labelEl.textContent = this.label;
@@ -74,7 +73,6 @@ export class ColorController extends Controller<string> {
 		}
 	}
 
-	/** input の値変更を反映 */
 	private onChange_(_e: Event): void {
 		if (!this.colorInput) return;
 		this.value = this.colorInput.value;

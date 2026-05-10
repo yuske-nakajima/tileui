@@ -98,23 +98,20 @@ export function initSketch(container: HTMLElement): void {
 		p.draw = () => {
 			const { gridSize, noiseScale, speed, rotation, bgColor, fgColor, animate, fill } = artParams;
 
-			// 背景描画
 			p.background(bgColor);
 
-			// 時間を進める（animate が有効な場合のみ）
 			if (animate) {
 				time += speed * 0.01;
 			}
 
 			const cellSize = p.width / gridSize;
 
-			// キャンバス中心を原点にしてグローバル回転
+			// キャンバス中心を原点にしてグローバル回転を適用する
 			p.push();
 			p.translate(p.width / 2, p.height / 2);
 			p.rotate(p.radians(rotation));
 			p.translate(-p.width / 2, -p.height / 2);
 
-			// 塗りまたは線のみモード設定
 			if (fill) {
 				p.fill(fgColor);
 				p.noStroke();
@@ -124,13 +121,12 @@ export function initSketch(container: HTMLElement): void {
 				p.strokeWeight(1.5);
 			}
 
-			// グリッドを走査して各タイルに図形を描画
 			for (let row = 0; row < gridSize; row++) {
 				for (let col = 0; col < gridSize; col++) {
 					const noiseVal = p.noise(col * noiseScale, row * noiseScale, time);
 
 					p.push();
-					// タイル中心に移動
+					// 描画原点をタイル中心に揃える
 					p.translate(col * cellSize + cellSize / 2, row * cellSize + cellSize / 2);
 					drawShape(p, noiseVal, cellSize);
 					p.pop();

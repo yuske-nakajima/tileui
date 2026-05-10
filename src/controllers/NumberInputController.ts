@@ -35,12 +35,10 @@ export class NumberInputController extends Controller<number> {
 		const tile = document.createElement('div');
 		tile.classList.add(`${CSS_PREFIX}-tile`, `${CSS_PREFIX}-tile-number`);
 
-		// ラベル
 		const labelEl = document.createElement('div');
 		labelEl.classList.add(`${CSS_PREFIX}-label`);
 		labelEl.textContent = this.label;
 
-		// 数値入力
 		this.input = document.createElement('input');
 		this.input.type = 'number';
 		this.input.step = String(this.step);

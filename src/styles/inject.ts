@@ -9,12 +9,11 @@ let injected = false;
  * 重複注入を防止する。
  */
 export function injectStyles(): void {
-	// 既にフラグが立っているなら何もしない
 	if (injected) {
 		return;
 	}
 
-	// DOM 上にも存在チェック（外部から挿入された場合の対策）
+	// 外部から挿入された <style id="..."> を検出した場合は注入をスキップする
 	if (document.getElementById(STYLE_ELEMENT_ID)) {
 		injected = true;
 		return;
