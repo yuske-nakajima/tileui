@@ -64,7 +64,6 @@ export class KnobController extends Controller<number> {
 		this.step = options.step ?? 1;
 		this.label = options.label ?? prop;
 
-		// ハンドラをバインド
 		this.handlePointerMove = this.onPointerMove.bind(this);
 		this.handlePointerUp = this.onPointerUp.bind(this);
 	}
@@ -89,15 +88,12 @@ export class KnobController extends Controller<number> {
 		const tile = document.createElement('div');
 		tile.classList.add(`${CSS_PREFIX}-tile`, `${CSS_PREFIX}-tile-knob`);
 
-		// ラベル
 		const labelEl = document.createElement('div');
 		labelEl.classList.add(`${CSS_PREFIX}-label`);
 		labelEl.textContent = this.label;
 
-		// SVG ノブ
 		const svg = this.createSVG();
 
-		// 値表示
 		this.valueSpan = document.createElement('div');
 		this.valueSpan.classList.add(`${CSS_PREFIX}-value`);
 
@@ -120,7 +116,6 @@ export class KnobController extends Controller<number> {
 		svg.setAttribute('height', '50');
 		svg.classList.add(`${CSS_PREFIX}-knob`);
 
-		// トラック（背景の弧）
 		const endAngle = KNOB_START_DEG + KNOB_RANGE_DEG;
 		const trackD = describeArc(KNOB_CENTER, KNOB_CENTER, KNOB_RADIUS, KNOB_START_DEG, endAngle);
 		const track = document.createElementNS(ns, 'path');
@@ -128,12 +123,10 @@ export class KnobController extends Controller<number> {
 		track.setAttribute('stroke-width', String(KNOB_TRACK_WIDTH));
 		track.classList.add(`${CSS_PREFIX}-knob-track`);
 
-		// 値表示の弧
 		this.valuePath = document.createElementNS(ns, 'path');
 		this.valuePath.setAttribute('stroke-width', String(KNOB_VALUE_WIDTH));
 		this.valuePath.classList.add(`${CSS_PREFIX}-knob-value`);
 
-		// つまみ
 		this.thumb = document.createElementNS(ns, 'circle');
 		this.thumb.setAttribute('r', String(KNOB_THUMB_RADIUS));
 		this.thumb.classList.add(`${CSS_PREFIX}-knob-thumb`);
@@ -142,7 +135,6 @@ export class KnobController extends Controller<number> {
 		svg.appendChild(this.valuePath);
 		svg.appendChild(this.thumb);
 
-		// ポインターイベント
 		svg.addEventListener('pointerdown', (e) => this.onPointerDown(e));
 
 		return svg;
@@ -152,20 +144,18 @@ export class KnobController extends Controller<number> {
 		const norm = this.normalizedValue;
 		const valueAngle = KNOB_START_DEG + norm * KNOB_RANGE_DEG;
 
-		// 値弧の更新
 		if (this.valuePath) {
 			const d = describeArc(KNOB_CENTER, KNOB_CENTER, KNOB_RADIUS, KNOB_START_DEG, valueAngle);
 			this.valuePath.setAttribute('d', d);
 		}
 
-		// つまみ位置の更新
 		if (this.thumb) {
 			const pos = polarToCartesian(KNOB_CENTER, KNOB_CENTER, KNOB_RADIUS, valueAngle);
 			this.thumb.setAttribute('cx', String(pos.x));
 			this.thumb.setAttribute('cy', String(pos.y));
 		}
 
-		// 値テキストの更新（step に応じた桁数で表示）
+		// 値テキストは step の小数桁数に合わせて整形する
 		if (this.valueSpan) {
 			this.valueSpan.textContent = formatValue(this.value, this.step);
 		}

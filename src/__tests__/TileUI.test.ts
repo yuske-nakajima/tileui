@@ -15,7 +15,6 @@ describe('TileUI', () => {
 
 	afterEach(() => {
 		container.remove();
-		// スタイル要素もクリーンアップ
 		const style = document.getElementById(STYLE_ELEMENT_ID);
 		if (style) style.remove();
 		resetStyleInjection();
@@ -56,7 +55,6 @@ describe('TileUI', () => {
 			const ctrl = gui.add(params, 'speed', 0, 100, 1);
 			expect(ctrl).toBeDefined();
 			expect(ctrl.value).toBe(50);
-			// ノブ用タイルがあるか確認
 			expect(container.querySelector(`.${CSS_PREFIX}-tile-knob`)).not.toBeNull();
 			gui.dispose();
 		});
@@ -139,11 +137,9 @@ describe('TileUI', () => {
 			gui.add(params, 'speed', 0, 100);
 			gui.addBoolean(params, 'enabled');
 
-			// 値を直接変更
 			params.speed = 75;
 			params.enabled = false;
 
-			// updateDisplay で反映
 			gui.updateDisplay();
 			gui.dispose();
 		});
@@ -202,12 +198,10 @@ describe('TileUI', () => {
 			const params = { speed: 50 };
 			const callback = vi.fn();
 			const ctrl = gui.add(params, 'speed', 0, 100);
-			// onChange → style のチェーン
 			const result = ctrl.onChange(callback).style({ bgColor: '#00ff00' });
 			expect(result).toBe(ctrl);
 			const tile = container.querySelector(`.${CSS_PREFIX}-tile-knob`) as HTMLElement;
 			expect(tile.style.backgroundColor).toBe('rgb(0, 255, 0)');
-			// コールバックも正常動作
 			ctrl.value = 75;
 			expect(callback).toHaveBeenCalledWith(75);
 			gui.dispose();
@@ -562,14 +556,11 @@ describe('TileUI', () => {
 			const gui = new TileUI({ container, dock: 'right', collapsible: true });
 			const btn = container.querySelector(`.${CSS_PREFIX}-toggle-btn`) as HTMLElement;
 
-			// 初期状態: 閉じている
 			expect(gui.isOpen).toBe(false);
 
-			// クリックで開く
 			btn.click();
 			expect(gui.isOpen).toBe(true);
 
-			// もう一度クリックで閉じる
 			btn.click();
 			expect(gui.isOpen).toBe(false);
 
@@ -675,8 +666,7 @@ describe('TileUI', () => {
 			const gui = new TileUI({ container, dock: 'right', toggleKey: 'g' });
 			gui.dispose();
 
-			// dispose 後は g キーでトグルしないことを確認するため、
-			// 新しいインスタンスを作成して影響がないことを確認
+			// dispose 後にハンドラが残っていないことを別インスタンス経由で検証する
 			const gui2 = new TileUI({ container, dock: 'right' });
 			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }));
 			expect(gui2.isOpen).toBe(false);

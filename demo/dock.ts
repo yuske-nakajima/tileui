@@ -133,7 +133,6 @@ function createDrawer(dock: DockPosition): TileUI {
 		toggleKey: 'g',
 	});
 
-	// 方向切替ボタン群
 	const directions: DockPosition[] = ['left', 'right', 'top', 'bottom'];
 	for (const dir of directions) {
 		instance
@@ -143,7 +142,6 @@ function createDrawer(dock: DockPosition): TileUI {
 			.style({ accentColor: ACCENT });
 	}
 
-	// ノブ（数値スライダー）
 	instance
 		.add(params, 'speed', 0, 100, 1)
 		.style({ accentColor: ACCENT })
@@ -158,7 +156,6 @@ function createDrawer(dock: DockPosition): TileUI {
 			params.intensity = v;
 		});
 
-	// カラーピッカー
 	instance
 		.addColor(params, 'color')
 		.style({ accentColor: ACCENT })
@@ -166,7 +163,6 @@ function createDrawer(dock: DockPosition): TileUI {
 			params.color = v;
 		});
 
-	// トグル（boolean）
 	instance
 		.addBoolean(params, 'enabled')
 		.style({ accentColor: ACCENT })
@@ -179,33 +175,28 @@ function createDrawer(dock: DockPosition): TileUI {
 			}
 		});
 
-	// 初期状態: open
 	instance.open();
 
 	return instance;
 }
 
-/** ドック方向を切り替える（現在のインスタンスを破棄して再生成） */
+/** ドック方向を切り替える（インスタンスを破棄して指定方向で再生成する） */
 function switchDock(dock: DockPosition): void {
 	if (dock === currentDock) {
 		return;
 	}
 
-	// 現在のインスタンスを破棄
 	if (gui) {
 		gui.dispose();
 		gui = null;
 	}
 
-	// 新しい方向で再生成
 	currentDock = dock;
 	updateDirectionLabel();
 	gui = createDrawer(dock);
 }
 
-// 初期生成
 updateDirectionLabel();
 gui = createDrawer(currentDock);
 
-// グラデーションアニメーション開始
 startGradientAnimation();

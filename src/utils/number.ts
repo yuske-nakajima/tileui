@@ -20,7 +20,6 @@ const DEFAULT_MAX_DECIMALS = 2;
  */
 export function formatValue(value: number, step?: number): string {
 	if (step === undefined) {
-		// step 未指定の場合はデフォルトで小数点以下2桁を上限とする
 		const decimals = Math.min(getDecimalPlaces(value), DEFAULT_MAX_DECIMALS);
 		return value.toFixed(decimals);
 	}

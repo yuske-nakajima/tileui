@@ -1,5 +1,3 @@
-// tileui エントリポイント
-
 export {
 	CSS_PREFIX,
 	KNOB_CENTER,

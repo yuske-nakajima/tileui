@@ -30,12 +30,10 @@ export class BooleanController extends Controller<boolean> {
 		const tile = document.createElement('div');
 		tile.classList.add(`${CSS_PREFIX}-tile`, `${CSS_PREFIX}-tile-boolean`);
 
-		// ラベル
 		const labelEl = document.createElement('div');
 		labelEl.classList.add(`${CSS_PREFIX}-label`);
 		labelEl.textContent = this.label;
 
-		// トグルスイッチ
 		this.toggle = document.createElement('div');
 		this.toggle.classList.add(`${CSS_PREFIX}-toggle`);
 
