@@ -212,6 +212,13 @@ body {
 	letter-spacing: 0.05em;
 }
 
+/* コードブロックのテキスト色を固定（ドロワーのカラーピッカーに影響されない） */
+code,
+pre,
+kbd {
+	color: #e0e0e0;
+}
+
 .showcase__hint kbd {
 	display: inline-block;
 	font-family: "Space Mono", monospace;
@@ -246,13 +253,6 @@ body {
 	padding: 16px 20px;
 	overflow-x: auto;
 	max-width: 480px;
-}
-
-/* コードブロックのテキスト色を固定（ドロワーのカラーピッカーに影響されない） */
-code,
-pre,
-kbd {
-	color: #e0e0e0;
 }
 
 /* ドロワーパネルのスタイルオーバーライド（デモ用） */
