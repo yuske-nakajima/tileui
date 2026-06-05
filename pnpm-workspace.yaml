@@ -7,3 +7,7 @@ blockExoticSubdeps: true
 # ライフサイクルスクリプトの実行をホワイトリスト方式で制限
 onlyBuiltDependencies:
   - esbuild
+
+# GHSA-jxxr-4gwj-5jf2 (brace-expansion DoS) 対応: 脆弱な範囲を patched 以上へ強制
+overrides:
+  "brace-expansion@>=5.0.0 <5.0.6": ">=5.0.6"
