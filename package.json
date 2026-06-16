@@ -18,7 +18,7 @@
 		"dist"
 	],
 	"sideEffects": false,
-	"packageManager": "pnpm@11.5.1",
+	"packageManager": "pnpm@11.6.0",
 	"scripts": {
 		"dev": "vite",
 		"dev:bg": "vite > /dev/null 2>&1 & echo $! > .vite.pid && echo 'Vite started (PID:'$(cat .vite.pid)')'",
