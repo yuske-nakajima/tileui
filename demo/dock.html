@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="dark">
+<html lang="en" data-lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>TileUI - Dock Demo</title>
+  <title>TileUI - Demo</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
@@ -18,12 +18,15 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Silkscreen:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Outfit:wght@400;500&family=Silkscreen:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --demo-font: "Silkscreen", cursive;
+      --demo-font: "Silkscreen", "DotGothic16", cursive;
     }
+
+    [data-lang="en"] [lang="ja"] { display: none; }
+    [data-lang="ja"] [lang="en"] { display: none; }
 
     *, *::before, *::after {
       box-sizing: border-box;
@@ -155,25 +158,57 @@
     .dock-center__direction-value {
       color: #b38f59;
     }
+
+    .lang-toggle {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .lang-toggle__btn {
+      font-family: var(--demo-font);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: #555555;
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      padding: 2px 8px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .lang-toggle__btn:hover {
+      color: #faf9f6;
+    }
+
+    .lang-toggle__btn--active {
+      color: #faf9f6;
+      border-color: #444444;
+    }
   </style>
 </head>
 <body>
   <header class="dock-header">
     <span class="dock-header__logo">TILEUI</span>
-    <a class="dock-header__link" href="./index.html">&larr; Main Demo</a>
+    <nav style="display: flex; align-items: center; gap: 16px;">
+      <a class="dock-header__link" href="./index.html"><span lang="en">&larr; Main Demo</span><span lang="ja">&larr; メインデモ</span></a>
+      <span class="lang-toggle">
+        <button class="lang-toggle__btn" type="button" data-value="en">EN</button>
+        <button class="lang-toggle__btn" type="button" data-value="ja">JA</button>
+      </span>
+    </nav>
   </header>
 
   <div class="dock-center">
-    <h1 class="dock-center__title">Dock Demo</h1>
+    <h1 class="dock-center__title"><span lang="en">Demo</span><span lang="ja">Demo</span></h1>
     <p class="dock-center__desc">
-      A demo of TileUI's drawer (Dock) mode.<br />
-      Use the buttons in the panel to switch dock direction.
+      <span lang="en">A demo of TileUI's drawer (Dock) mode.<br />Use the buttons in the panel to switch dock direction.</span><span lang="ja">TileUI のドロワー（ドック）モードのデモ。<br />パネル内のボタンでドック方向を切り替えられます。</span>
     </p>
     <p class="dock-center__hint">
-      Press <kbd>G</kbd> to toggle drawer
+      <span lang="en">Press <kbd>G</kbd> to toggle drawer</span><span lang="ja"><kbd>G</kbd> キーでドロワーを切替</span>
     </p>
     <p class="dock-center__direction">
-      Current: <span class="dock-center__direction-value" id="direction-label">RIGHT</span>
+      <span lang="en">Current:</span><span lang="ja">現在:</span> <span class="dock-center__direction-value" id="direction-label">RIGHT</span>
     </p>
   </div>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="dark">
+<html lang="en" data-lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,7 +24,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Silkscreen:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Outfit:wght@400;500&family=Silkscreen:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="./style.css" />
   <script src="https://cdn.jsdelivr.net/npm/p5@1/lib/p5.min.js"></script>
@@ -35,8 +35,12 @@
     <nav class="header__nav">
       <span class="header__version" id="version"></span>
       <a class="header__link" href="https://www.npmjs.com/package/@yuske-nakajima/tileui" target="_blank" rel="noopener noreferrer">npm</a>
-      <a class="header__link" href="./dock.html">Dock Demo</a>
+      <a class="header__link" href="./dock.html"><span lang="en">Demo</span><span lang="ja">Demo</span></a>
       <a class="header__link" href="https://github.com/yuske-nakajima/tileui" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+      <span class="lang-toggle">
+        <button class="lang-toggle__btn" type="button" data-value="en">EN</button>
+        <button class="lang-toggle__btn" type="button" data-value="ja">JA</button>
+      </span>
     </nav>
   </header>
 
@@ -46,7 +50,7 @@
   </main>
 
   <section class="tagline">
-    <p>A grid-tile GUI panel with SVG rotary knobs for creative coding</p>
+    <p><span lang="en">A grid-tile GUI panel with SVG rotary knobs for creative coding</span><span lang="ja">クリエイティブコーディングのための SVG ロータリーノブ付きグリッドタイル GUI パネル</span></p>
   </section>
 
   <section class="install">
@@ -54,9 +58,9 @@
   </section>
 
   <section class="usage">
-    <h2 class="usage__title">USAGE</h2>
+    <h2 class="usage__title"><span lang="en">USAGE</span><span lang="ja">使い方</span></h2>
     <div class="usage__item">
-      <span class="usage__label">ESM (recommended)</span>
+      <span class="usage__label"><span lang="en">ESM (recommended)</span><span lang="ja">ESM（推奨）</span></span>
       <pre class="usage__code"><code>import TileUI from '@yuske-nakajima/tileui';</code></pre>
     </div>
     <div class="usage__item">
@@ -75,32 +79,32 @@
   </section>
 
   <section class="showcase">
-    <h2 class="showcase__title">EXAMPLES</h2>
+    <h2 class="showcase__title"><span lang="en">EXAMPLES</span><span lang="ja">作例</span></h2>
 
     <div class="showcase__item">
-      <span class="showcase__label">2 COLUMNS</span>
+      <span class="showcase__label"><span lang="en">2 COLUMNS</span><span lang="ja">2 列</span></span>
       <div id="showcase-2col"></div>
     </div>
 
     <div class="showcase__item">
-      <span class="showcase__label">3 COLUMNS</span>
+      <span class="showcase__label"><span lang="en">3 COLUMNS</span><span lang="ja">3 列</span></span>
       <div id="showcase-3col"></div>
     </div>
 
     <div class="showcase__item">
-      <span class="showcase__label">4 COLUMNS</span>
+      <span class="showcase__label"><span lang="en">4 COLUMNS</span><span lang="ja">4 列</span></span>
       <div id="showcase-4col"></div>
     </div>
 
     <div class="showcase__item">
-      <span class="showcase__label">CUSTOM STYLES</span>
+      <span class="showcase__label"><span lang="en">CUSTOM STYLES</span><span lang="ja">カスタムスタイル</span></span>
       <div id="showcase-styled"></div>
     </div>
 
     <div class="showcase__item">
-      <span class="showcase__label">DOCK (RIGHT DRAWER)</span>
-      <p class="showcase__hint">Press <kbd>G</kbd> to toggle or use the edge button</p>
-      <h3 class="showcase__code-caption">Dock Drawer — Slide-in panel from any edge</h3>
+      <span class="showcase__label"><span lang="en">DOCK (RIGHT DRAWER)</span><span lang="ja">ドック（右ドロワー）</span></span>
+      <p class="showcase__hint"><span lang="en">Press <kbd>G</kbd> to toggle or use the edge button</span><span lang="ja"><kbd>G</kbd> キーで切替、またはエッジボタンを使用</span></p>
+      <h3 class="showcase__code-caption"><span lang="en">Dock Drawer — Slide-in panel from any edge</span><span lang="ja">ドックドロワー — 任意の辺からスライドインするパネル</span></h3>
       <pre class="showcase__code"><code>const gui = new TileUI({
   dock: 'right',
   collapsible: true,
@@ -118,8 +122,8 @@ gui.open();</code></pre>
   </section>
 
   <section class="dock-cta">
-    <p>Try the interactive dock demo with all four directions</p>
-    <a href="./dock.html">Go to Dock Demo &rarr;</a>
+    <p><span lang="en">Try the interactive dock demo with all four directions</span><span lang="ja">4 方向のインタラクティブDemoを試す</span></p>
+    <a href="./dock.html"><span lang="en">Go to Demo &rarr;</span><span lang="ja">Demoへ &rarr;</span></a>
   </section>
 
   <footer class="footer">

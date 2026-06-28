@@ -2,6 +2,12 @@
 
 import type { DockPosition } from '../src';
 import TileUI from '../src';
+import { initI18n } from './i18n';
+
+initI18n({
+	en: 'TileUI - Demo',
+	ja: 'TileUI - Demo',
+});
 
 /** ドロワーのアクセントカラー（ゴールド系） */
 const ACCENT = '#b38f59';

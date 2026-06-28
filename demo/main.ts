@@ -3,7 +3,13 @@
 declare const __VERSION__: string;
 
 import TileUI from '../src';
+import { initI18n } from './i18n';
 import { artParams, initSketch, resizeSketch } from './sketch';
+
+initI18n({
+	en: 'TileUI - A Grid-Tile GUI Panel for Creative Coding',
+	ja: 'TileUI - クリエイティブコーディングのためのグリッドタイル GUI パネル',
+});
 
 /** ID から要素を取得し、見つからなければエラーを投げる */
 function getElement(id: string): HTMLElement {
