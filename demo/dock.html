@@ -9,7 +9,6 @@
   <meta http-equiv="Expires" content="0">
   <title>TileUI - Dock Demo</title>
 
-  <!-- Favicon / アイコン -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
@@ -17,18 +16,15 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0a0a0a" />
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Silkscreen:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet" />
 
   <style>
-    /* フォント切り替え: 使いたい方のコメントを外す */
     :root {
       --demo-font: "Silkscreen", cursive;
     }
 
-    /* リセットとベース */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -47,7 +43,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* tileui パネルのスタイルオーバーライド（メインデモと統一） */
     .tileui-panel {
       --tileui-bg: #000000;
       --tileui-tile-bg: #000000;
@@ -69,7 +64,6 @@
       padding: 4px;
     }
 
-    /* ヘッダー・中央テキストの視認性確保 */
     .dock-header,
     .dock-center__title,
     .dock-center__desc,
@@ -78,7 +72,6 @@
       text-shadow: 0 0 20px rgba(0,0,0,0.8);
     }
 
-    /* ヘッダー */
     .dock-header {
       position: fixed;
       top: 0;
@@ -110,7 +103,6 @@
       color: #faf9f6;
     }
 
-    /* 中央テキスト */
     .dock-center {
       text-align: center;
       max-width: 480px;
@@ -151,7 +143,6 @@
       color: #faf9f6;
     }
 
-    /* 方向ラベル */
     .dock-center__direction {
       margin-top: 12px;
       font-family: var(--demo-font);
@@ -167,13 +158,11 @@
   </style>
 </head>
 <body>
-  <!-- ヘッダー -->
   <header class="dock-header">
     <span class="dock-header__logo">TILEUI</span>
     <a class="dock-header__link" href="./index.html">&larr; Main Demo</a>
   </header>
 
-  <!-- 中央コンテンツ -->
   <div class="dock-center">
     <h1 class="dock-center__title">Dock Demo</h1>
     <p class="dock-center__desc">
