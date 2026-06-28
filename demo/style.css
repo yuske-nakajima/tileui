@@ -1,4 +1,6 @@
-/* === tileui デモページ — Nothing design スタイル === */
+:root {
+	--demo-font: "Silkscreen", cursive;
+}
 
 /*
  * tileui CSS 変数のモノクロオーバーライド
@@ -17,15 +19,13 @@
 	--tileui-knob-track: #333333;
 	--tileui-knob-thumb: #faf9f6;
 	--tileui-toggle-off: #333333;
-	--tileui-font-family: "Space Grotesk", sans-serif;
+	--tileui-font-family: "Outfit", sans-serif;
 }
 
-/* ダークモード: スクロールバー等もダークにする */
 html {
 	color-scheme: dark;
 }
 
-/* リセットとベース */
 *,
 *::before,
 *::after {
@@ -37,7 +37,7 @@ html {
 body {
 	background: #000000;
 	color: #faf9f6;
-	font-family: "Space Grotesk", sans-serif;
+	font-family: var(--demo-font);
 	font-weight: 400;
 	line-height: 1.5;
 	min-height: 100vh;
@@ -45,7 +45,6 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-/* 最大幅コンテナ — fluid spacing で余白を段階的に変化 */
 .header,
 .main,
 .tagline,
@@ -57,19 +56,17 @@ body {
 	padding-inline: clamp(16px, 4vw, 24px);
 }
 
-/* ヘッダー — fluid spacing */
 .header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding-block: clamp(20px, 4vw, 32px) clamp(32px, 6vw, 48px);
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	text-transform: uppercase;
 	letter-spacing: 0.12em;
 	font-size: clamp(11px, 1.5vw, 13px);
 }
 
-/* ヘッダーロゴ — fluid typography */
 .header__logo {
 	font-size: clamp(14px, 2vw, 16px);
 	font-weight: 400;
@@ -96,7 +93,6 @@ body {
 	opacity: 0.7;
 }
 
-/* メインエリア: グリッドレイアウト — fluid spacing */
 .main {
 	display: grid;
 	grid-template-columns: 1fr auto;
@@ -105,7 +101,7 @@ body {
 	padding-bottom: 64px;
 }
 
-/* キャンバスエリア — overflow: hidden で p5.js キャンバスのはみ出しを防止 */
+/* p5.js キャンバスがコンテナからはみ出すため overflow: hidden で抑制 */
 .canvas-area {
 	aspect-ratio: 1 / 1;
 	background: #000000;
@@ -114,12 +110,10 @@ body {
 	overflow: hidden;
 }
 
-/* パネルのタイトル背景もページと統一 */
 .tileui-title {
 	background: transparent;
 }
 
-/* GUI パネルエリア — 白系の細い border でコミカルに */
 .gui-area {
 	border: 1px solid rgba(250, 249, 246, 0.15);
 	border-radius: 8px;
@@ -127,25 +121,22 @@ body {
 	width: fit-content;
 }
 
-/* デスクトップでは Controls パネルを 2 列に制限 */
 .gui-area .tileui-panel {
 	grid-template-columns: repeat(2, var(--tileui-tile-size));
 }
 
-/* タグライン — fluid typography & spacing */
 .tagline {
 	padding-block: clamp(32px, 6vw, 48px);
 }
 
 .tagline p {
-	font-family: "Space Grotesk", sans-serif;
+	font-family: var(--demo-font);
 	font-size: clamp(18px, 4vw, 28px);
 	font-weight: 500;
 	line-height: 1.3;
 	max-width: 640px;
 }
 
-/* インストールコマンド — fluid typography & spacing */
 .install {
 	padding-bottom: clamp(40px, 8vw, 64px);
 }
@@ -167,13 +158,12 @@ body {
 	opacity: 0.8;
 }
 
-/* ショーケース — Nothing design */
 .showcase {
 	padding-bottom: clamp(40px, 8vw, 64px);
 }
 
 .showcase__title {
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 12px;
 	font-weight: 400;
 	text-transform: uppercase;
@@ -186,7 +176,6 @@ body {
 	margin-bottom: clamp(32px, 6vw, 48px);
 }
 
-/* ショーケース内のパネルラッパーに gui-area と同じ枠を適用 */
 .showcase__item > div {
 	border: 1px solid rgba(250, 249, 246, 0.15);
 	border-radius: 8px;
@@ -196,7 +185,7 @@ body {
 
 .showcase__label {
 	display: block;
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 11px;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
@@ -204,15 +193,14 @@ body {
 	margin-bottom: 12px;
 }
 
-/* ドロワーのヒントテキスト */
 .showcase__hint {
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 12px;
 	color: #555555;
 	letter-spacing: 0.05em;
 }
 
-/* コードブロックのテキスト色を固定（ドロワーのカラーピッカーに影響されない） */
+/* ドロワーのカラーピッカーが祖先の color を変えるため、コード要素は固定値で上書き */
 code,
 pre,
 kbd {
@@ -230,9 +218,8 @@ kbd {
 	color: #faf9f6;
 }
 
-/* コードキャプション */
 .showcase__code-caption {
-	font-family: "Space Grotesk", sans-serif;
+	font-family: var(--demo-font);
 	font-size: 14px;
 	font-weight: 500;
 	color: #aaaaaa;
@@ -240,7 +227,6 @@ kbd {
 	margin-bottom: 4px;
 }
 
-/* ドック機能のコード例 */
 .showcase__code {
 	margin-top: 16px;
 	font-family: "Space Mono", monospace;
@@ -255,14 +241,12 @@ kbd {
 	max-width: 480px;
 }
 
-/* ドロワーパネルのスタイルオーバーライド（デモ用） */
 .tileui-drawer {
 	background: #000000;
 	border-left: 1px solid rgba(250, 249, 246, 0.15);
 	padding: 4px;
 }
 
-/* 使い方セクション */
 .usage {
 	max-width: 1200px;
 	margin-inline: auto;
@@ -271,7 +255,7 @@ kbd {
 }
 
 .usage__title {
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 12px;
 	font-weight: 400;
 	text-transform: uppercase;
@@ -286,7 +270,7 @@ kbd {
 
 .usage__label {
 	display: block;
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 11px;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
@@ -307,7 +291,6 @@ kbd {
 	max-width: 640px;
 }
 
-/* ドックデモへの誘導セクション */
 .dock-cta {
 	max-width: 1200px;
 	margin-inline: auto;
@@ -317,7 +300,7 @@ kbd {
 }
 
 .dock-cta p {
-	font-family: "Space Grotesk", sans-serif;
+	font-family: var(--demo-font);
 	font-size: clamp(14px, 2vw, 16px);
 	color: #888888;
 	margin-bottom: 16px;
@@ -325,7 +308,7 @@ kbd {
 
 .dock-cta a {
 	display: inline-block;
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 13px;
 	color: #faf9f6;
 	text-decoration: none;
@@ -344,14 +327,13 @@ kbd {
 	border-color: #666666;
 }
 
-/* フッター — fluid spacing */
 .footer {
 	display: flex;
 	align-items: center;
 	gap: 12px;
 	padding-block: clamp(32px, 6vw, 48px) clamp(40px, 8vw, 64px);
 	border-top: 1px solid #222222;
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
@@ -362,19 +344,16 @@ kbd {
 	color: #333333;
 }
 
-/* レスポンシブ: 1024px 未満で縦積みレイアウト */
 @media (max-width: 1023px) {
 	.main {
 		grid-template-columns: 1fr;
 	}
 
-	/* タブレット以下ではキャンバスを幅いっぱいに広げる */
 	.canvas-area {
 		max-width: none;
 		margin-inline: auto;
 	}
 
-	/* パネルを画面幅に広げ、列数を自動調整して中央寄せ */
 	.gui-area {
 		min-width: unset;
 		width: 100%;
@@ -386,7 +365,6 @@ kbd {
 		justify-content: center;
 	}
 
-	/* ショーケースのパネルも中央寄せ、はみ出す場合はスクロール */
 	.showcase__item > div {
 		width: fit-content;
 		max-width: 100%;
@@ -395,7 +373,6 @@ kbd {
 	}
 }
 
-/* タブレット: 768px 未満 */
 @media (max-width: 767px) {
 	.header__nav {
 		gap: 16px;
@@ -407,7 +384,6 @@ kbd {
 	}
 }
 
-/* モバイル小: 480px 未満 */
 @media (max-width: 479px) {
 	.header {
 		flex-direction: column;
