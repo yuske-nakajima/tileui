@@ -5,8 +5,8 @@ import TileUI from '../src';
 import { initI18n } from './i18n';
 
 initI18n({
-	en: 'TileUI - Dock Demo',
-	ja: 'TileUI - ドックデモ',
+	en: 'TileUI - Demo',
+	ja: 'TileUI - Demo',
 });
 
 /** ドロワーのアクセントカラー（ゴールド系） */
