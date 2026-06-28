@@ -1,5 +1,10 @@
 /* === tileui デモページ — Nothing design スタイル === */
 
+/* フォント切り替え: 使いたい方のコメントを外す */
+:root {
+	--demo-font: "Silkscreen", cursive;
+}
+
 /*
  * tileui CSS 変数のモノクロオーバーライド
  * ライブラリの injectStyles() が :root に後から注入するため、
@@ -17,7 +22,7 @@
 	--tileui-knob-track: #333333;
 	--tileui-knob-thumb: #faf9f6;
 	--tileui-toggle-off: #333333;
-	--tileui-font-family: "Space Grotesk", sans-serif;
+	--tileui-font-family: "Outfit", sans-serif;
 }
 
 /* ダークモード: スクロールバー等もダークにする */
@@ -37,7 +42,7 @@ html {
 body {
 	background: #000000;
 	color: #faf9f6;
-	font-family: "Space Grotesk", sans-serif;
+	font-family: var(--demo-font);
 	font-weight: 400;
 	line-height: 1.5;
 	min-height: 100vh;
@@ -63,7 +68,7 @@ body {
 	align-items: center;
 	justify-content: space-between;
 	padding-block: clamp(20px, 4vw, 32px) clamp(32px, 6vw, 48px);
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	text-transform: uppercase;
 	letter-spacing: 0.12em;
 	font-size: clamp(11px, 1.5vw, 13px);
@@ -138,7 +143,7 @@ body {
 }
 
 .tagline p {
-	font-family: "Space Grotesk", sans-serif;
+	font-family: var(--demo-font);
 	font-size: clamp(18px, 4vw, 28px);
 	font-weight: 500;
 	line-height: 1.3;
@@ -173,7 +178,7 @@ body {
 }
 
 .showcase__title {
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 12px;
 	font-weight: 400;
 	text-transform: uppercase;
@@ -196,7 +201,7 @@ body {
 
 .showcase__label {
 	display: block;
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 11px;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
@@ -206,7 +211,7 @@ body {
 
 /* ドロワーのヒントテキスト */
 .showcase__hint {
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 12px;
 	color: #555555;
 	letter-spacing: 0.05em;
@@ -232,7 +237,7 @@ kbd {
 
 /* コードキャプション */
 .showcase__code-caption {
-	font-family: "Space Grotesk", sans-serif;
+	font-family: var(--demo-font);
 	font-size: 14px;
 	font-weight: 500;
 	color: #aaaaaa;
@@ -271,7 +276,7 @@ kbd {
 }
 
 .usage__title {
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 12px;
 	font-weight: 400;
 	text-transform: uppercase;
@@ -286,7 +291,7 @@ kbd {
 
 .usage__label {
 	display: block;
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 11px;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
@@ -317,7 +322,7 @@ kbd {
 }
 
 .dock-cta p {
-	font-family: "Space Grotesk", sans-serif;
+	font-family: var(--demo-font);
 	font-size: clamp(14px, 2vw, 16px);
 	color: #888888;
 	margin-bottom: 16px;
@@ -325,7 +330,7 @@ kbd {
 
 .dock-cta a {
 	display: inline-block;
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 13px;
 	color: #faf9f6;
 	text-decoration: none;
@@ -351,7 +356,7 @@ kbd {
 	gap: 12px;
 	padding-block: clamp(32px, 6vw, 48px) clamp(40px, 8vw, 64px);
 	border-top: 1px solid #222222;
-	font-family: "Space Mono", monospace;
+	font-family: var(--demo-font);
 	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;

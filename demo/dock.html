@@ -20,9 +20,14 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Silkscreen:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet" />
 
   <style>
+    /* フォント切り替え: 使いたい方のコメントを外す */
+    :root {
+      --demo-font: "Silkscreen", cursive;
+    }
+
     /* リセットとベース */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -32,7 +37,7 @@
 
     body {
       color: #faf9f6;
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--demo-font);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -55,7 +60,7 @@
       --tileui-knob-track: #333333;
       --tileui-knob-thumb: #faf9f6;
       --tileui-toggle-off: #333333;
-      --tileui-font-family: "Space Grotesk", sans-serif;
+      --tileui-font-family: "Outfit", sans-serif;
     }
 
     .tileui-drawer {
@@ -83,7 +88,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 16px 24px;
-      font-family: "Space Mono", monospace;
+      font-family: var(--demo-font);
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
@@ -113,7 +118,7 @@
     }
 
     .dock-center__title {
-      font-family: "Space Mono", monospace;
+      font-family: var(--demo-font);
       font-size: clamp(20px, 4vw, 32px);
       font-weight: 400;
       letter-spacing: 0.15em;
@@ -129,7 +134,7 @@
 
     .dock-center__hint {
       margin-top: 24px;
-      font-family: "Space Mono", monospace;
+      font-family: var(--demo-font);
       font-size: 12px;
       color: #555555;
       letter-spacing: 0.05em;
@@ -149,7 +154,7 @@
     /* 方向ラベル */
     .dock-center__direction {
       margin-top: 12px;
-      font-family: "Space Mono", monospace;
+      font-family: var(--demo-font);
       font-size: 12px;
       color: #555555;
       letter-spacing: 0.1em;
@@ -172,8 +177,8 @@
   <div class="dock-center">
     <h1 class="dock-center__title">Dock Demo</h1>
     <p class="dock-center__desc">
-      TileUI のドロワー（Dock）モードのデモです。<br />
-      パネル内のボタンでドック方向を切り替えられます。
+      A demo of TileUI's drawer (Dock) mode.<br />
+      Use the buttons in the panel to switch dock direction.
     </p>
     <p class="dock-center__hint">
       Press <kbd>G</kbd> to toggle drawer
