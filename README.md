@@ -2,22 +2,24 @@
 
 [![CI](https://github.com/yuske-nakajima/tileui/actions/workflows/ci.yml/badge.svg)](https://github.com/yuske-nakajima/tileui/actions/workflows/ci.yml)
 
-[デモ](https://tileui.yuske.app)
+[日本語](./README.ja.md)
 
-> CSS Grid タイル型 + SVG ノブの GUI パネルライブラリ
+[Demo](https://tileui.yuske.app)
 
-![TileUI デモ](screenshots/demo.gif)
+> A grid-tile GUI panel library with SVG rotary knobs
 
-## 特徴
+![TileUI Demo](screenshots/demo.gif)
 
-- CSS Grid による正方形タイルレイアウト
-- SVG 回転ノブで直感的な数値操作（270度可動）
-- ゼロ依存、軽量
-- CSS 変数によるテーマカスタマイズ
-- lil-gui / dat.gui 風の簡潔な API
-- ESM / UMD 両対応、TypeScript 型定義付き
+## Features
 
-## インストール
+- Square tile layout powered by CSS Grid
+- Intuitive numeric control with SVG rotary knobs (270° range)
+- Zero dependencies, lightweight
+- Theme customization via CSS variables
+- Simple API inspired by lil-gui / dat.gui
+- ESM / UMD dual output with TypeScript definitions
+
+## Install
 
 ```bash
 npm install @yuske-nakajima/tileui
@@ -38,7 +40,7 @@ npm install @yuske-nakajima/tileui
 </script>
 ```
 
-## クイックスタート
+## Quick Start
 
 ```ts
 import TileUI from '@yuske-nakajima/tileui';
@@ -47,69 +49,69 @@ const params = { speed: 0.5, volume: 80, color: '#ff0000', enabled: true };
 
 const gui = new TileUI({ title: 'Controls' });
 
-// 数値（ノブ）: min, max, step を指定
+// Number (knob): specify min, max, step
 gui.add(params, 'speed', 0, 1, 0.01).onChange((v) => console.log('speed:', v));
 
-// 数値（入力欄）: min/max なし
+// Number (input field): no min/max
 gui.add(params, 'volume');
 
-// カラーピッカー
+// Color picker
 gui.addColor(params, 'color');
 
-// トグルスイッチ
+// Toggle switch
 gui.addBoolean(params, 'enabled');
 
-// ボタン
+// Button
 gui.addButton('Reset', () => console.log('reset!'));
 
-// フォルダ（サブグリッド）
+// Folder (sub-grid)
 const folder = gui.addFolder('Advanced');
 folder.add(params, 'speed', 0, 1, 0.01);
 ```
 
-## API リファレンス
+## API Reference
 
 ### `new TileUI(options?)`
 
-GUI パネルを作成する。
+Creates a GUI panel.
 
-| オプション | 型 | デフォルト | 説明 |
-|-----------|-----|----------|------|
-| `container` | `HTMLElement` | `document.body` | パネルの挿入先 |
-| `columns` | `number` | auto-fill | グリッドの列数 |
-| `title` | `string` | — | パネルのタイトル |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `container` | `HTMLElement` | `document.body` | Container element |
+| `columns` | `number` | auto-fill | Number of grid columns |
+| `title` | `string` | — | Panel title |
 
 ### `gui.add(obj, prop, min?, max?, step?)`
 
-数値コントローラーを追加する。`min`/`max` を指定すると SVG ノブ、省略すると数値入力欄になる。
+Adds a numeric controller. Renders as an SVG knob when `min`/`max` are provided, otherwise as a number input field.
 
 ### `gui.addBoolean(obj, prop)`
 
-トグルスイッチを追加する。
+Adds a toggle switch.
 
 ### `gui.addColor(obj, prop)`
 
-カラーピッカーを追加する。
+Adds a color picker.
 
 ### `gui.addButton(label, callback)`
 
-クリック可能なボタンタイルを追加する。
+Adds a clickable button tile.
 
 ### `gui.addFolder(title)`
 
-サブグリッド（フォルダ）を追加する。戻り値は新しい `TileUI` インスタンス。
+Adds a sub-grid (folder). Returns a new `TileUI` instance.
 
 ### `gui.updateDisplay()`
 
-全コントローラーの表示を現在のオブジェクト値に同期する。
+Syncs all controller displays with current object values.
 
 ### `gui.dispose()`
 
-全コントローラーと DOM 要素をクリーンアップする。
+Cleans up all controllers and DOM elements.
 
 ### `controller.onChange(callback)`
 
-値変更時のコールバックを設定する。メソッドチェーン対応。
+Sets a callback for value changes. Supports method chaining.
 
 ```ts
 gui.add(params, 'speed', 0, 1).onChange((v) => {
@@ -117,9 +119,9 @@ gui.add(params, 'speed', 0, 1).onChange((v) => {
 });
 ```
 
-## テーマカスタマイズ
+## Theme Customization
 
-CSS 変数をオーバーライドすることで、パネルの見た目をカスタマイズできる。
+Override CSS variables to customize the panel appearance.
 
 ```css
 :root {
@@ -142,24 +144,22 @@ CSS 変数をオーバーライドすることで、パネルの見た目をカ�
 }
 ```
 
-## 開発
+## Development
 
-### E2E テスト
+### E2E Tests
 
-demo ページの動作確認用に Playwright E2E テストを用意しています。CI には組み込んでいません。
+Playwright E2E tests are provided for verifying demo page behavior. They are not included in CI.
 
 ```bash
-# Chromium がインストールされていない場合
+# Install Chromium if not already installed
 npx playwright install chromium
 
-# E2E テスト実行（Vite dev server は自動起動）
+# Run E2E tests (Vite dev server starts automatically)
 pnpm test:e2e
 ```
 
-モバイル（Pixel 7 エミュレーション）とデスクトップ Chrome で実行されます。
+Tests run on both mobile (Pixel 7 emulation) and desktop Chrome.
 
-## ライセンス
+## License
 
 [MIT](./LICENSE)
-
-[English](./README.en.md)
