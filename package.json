@@ -26,7 +26,7 @@
 		"dev:stop": "if [ -f .vite.pid ] && kill -0 $(cat .vite.pid) 2>/dev/null; then kill $(cat .vite.pid) && rm -f .vite.pid && echo 'Stopped'; else echo 'Not running'; rm -f .vite.pid; fi",
 		"build": "vite build && tsc --emitDeclarationOnly",
 		"build:demo": "vite build --config vite.config.demo.ts",
-		"check": "biome check . && eslint .",
+		"check": "biome check .",
 		"format": "biome format --write .",
 		"test": "vitest run",
 		"test:watch": "vitest",
@@ -57,11 +57,9 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.5.12",
 		"@playwright/test": "1.63.0",
-		"eslint": "10.10.0",
 		"jsdom": "30.0.1",
 		"terser": "5.49.2",
-		"typescript": "6.0.3",
-		"typescript-eslint": "8.69.0",
+		"typescript": "7.0.2",
 		"vite": "8.2.2",
 		"vitest": "4.1.11"
 	}
