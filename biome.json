@@ -38,7 +38,8 @@
 			"!test-results",
 			"!playwright-report",
 			"!.vscode",
-			"!dock-eval-playwright.ts"
+			"!dock-eval-playwright.ts",
+			"!**/*.md"
 		]
 	}
 }
